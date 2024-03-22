@@ -2,6 +2,7 @@ import os
 import re
 import hashlib
 import ast
+from openai import OpenAI
 ACTION_MISSED = None
 
 def get_id_from_view_desc(view_desc):
@@ -46,14 +47,32 @@ def get_view_without_id(view_desc):
     id_string = ' id=' + id
     return re.sub(id_string, '', view_desc)
 
+# def query_gpt(prompt):
+#     import requests
+#     URL = os.environ['GPT_URL']  # NOTE: replace with your own GPT API
+#     body = {"model":"gpt-3.5-turbo","messages":[{"role":"user","content":prompt}],"stream":True}
+#     headers = {'Content-Type': 'application/json', 'path': 'v1/chat/completions'}
+#     r = requests.post(url=URL, json=body, headers=headers)
+#     return r.content.decode()
+
 def query_gpt(prompt):
-    import requests
-    URL = "sk-0ERDO99jvtRd37sql5uUjL3dTtnsmZQbQmn3JVSUT85U1LBi"
-    # os.environ['GPT_URL']  # NOTE: replace with your own GPT API
-    body = {"model":"gpt-3.5-turbo","messages":[{"role":"user","content":prompt}],"stream":True}
-    headers = {'Content-Type': 'application/json', 'path': 'v1/chat/completions'}
-    r = requests.post(url=URL, json=body, headers=headers)
-    return r.content.decode()
+    # print(prompt)
+    client = OpenAI(
+        api_key=os.environ['APIKey']
+    )
+    retry = 0
+    completion = client.chat.completions.create(
+        messages=[
+            {
+                "role": "user",
+                "content": prompt,
+            }
+        ],
+        model="gpt-3.5-turbo",
+        timeout=15
+    )
+    res = completion.choices[0].message.content
+    return res
 
 def delete_old_views_from_new_state(old_state, new_state, without_id=True):
     '''
@@ -152,7 +171,7 @@ def visualize_network(G):
     nt.show('visualize/nx.html')
 
 
-def extract_action(answer):
+def extract_actionv0(answer):
     llm_id = 'N/A'
     llm_action = 'tap'
     llm_input = "N/A"
@@ -224,6 +243,55 @@ def extract_action(answer):
                     pass
     return llm_id, llm_action, llm_input
 
+def extract_action(v):
+    import json
+    try:
+        if isinstance(v, str):
+            v = ast.literal_eval(v)
+    except:
+        print('format error: v')
+        llm_id = -1
+        llm_action = "N/A"
+        llm_input = "N/A"
+    try:
+        if 'Finished' in v.keys():
+            whether_finished_answer = v['Finished'].lower() == 'yes' or v['Finished'].lower() == 'y' or v['Finished'].lower() == 'true' or 'finished' in v['Finished'].lower() 
+        elif 'finished' in v.keys():
+            whether_finished_answer = v['finished'].lower() == 'yes' or v['finished'].lower() == 'y' or v['finished'].lower() == 'true' or 'finished' in v['finished'].lower() 
+        else:
+            whether_finished_answer = False
+        if whether_finished_answer:
+            llm_id = -1
+            llm_action = "N/A"
+            llm_input = "N/A"
+        else:
+            llm_id = 'N/A'
+
+    except:
+        pass
+    if llm_id != -1:
+        step_desc = v
+        try:
+            llm_id = step_desc['id']
+            llm_action = step_desc['action']
+            llm_input = step_desc['input_text']
+            if llm_id == "N/A":
+                llm_id = -1
+            else:
+                llm_id = int(llm_id)
+            if "tap" in llm_action.lower() or "check" in llm_action.lower() or "choose" in llm_action.lower():
+                llm_action = "tap"
+            elif "none" in llm_action.lower():
+                llm_action = "N/A"
+            elif "click" in llm_action.lower():
+                llm_action = "tap"
+            elif "input" in llm_action.lower():
+                llm_action = "input"
+            assert llm_action in ["tap", "input", "N/A"]
+        except:
+            llm_id = -1
+    return llm_id, llm_action, llm_input
+
 def insert_onclick_into_prompt(state_prompt, insert_ele, target_ele_desc):
 
     def insert_onclick(statement, description):
@@ -260,15 +328,4 @@ def hash_string(string):
 
 if __name__ == '__main__':
     print(query_gpt('how can i cancel wechat charge'))
-    # import openai
-    #
-    # openai.api_key = "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"  # 替换成你的API密钥
-    #
-    #
-    # response = openai.Completion.create(
-    #     engine="davinci",
-    #     prompt="Translate the following English text to French: 'Hello, how are you?'",
-    #     max_tokens=50
-    # )
-    #
-    # print(response.choices[0].text.strip())
+
