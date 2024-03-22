@@ -48,7 +48,8 @@ def get_view_without_id(view_desc):
 
 def query_gpt(prompt):
     import requests
-    URL = os.environ['GPT_URL']  # NOTE: replace with your own GPT API
+    URL = "sk-0ERDO99jvtRd37sql5uUjL3dTtnsmZQbQmn3JVSUT85U1LBi"
+    # os.environ['GPT_URL']  # NOTE: replace with your own GPT API
     body = {"model":"gpt-3.5-turbo","messages":[{"role":"user","content":prompt}],"stream":True}
     headers = {'Content-Type': 'application/json', 'path': 'v1/chat/completions'}
     r = requests.post(url=URL, json=body, headers=headers)
