@@ -16,7 +16,7 @@ from .input_event import ScrollEvent
 import tools
 import pdb
 import os
-from query_lmql import prompt_llm_with_history
+# from query_lmql import prompt_llm_with_history
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 # Max number of restarts
@@ -48,6 +48,8 @@ POLICY_NONE = "none"
 POLICY_MEMORY_GUIDED = "memory_guided"  # implemented in input_policy2
 FINISHED = "task_completed"
 MAX_SCROLL_NUM = 7
+USE_LMQL = False
+
 class InputInterruptedException(Exception):
     pass
 
@@ -662,7 +664,7 @@ class ManualPolicy(UtgBasedInputPolicy):
 
 class TaskPolicy(UtgBasedInputPolicy):
 
-    def __init__(self, device, app, random_input, task, use_memory=True, debug_mode=False):
+    def __init__(self, device, app, random_input, task, use_memory=False, debug_mode=False):
         super(TaskPolicy, self).__init__(device, app, random_input)
         self.logger = logging.getLogger(self.__class__.__name__)
         self.task = task
@@ -1012,7 +1014,7 @@ class TaskPolicy(UtgBasedInputPolicy):
         task_prompt = 'Task: ' + self.task
         history_prompt = 'Previous UI actions: \n' + '\n'.join(history_with_thought)
         full_state_prompt = 'Current UI state: \n' + state_prompt
-        request_prompt = '''Your answer should always use the following format:1. Completing this task on a smartphone usually involves these steps: <?>.\n2. Analyses of the relations between the task and the previous UI actions and current UI state: <?>.\n3. Based on the previous actions, is the task already finished? <Y/N>. The next step should be <?/None>.\n4. Can the task be proceeded with the current UI state? <Y/N>. Fill in the blanks about the next one interaction: - id=<id number> - action=<tap/input> - input text=<text or N/A>'''
+        request_prompt = "\nYour answer should always use the following format: { \"Steps\": \"...<steps usually involved to complete the above task on a smartphone>\", \"Analyses\": \"...<Analyses of the relations between the task, and relations between the previous UI actions and current UI state>\", \"Finished\": \"Yes/No\", \"Next step\": \"None or a <high level description of the next step>\", \"id\": \"an integer or -1 (if the task has been completed by previous UI actions)\", \"action\": \"tap or input\", \"input_text\": \"N/A or ...<input text>\" } \n\n**Note that the id is the id number of the UI element to interact with. If you think the task has been completed by previous UI actions, the id should be -1. If 'Finished' is 'Yes', then the 'description' of 'Next step' is 'None', otherwise it is a high level description of the next step. If the 'action' is 'tap', the 'input_text' is N/A, otherwise it is the '<input text>'. Please do not output any content other than the JSON format. **"
         prompt = introduction + '\n' + task_prompt + '\n' + history_prompt + '\n' + full_state_prompt + '\n' + request_prompt
         return prompt
     
@@ -1052,25 +1054,44 @@ class TaskPolicy(UtgBasedInputPolicy):
         if current_state:
             state_prompt, candidate_actions, _, _ = current_state.get_described_actions()
             state_str = current_state.state_str
-            history, state_prompt = self._make_prompt_lmql(state_prompt, action_history, is_text=False, state_str=state_str,
-                                                      thought_history=thought_history)
+            if USE_LMQL:
+                history, state_prompt = self._make_prompt_lmql(state_prompt, action_history, is_text=False, state_str=state_str,
+                                                      thought_history=thought_history)  
+            else:
+                prompt = self._make_prompt(state_prompt, action_history, is_text=False, state_str=state_str, thought_history=thought_history)
         else:
             views_with_id = []
             for id in range(len(views)):
                 views_with_id.append(tools.insert_id_into_view(views[id], id))
             state_prompt = '\n'.join(views_with_id)
             state_str = tools.hash_string(state_prompt)
-            history, state_prompt = self._make_prompt_lmql(state_prompt, action_history, is_text=False, state_str=state_str,
-                                                      thought_history=thought_history)
+            if USE_LMQL:
+                history, state_prompt = self._make_prompt_lmql(state_prompt, action_history, is_text=False, state_str=state_str,
+                                                      thought_history=thought_history)  
+            else:
+                prompt = self._make_prompt(state_prompt, action_history, is_text=False, state_str=state_str, thought_history=thought_history)
 
-        ids = [str(idx) for idx, i in enumerate(candidate_actions)]
-        idx, action_type, input_text=prompt_llm_with_history(history=history, ui_desc=state_prompt, ids=ids)
-
+        # ids = [str(idx) for idx, i in enumerate(candidate_actions)]
+        ids = str([i for i in range(len(candidate_actions))])
+        
+        if USE_LMQL:
+            idx, action_type, input_text=prompt_llm_with_history(task=self.task, history=history, ui_desc=state_prompt, ids=ids)
+        else:
+            print('********************************** prompt: **********************************')
+            print(prompt)
+            print('********************************** end of prompt **********************************')
+            response = tools.query_gpt(prompt)
+            
+            print(f'response: {response}')
+            idx, action_type, input_text = tools.extract_action(response)
+        # import pdb;pdb.set_trace()
         file_name = self.device.output_dir +'/'+ self.task.replace('"', '_').replace("'", '_') + '.yaml' #str(str(time.time()).replace('.', ''))
         idx = int(idx)
+        if idx == -1:
+            return FINISHED, None, None, None
         selected_action = candidate_actions[idx]
         
-        selected_view_description = tools.get_item_properties_from_id(task=self.task,ui_state_desc=state_prompt, view_id=idx)
+        selected_view_description = tools.get_item_properties_from_id(ui_state_desc=state_prompt, view_id=idx)
         thought = ''# tools.get_thought(response)
 
         if isinstance(selected_action, SetTextEvent):
