@@ -1,0 +1,112 @@
+records:
+- Choice: 2
+  Input: 'null'
+  State: '<button id=0 text=''Search''></button>
+
+    <button id=1 text=''Open note''></button>
+
+    <button id=2 text=''Create a new note''></button>
+
+    <button id=3 text=''More options''></button>
+
+    <button id=4>General note</button>
+
+    <p id=5>Sas</p>
+
+    <input id=6>Insert text here</input>
+
+    <button id=7>go back</button>'
+  state_str:
+  - e9ae4b999b3cfd13fc9261117c4eb899a2d868d8996214da165ac9e33b6fb273
+- Choice: 4
+  Input: 'null'
+  State: '<p id=0>Add a new note</p>
+
+    <input id=1>Label</input>
+
+    <p id=2>New note type:</p>
+
+    <checkbox id=3 checked=True>Text note</checkbox>
+
+    <checkbox id=4 checked=False>Checklist</checkbox>
+
+    <button id=5>Cancel</button>
+
+    <button id=6>OK</button>
+
+    <button id=7>go back</button>'
+  state_str: 3279b0a335a853162279a266bfc5dea62d8d15e841a8a5373548b76df9bc19c5
+- Choice: 6
+  Input: 'null'
+  State: '<p id=0>Add a new note</p>
+
+    <input id=1>Label</input>
+
+    <p id=2>New note type:</p>
+
+    <checkbox id=3 checked=False>Text note</checkbox>
+
+    <checkbox id=4 checked=True>Checklist</checkbox>
+
+    <button id=5>Cancel</button>
+
+    <button id=6>OK</button>
+
+    <button id=7>go back</button>'
+  state_str: 3151392a92dc001931363b48a5db26ad5e927ecb8dd2ea597edf7110138efcc4
+- Choice: 6
+  Input: 'null'
+  State: '<p id=0>Add a new note</p>
+
+    <input id=1>Label</input>
+
+    <p id=2>New note type:</p>
+
+    <checkbox id=3 checked=False>Text note</checkbox>
+
+    <checkbox id=4 checked=True>Checklist</checkbox>
+
+    <button id=5>Cancel</button>
+
+    <button id=6>OK</button>
+
+    <button id=7>go back</button>'
+  state_str: 3151392a92dc001931363b48a5db26ad5e927ecb8dd2ea597edf7110138efcc4
+- Choice: 1
+  Input: NewCheckList
+  State: '<p id=0>Add a new note</p>
+
+    <input id=1>Label</input>
+
+    <p id=2>New note type:</p>
+
+    <checkbox id=3 checked=False>Text note</checkbox>
+
+    <checkbox id=4 checked=True>Checklist</checkbox>
+
+    <button id=5>Cancel</button>
+
+    <button id=6>OK</button>
+
+    <button id=7>go back</button>'
+  state_str: 3151392a92dc001931363b48a5db26ad5e927ecb8dd2ea597edf7110138efcc4
+- Choice: 1
+  Input: NewCheckList
+  State: '<p id=0>Add a new note</p>
+
+    <input id=1>NewCheckList, Label</input>
+
+    <p id=2>New note type:</p>
+
+    <checkbox id=3 checked=False>Text note</checkbox>
+
+    <checkbox id=4 checked=True>Checklist</checkbox>
+
+    <button id=5>Cancel</button>
+
+    <button id=6>OK</button>
+
+    <button id=7>go back</button>'
+  state_str: 308cfaca540977c606a4894b3320f010e43ae61ff31e7116c97a55118e737189
+step_num: 6
+task_name: Create a checklist note called 'NewCheckList'

@@ -1,0 +1,12 @@
+{
+  "tag": "2024-03-26_141801",
+  "event": {
+    "event_type": "kill_app",
+    "log_lines": null,
+    "prompt": null,
+    "stop_intent": "am force-stop com.simplemobiletools.notes.pro"
+  },
+  "start_state": "e9ae4b999b3cfd13fc9261117c4eb899a2d868d8996214da165ac9e33b6fb273",
+  "stop_state": "ae537ba896cf566fc5615b1b542779b99329c7042028660c4656409f62c1880e",
+  "event_str": "KillAppEvent()"
+}

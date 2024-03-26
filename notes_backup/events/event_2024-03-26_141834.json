@@ -1,0 +1,50 @@
+{
+  "tag": "2024-03-26_141834",
+  "event": {
+    "event_type": "click",
+    "log_lines": null,
+    "prompt": null,
+    "view": {
+      "checkable": true,
+      "selected": false,
+      "scrollable": false,
+      "long_clickable": false,
+      "resource_id": "com.simplemobiletools.notes.pro:id/type_checklist",
+      "visible": true,
+      "enabled": true,
+      "clickable": true,
+      "checked": false,
+      "is_password": false,
+      "content_description": null,
+      "focused": false,
+      "class": "android.widget.RadioButton",
+      "children": [],
+      "child_count": 0,
+      "package": "com.simplemobiletools.notes.pro",
+      "text": "Checklist",
+      "bounds": [
+        [
+          71,
+          1191
+        ],
+        [
+          1009,
+          1312
+        ]
+      ],
+      "editable": false,
+      "focusable": true,
+      "parent": 15,
+      "temp_id": 17,
+      "size": "938*121",
+      "signature": "[class]android.widget.RadioButton[resource_id]com.simplemobiletools.notes.pro:id/type_checklist[text]Checklist[enabled,,]",
+      "view_str": "a445e6575cd2194332b6c1fdc783f885",
+      "content_free_signature": "[class]android.widget.RadioButton[resource_id]com.simplemobiletools.notes.pro:id/type_checklist"
+    },
+    "x": null,
+    "y": null
+  },
+  "start_state": "3279b0a335a853162279a266bfc5dea62d8d15e841a8a5373548b76df9bc19c5",
+  "stop_state": "3151392a92dc001931363b48a5db26ad5e927ecb8dd2ea597edf7110138efcc4",
+  "event_str": "TouchEvent(state=3279b0a335a853162279a266bfc5dea62d8d15e841a8a5373548b76df9bc19c5, view=a445e6575cd2194332b6c1fdc783f885(MainActivity/RadioButton-Checklist))"
+}
