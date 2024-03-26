@@ -104,7 +104,7 @@ class InputManager(object):
         event_log.start()
         while True:
             time.sleep(self.event_interval)
-            if not self.device.pause_sending_event:
+            if not self.device.pause_sending_event:#if pause_sending_event, we will not send event and stay in the loop
                 break
         event_log.stop()
 
@@ -141,7 +141,7 @@ class InputManager(object):
                 # may be disturbed from outside
                 if self.monkey is not None:
                     self.monkey.wait()
-            elif self.policy_name == POLICY_MANUAL:
+            elif self.policy_name == POLICY_MANUAL:#conflict with "if self.policy is not None", execute one after another?
                 self.device.start_app(self.app)
                 while self.enabled:
                     keyboard_input = input("press ENTER to save current state, type q to exit...")
