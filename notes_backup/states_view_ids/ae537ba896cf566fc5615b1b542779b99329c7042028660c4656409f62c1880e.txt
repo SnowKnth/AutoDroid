@@ -1,0 +1,1 @@
+[['Analog clock', 8], ['Camera', 10], ['Camera', 10], ['14:18', 9], ['Search', 17], ['Home screen 1 of 2, Settings', 30], ['Phone', 41], ['Phone', 41], ['Contacts', 42], ['Contacts', 42], ['Apps', 43], ['Messaging', 44], ['Messaging', 44], ['Browser', 45], ['Browser', 45]]

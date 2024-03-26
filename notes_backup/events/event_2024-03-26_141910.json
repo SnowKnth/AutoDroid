@@ -1,0 +1,51 @@
+{
+  "tag": "2024-03-26_141910",
+  "event": {
+    "event_type": "set_text",
+    "log_lines": null,
+    "prompt": null,
+    "view": {
+      "checkable": false,
+      "selected": false,
+      "scrollable": false,
+      "long_clickable": true,
+      "resource_id": "com.simplemobiletools.notes.pro:id/locked_note_title",
+      "visible": true,
+      "enabled": true,
+      "clickable": true,
+      "checked": false,
+      "is_password": false,
+      "content_description": null,
+      "focused": true,
+      "class": "android.widget.EditText",
+      "children": [],
+      "child_count": 0,
+      "package": "com.simplemobiletools.notes.pro",
+      "text": "NewCheckList, Label",
+      "bounds": [
+        [
+          71,
+          798
+        ],
+        [
+          1009,
+          951
+        ]
+      ],
+      "editable": true,
+      "focusable": true,
+      "parent": 12,
+      "temp_id": 13,
+      "size": "938*153",
+      "signature": "[class]android.widget.EditText[resource_id]com.simplemobiletools.notes.pro:id/locked_note_title[text]NewCheckList, Label[enabled,,]",
+      "view_str": "c0eab2258198a48b2c12dbd3fdf429ca",
+      "content_free_signature": "[class]android.widget.EditText[resource_id]com.simplemobiletools.notes.pro:id/locked_note_title"
+    },
+    "x": null,
+    "y": null,
+    "text": "NewCheckList"
+  },
+  "start_state": "308cfaca540977c606a4894b3320f010e43ae61ff31e7116c97a55118e737189",
+  "stop_state": "308cfaca540977c606a4894b3320f010e43ae61ff31e7116c97a55118e737189",
+  "event_str": "SetTextEvent(state=308cfaca540977c606a4894b3320f010e43ae61ff31e7116c97a55118e737189, view=c0eab2258198a48b2c12dbd3fdf429ca(MainActivity/EditText-NewCheckLi), text=NewCheckList)"
+}

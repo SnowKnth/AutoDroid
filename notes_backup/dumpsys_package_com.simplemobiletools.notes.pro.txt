@@ -1,0 +1,93 @@
+Activity Resolver Table:
+  Full MIME Types:
+      text/*:
+        cc1ceba com.simplemobiletools.notes.pro/.activities.MainActivity (2 filters)
+
+  Wild MIME Types:
+      text:
+        cc1ceba com.simplemobiletools.notes.pro/.activities.MainActivity (2 filters)
+
+  Non-Data Actions:
+      android.intent.action.MAIN:
+        96365e com.simplemobiletools.notes.pro/.activities.SplashActivity.Cyan
+        ade961 com.simplemobiletools.notes.pro/.activities.SplashActivity.Brown
+        b2ecd1 com.simplemobiletools.notes.pro/.activities.SplashActivity.Red
+        d264e0 com.simplemobiletools.notes.pro/.activities.SplashActivity.Green
+        1a8ef0c com.simplemobiletools.notes.pro/.activities.SplashActivity.Blue
+        1bf7b12 com.simplemobiletools.notes.pro/.activities.SplashActivity.Lime
+        37beff8 com.simplemobiletools.notes.pro/.activities.SplashActivity.Pink
+        7f312e3 com.simplemobiletools.notes.pro/.activities.SplashActivity.Light_green
+        92e1c86 com.simplemobiletools.notes.pro/.activities.SplashActivity.Deep_orange
+        95de16b com.simplemobiletools.notes.pro/.activities.SplashActivity.Grey_black
+        9916399 com.simplemobiletools.notes.pro/.activities.SplashActivity.Teal
+        af72947 com.simplemobiletools.notes.pro/.activities.SplashActivity.Orange
+        b69c4c8 com.simplemobiletools.notes.pro/.activities.SplashActivity.Blue_grey
+        bddfb5b com.simplemobiletools.notes.pro/.activities.SplashActivity.Purple
+        d0ba055 com.simplemobiletools.notes.pro/.activities.SplashActivity.Indigo
+        dba6574 com.simplemobiletools.notes.pro/.activities.SplashActivity.Amber
+        efeba9d com.simplemobiletools.notes.pro/.activities.SplashActivity.Yellow
+        f39fa3f com.simplemobiletools.notes.pro/.activities.SplashActivity.Light_blue
+        f8b5a6a com.simplemobiletools.notes.pro/.activities.SplashActivity.Deep_purple
+      android.intent.action.APPLICATION_PREFERENCES:
+        afcb336 com.simplemobiletools.notes.pro/.activities.SettingsActivity
+      android.appwidget.action.APPWIDGET_CONFIGURE:
+        df6f237 com.simplemobiletools.notes.pro/.activities.WidgetConfigureActivity
+
+  MIME Typed Actions:
+      android.intent.action.SEND:
+        cc1ceba com.simplemobiletools.notes.pro/.activities.MainActivity
+      android.intent.action.VIEW:
+        cc1ceba com.simplemobiletools.notes.pro/.activities.MainActivity
+
+Receiver Resolver Table:
+  Non-Data Actions:
+      com.simplemobiletools.commons.SHARED_THEME_ACTIVATED:
+        d7c13a4 com.simplemobiletools.notes.pro/com.simplemobiletools.commons.receivers.SharedThemeReceiver
+      com.simplemobiletools.commons.SHARED_THEME_UPDATED:
+        d7c13a4 com.simplemobiletools.notes.pro/com.simplemobiletools.commons.receivers.SharedThemeReceiver
+      android.appwidget.action.APPWIDGET_UPDATE:
+        a8850d com.simplemobiletools.notes.pro/.helpers.MyWidgetProvider
+
+Registered ContentProviders:
+  com.simplemobiletools.notes.pro/androidx.startup.InitializationProvider:
+    Provider{558ccc2 com.simplemobiletools.notes.pro/androidx.startup.InitializationProvider}
+
+ContentProvider Authorities:
+  [com.simplemobiletools.notes.pro.androidx-startup]:
+    Provider{558ccc2 com.simplemobiletools.notes.pro/androidx.startup.InitializationProvider}
+      applicationInfo=ApplicationInfo{53e7ad3 com.simplemobiletools.notes.pro}
+
+Key Set Manager:
+  [com.simplemobiletools.notes.pro]
+      Signing KeySets: 31
+
+Packages:
+  Package [com.simplemobiletools.notes.pro] (738c610):
+    userId=10081
+    pkg=Package{fe56509 com.simplemobiletools.notes.pro}
+    codePath=/data/app/com.simplemobiletools.notes.pro-1
+    resourcePath=/data/app/com.simplemobiletools.notes.pro-1
+    legacyNativeLibraryDir=/data/app/com.simplemobiletools.notes.pro-1/lib
+    primaryCpuAbi=null
+    secondaryCpuAbi=null
+    versionCode=105 targetSdk=33
+    versionName=6.15.5
+    splits=[base]
+    applicationInfo=ApplicationInfo{53e7ad3 com.simplemobiletools.notes.pro}
+    flags=[ HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+    dataDir=/data/user/0/com.simplemobiletools.notes.pro
+    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]
+    timeStamp=2024-03-26 13:23:51
+    firstInstallTime=2024-03-26 13:23:52
+    lastUpdateTime=2024-03-26 13:23:52
+    signatures=PackageSignatures{76af30e [96bf12f]}
+    installPermissionsFixed=true installStatus=1
+    pkgFlags=[ HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+    requested permissions:
+      android.permission.WRITE_EXTERNAL_STORAGE
+      android.permission.USE_FINGERPRINT
+      android.permission.READ_EXTERNAL_STORAGE
+    install permissions:
+      android.permission.USE_FINGERPRINT: granted=true
+    User 0:  installed=true hidden=false stopped=false notLaunched=false enabled=0
+      runtime permissions:
