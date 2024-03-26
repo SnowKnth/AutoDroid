@@ -58,7 +58,8 @@ def get_view_without_id(view_desc):
 def query_gpt(prompt):
     # print(prompt)
     client = OpenAI(
-        api_key=os.environ['APIKey']
+        api_key=os.environ['APIKey'],
+        base_url="https://api.chatanywhere.tech/v1"##by wxd, for chatanywhere
     )
     retry = 0
     completion = client.chat.completions.create(
