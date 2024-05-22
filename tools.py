@@ -106,7 +106,7 @@ def delete_old_views_from_new_state(old_state, new_state, without_id=True):
 
 def get_item_properties_from_id(ui_state_desc, view_id):
     '''
-    given the element id, get the UI element property from the state prompt
+    given the element id, get the UI element property from the state prompt. An example of return value: '<button>Settings</button>'. ui_state_desc is catecated with sth like returned value
     '''
     # ui_state_desc = self.states[state_str]['raw_prompt']
     ui_state_list = ui_state_desc.split('>\n')
@@ -294,7 +294,8 @@ def extract_action(v):
     return llm_id, llm_action, llm_input
 
 def insert_onclick_into_prompt(state_prompt, insert_ele, target_ele_desc):
-
+    """an example of return value: ['<button id=0>Add holidays</button>', '<button id=1>Add contact birthdays</button>', '<button id=2>Add contact anniversaries</button>', '<button id=3>Import events from an .ics file</button>', '<button id=4>Export events to an .ics file</button>', '<button id=5 onclick=\'go to complete the task: change the reminder sound for calendar events to "Adara" on a smartphone.\'>Settings</button>', '<button id=6>About</button>', '<button id=7>go back</button>']
+"""
     def insert_onclick(statement, description):
         index = statement.find('>')
         inserted_statement = statement[:index] + f" onclick='{description}'" + statement[index:]
@@ -307,7 +308,7 @@ def insert_onclick_into_prompt(state_prompt, insert_ele, target_ele_desc):
         ele_statement_without_id = get_view_without_id(ele_statement)
         if ele_statement_without_id[-1] != '>':
             ele_statement_without_id += '>'
-        if insert_ele == ele_statement_without_id:
+        if insert_ele == ele_statement_without_id:#insert the description of  most similar element's functionality
             ele_statement_without_id = insert_onclick(ele_statement_without_id, onclick_desc)
 
         elements_without_id.append(ele_statement_without_id)

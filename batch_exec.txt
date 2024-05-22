@@ -1,0 +1,450 @@
+python3 -m droidbot.start -a ./c2d_apps/a1-browser/a11-acr.browser.lightning_96.apk -o output/a11b11 -is_emulator -script ./c2d_script/a1/b11/base/a11_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a1-browser/a12-Browser\ for\ Android_v1.3.1_apkpure.com.apk -o output/a12b11 -is_emulator -script ./c2d_script/a1/b11/base/a12_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a1-browser/a13-com.stoutner.privacybrowser.standard_33.apk -o output/a13b11 -is_emulator -script ./c2d_script/a1/b11/base/a13_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a1-browser/a14-de.baumann.browser_80.apk -o output/a14b11 -is_emulator -script ./c2d_script/a1/b11/base/a14_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a1-browser/a15-Firefox\ Focus\ The\ privacy\ browser_v6.0_apkpure.com.apk -o output/a15b11 -is_emulator -script ./c2d_script/a1/b11/base/a15_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a1-browser/a11-acr.browser.lightning_96.apk -o output/a11b12 -is_emulator -script ./c2d_script/a1/b12/base/a11_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a1-browser/a12-Browser\ for\ Android_v1.3.1_apkpure.com.apk -o output/a12b12 -is_emulator -script ./c2d_script/a1/b12/base/a12_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a1-browser/a13-com.stoutner.privacybrowser.standard_33.apk -o output/a13b12 -is_emulator -script ./c2d_script/a1/b12/base/a13_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a1-browser/a14-de.baumann.browser_80.apk -o output/a14b12 -is_emulator -script ./c2d_script/a1/b12/base/a14_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a1-browser/a15-Firefox\ Focus\ The\ privacy\ browser_v6.0_apkpure.com.apk -o output/a15b12 -is_emulator -script ./c2d_script/a1/b12/base/a15_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a2-todo/a21-com.rubenroy.minimaltodo_3.apk -o output/a21b21 -is_emulator -script ./c2d_script/a2/b21/base/a21_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a2-todo/a22-douzifly.list_21.apk -o output/a22b21 -is_emulator -script ./c2d_script/a2/b21/base/a22_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a2-todo/a23-org.secuso.privacyfriendlytodolist_4.apk -o output/a23b21 -is_emulator -script ./c2d_script/a2/b21/base/a23_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a2-todo/a24-kdk.android.simplydo_1.apk -o output/a24b21 -is_emulator -script ./c2d_script/a2/b21/base/a24_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a2-todo/a25-com.woefe.shoppinglist_11.apk -o output/a25b21 -is_emulator -script ./c2d_script/a2/b21/base/a25_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a2-todo/a21-com.rubenroy.minimaltodo_3.apk -o output/a21b22 -is_emulator -script ./c2d_script/a2/b22/base/a21_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a2-todo/a22-douzifly.list_21.apk -o output/a22b22 -is_emulator -script ./c2d_script/a2/b22/base/a22_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a2-todo/a23-org.secuso.privacyfriendlytodolist_4.apk -o output/a23b22 -is_emulator -script ./c2d_script/a2/b22/base/a23_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a2-todo/a24-kdk.android.simplydo_1.apk -o output/a24b22 -is_emulator -script ./c2d_script/a2/b22/base/a24_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a2-todo/a25-com.woefe.shoppinglist_11.apk -o output/a25b22 -is_emulator -script ./c2d_script/a2/b22/base/a25_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a3-shopping/a31-Geek\ Smarter\ Shopping_v2.3.7_apkpure.com.apk -o output/a31b31 -is_emulator -script ./c2d_script/a3/b31/base/a31_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a3-shopping/a32-Wish\ Shopping\ Made\ Fun_v4.22.6_apkpure.com.apk -o output/a32b31 -is_emulator -script ./c2d_script/a3/b31/base/a32_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a3-shopping/a33-Rainbow\ Shops\ Womens\ and\ Plus\ Size\ Clothing_v1.2.9_apkpure.com.apk -o output/a33b31 -is_emulator -script ./c2d_script/a3/b31/base/a33_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a3-shopping/a34-Etsy\ Handmade\ Vintage\ Goods_v5.6.0_apkpure.com.apk -o output/a34b31 -is_emulator -script ./c2d_script/a3/b31/base/a34_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a3-shopping/a35-Yelp\ Food\ Shopping\ Services\ Nearby_v10.21.1-21020803_apkpure.com.apk -o output/a35b31 -is_emulator -script ./c2d_script/a3/b31/base/a35_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a3-shopping/a31-Geek\ Smarter\ Shopping_v2.3.7_apkpure.com.apk -o output/a31b32 -is_emulator -script ./c2d_script/a3/b32/base/a31_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a3-shopping/a32-Wish\ Shopping\ Made\ Fun_v4.22.6_apkpure.com.apk -o output/a32b32 -is_emulator -script ./c2d_script/a3/b32/base/a32_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a3-shopping/a33-Rainbow\ Shops\ Womens\ and\ Plus\ Size\ Clothing_v1.2.9_apkpure.com.apk -o output/a33b32 -is_emulator -script ./c2d_script/a3/b32/base/a33_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a3-shopping/a34-Etsy\ Handmade\ Vintage\ Goods_v5.6.0_apkpure.com.apk -o output/a34b32 -is_emulator -script ./c2d_script/a3/b32/base/a34_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a3-shopping/a35-Yelp\ Food\ Shopping\ Services\ Nearby_v10.21.1-21020803_apkpure.com.apk -o output/a35b32 -is_emulator -script ./c2d_script/a3/b32/base/a35_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a4-mail/a41-com.fsck.k9_23630.apk -o output/a41b41 -is_emulator -script ./c2d_script/a4/b41/base/a41_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a4-mail/a42-Email\ mail\ box\ fast\ mail_v1.12.20_apkpure.com.apk -o output/a42b41 -is_emulator -script ./c2d_script/a4/b41/base/a42_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a4-mail/a43-Mail\ Ru\ Email\ App_v7.5.0.24869_apkpure.com.apk -o output/a43b41 -is_emulator -script ./c2d_script/a4/b41/base/a43_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a4-mail/a44-myMail\ ≈\ Email\ for\ Hotmail\ Gmail\ and\ Outlook\ Mail_v7.5.0.24869_apkpure.com.apk -o output/a44b41 -is_emulator -script ./c2d_script/a4/b41/base/a44_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a4-mail/a45-Email\ App\ for\ Outlook\ others_v6.6.0.24788_apkpure.com.apk -o output/a45b41 -is_emulator -script ./c2d_script/a4/b41/base/a45_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a4-mail/a41-com.fsck.k9_23630.apk -o output/a41b42 -is_emulator -script ./c2d_script/a4/b42/base/a41_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a4-mail/a42-Email\ mail\ box\ fast\ mail_v1.12.20_apkpure.com.apk -o output/a42b42 -is_emulator -script ./c2d_script/a4/b42/base/a42_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a4-mail/a43-Mail\ Ru\ Email\ App_v7.5.0.24869_apkpure.com.apk -o output/a43b42 -is_emulator -script ./c2d_script/a4/b42/base/a43_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a4-mail/a44-myMail\ ≈\ Email\ for\ Hotmail\ Gmail\ and\ Outlook\ Mail_v7.5.0.24869_apkpure.com.apk -o output/a44b42 -is_emulator -script ./c2d_script/a4/b42/base/a44_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a4-mail/a45-Email\ App\ for\ Outlook\ others_v6.6.0.24788_apkpure.com.apk -o output/a45b42 -is_emulator -script ./c2d_script/a4/b42/base/a45_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a5-tip/a51-Tip\ Calculator_v1.1_apkpure.com.apk -o output/a51b51 -is_emulator -script ./c2d_script/a5/b51/base/a51_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a5-tip/a52-Tip\ Calc_v1.11_apkpure.com.apk -o output/a52b51 -is_emulator -script ./c2d_script/a5/b51/base/a52_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a5-tip/a53-Simple\ Tip\ Calculator_v1.2_apkpure.com.apk -o output/a53b51 -is_emulator -script ./c2d_script/a5/b51/base/a53_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a5-tip/a54-Tip\ Calculator\ Plus_v2.0_apkpure.com.apk -o output/a54b51 -is_emulator -script ./c2d_script/a5/b51/base/a54_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a5-tip/a55-Free\ Tip\ Calculator_v1.0.0.9_apkpure.com.apk -o output/a55b51 -is_emulator -script ./c2d_script/a5/b51/base/a55_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a5-tip/a51-Tip\ Calculator_v1.1_apkpure.com.apk -o output/a51b52 -is_emulator -script ./c2d_script/a5/b52/base/a51_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a5-tip/a52-Tip\ Calc_v1.11_apkpure.com.apk -o output/a52b52 -is_emulator -script ./c2d_script/a5/b52/base/a52_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a5-tip/a53-Simple\ Tip\ Calculator_v1.2_apkpure.com.apk -o output/a53b52 -is_emulator -script ./c2d_script/a5/b52/base/a53_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a5-tip/a54-Tip\ Calculator\ Plus_v2.0_apkpure.com.apk -o output/a54b52 -is_emulator -script ./c2d_script/a5/b52/base/a54_drb.json -policy manual
+
+ python3 -m droidbot.start -a ./c2d_apps/a5-tip/a55-Free\ Tip\ Calculator_v1.0.0.9_apkpure.com.apk -o output/a55b52 -is_emulator -script ./c2d_script/a5/b52/base/a55_drb.json -policy manual
+
+python3 start.py -a ./c2d_apps/a1-browser/a11-acr.browser.lightning_96.apk -o output/a11b11 -is_emulator -script ./c2d_script/a1/b11/base/a11_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a12-Browser\ for\ Android_v1.3.1_apkpure.com.apk -o output/a12b11 -is_emulator -script ./c2d_script/a1/b11/base/a12_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a13-com.stoutner.privacybrowser.standard_33.apk -o output/a13b11 -is_emulator -script ./c2d_script/a1/b11/base/a13_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a14-de.baumann.browser_80.apk -o output/a14b11 -is_emulator -script ./c2d_script/a1/b11/base/a14_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a15-Firefox\ Focus\ The\ privacy\ browser_v6.0_apkpure.com.apk -o output/a15b11 -is_emulator -script ./c2d_script/a1/b11/base/a15_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a11-acr.browser.lightning_96.apk -o output/a11b12 -is_emulator -script ./c2d_script/a1/b12/base/a11_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a12-Browser\ for\ Android_v1.3.1_apkpure.com.apk -o output/a12b12 -is_emulator -script ./c2d_script/a1/b12/base/a12_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a13-com.stoutner.privacybrowser.standard_33.apk -o output/a13b12 -is_emulator -script ./c2d_script/a1/b12/base/a13_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a14-de.baumann.browser_80.apk -o output/a14b12 -is_emulator -script ./c2d_script/a1/b12/base/a14_drb.json -task "Access website by URL \"https://www.ics.uci.edu\", then access \"https://uci.edu\", the click BACK key" 
+python3 start.py -a ./c2d_apps/a1-browser/a15-Firefox\ Focus\ The\ privacy\ browser_v6.0_apkpure.com.apk -o output/a15b12 -is_emulator -script ./c2d_script/a1/b12/base/a15_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a2-todo/a21-com.rubenroy.minimaltodo_3.apk -o output/a21b21 -is_emulator -script ./c2d_script/a2/b21/base/a21_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a22-douzifly.list_21.apk -o output/a22b21 -is_emulator -script ./c2d_script/a2/b21/base/a22_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a23-org.secuso.privacyfriendlytodolist_4.apk -o output/a23b21 -is_emulator -script ./c2d_script/a2/b21/base/a23_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a24-kdk.android.simplydo_1.apk -o output/a24b21 -is_emulator -script ./c2d_script/a2/b21/base/a24_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a25-com.woefe.shoppinglist_11.apk -o output/a25b21 -is_emulator -script ./c2d_script/a2/b21/base/a25_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a21-com.rubenroy.minimaltodo_3.apk -o output/a21b22 -is_emulator -script ./c2d_script/a2/b22/base/a21_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a22-douzifly.list_21.apk -o output/a22b22 -is_emulator -script ./c2d_script/a2/b22/base/a22_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a23-org.secuso.privacyfriendlytodolist_4.apk -o output/a23b22 -is_emulator -script ./c2d_script/a2/b22/base/a23_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a24-kdk.android.simplydo_1.apk -o output/a24b22 -is_emulator -script ./c2d_script/a2/b22/base/a24_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a25-com.woefe.shoppinglist_11.apk -o output/a25b22 -is_emulator -script ./c2d_script/a2/b22/base/a25_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a3-shopping/a31-Geek\ Smarter\ Shopping_v2.3.7_apkpure.com.apk -o output/a31b31 -is_emulator -script ./c2d_script/a3/b31/base/a31_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a32-Wish\ Shopping\ Made\ Fun_v4.22.6_apkpure.com.apk -o output/a32b31 -is_emulator -script ./c2d_script/a3/b31/base/a32_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a33-Rainbow\ Shops\ Womens\ and\ Plus\ Size\ Clothing_v1.2.9_apkpure.com.apk -o output/a33b31 -is_emulator -script ./c2d_script/a3/b31/base/a33_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a34-Etsy\ Handmade\ Vintage\ Goods_v5.6.0_apkpure.com.apk -o output/a34b31 -is_emulator -script ./c2d_script/a3/b31/base/a34_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a35-Yelp\ Food\ Shopping\ Services\ Nearby_v10.21.1-21020803_apkpure.com.apk -o output/a35b31 -is_emulator -script ./c2d_script/a3/b31/base/a35_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a31-Geek\ Smarter\ Shopping_v2.3.7_apkpure.com.apk -o output/a31b32 -is_emulator -script ./c2d_script/a3/b32/base/a31_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a32-Wish\ Shopping\ Made\ Fun_v4.22.6_apkpure.com.apk -o output/a32b32 -is_emulator -script ./c2d_script/a3/b32/base/a32_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a33-Rainbow\ Shops\ Womens\ and\ Plus\ Size\ Clothing_v1.2.9_apkpure.com.apk -o output/a33b32 -is_emulator -script ./c2d_script/a3/b32/base/a33_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a34-Etsy\ Handmade\ Vintage\ Goods_v5.6.0_apkpure.com.apk -o output/a34b32 -is_emulator -script ./c2d_script/a3/b32/base/a34_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a35-Yelp\ Food\ Shopping\ Services\ Nearby_v10.21.1-21020803_apkpure.com.apk -o output/a35b32 -is_emulator -script ./c2d_script/a3/b32/base/a35_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a4-mail/a41-com.fsck.k9_23630.apk -o output/a41b41 -is_emulator -script ./c2d_script/a4/b41/base/a41_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a42-Email\ mail\ box\ fast\ mail_v1.12.20_apkpure.com.apk -o output/a42b41 -is_emulator -script ./c2d_script/a4/b41/base/a42_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a43-Mail\ Ru\ Email\ App_v7.5.0.24869_apkpure.com.apk -o output/a43b41 -is_emulator -script ./c2d_script/a4/b41/base/a43_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a44-myMail\ ≈\ Email\ for\ Hotmail\ Gmail\ and\ Outlook\ Mail_v7.5.0.24869_apkpure.com.apk -o output/a44b41 -is_emulator -script ./c2d_script/a4/b41/base/a44_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a45-Email\ App\ for\ Outlook\ others_v6.6.0.24788_apkpure.com.apk -o output/a45b41 -is_emulator -script ./c2d_script/a4/b41/base/a45_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a41-com.fsck.k9_23630.apk -o output/a41b42 -is_emulator -script ./c2d_script/a4/b42/base/a41_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a42-Email\ mail\ box\ fast\ mail_v1.12.20_apkpure.com.apk -o output/a42b42 -is_emulator -script ./c2d_script/a4/b42/base/a42_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a43-Mail\ Ru\ Email\ App_v7.5.0.24869_apkpure.com.apk -o output/a43b42 -is_emulator -script ./c2d_script/a4/b42/base/a43_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a44-myMail\ ≈\ Email\ for\ Hotmail\ Gmail\ and\ Outlook\ Mail_v7.5.0.24869_apkpure.com.apk -o output/a44b42 -is_emulator -script ./c2d_script/a4/b42/base/a44_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a45-Email\ App\ for\ Outlook\ others_v6.6.0.24788_apkpure.com.apk -o output/a45b42 -is_emulator -script ./c2d_script/a4/b42/base/a45_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a5-tip/a51-Tip\ Calculator_v1.1_apkpure.com.apk -o output/a51b51 -is_emulator -script ./c2d_script/a5/b51/base/a51_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a52-Tip\ Calc_v1.11_apkpure.com.apk -o output/a52b51 -is_emulator -script ./c2d_script/a5/b51/base/a52_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a53-Simple\ Tip\ Calculator_v1.2_apkpure.com.apk -o output/a53b51 -is_emulator -script ./c2d_script/a5/b51/base/a53_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a54-Tip\ Calculator\ Plus_v2.0_apkpure.com.apk -o output/a54b51 -is_emulator -script ./c2d_script/a5/b51/base/a54_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a55-Free\ Tip\ Calculator_v1.0.0.9_apkpure.com.apk -o output/a55b51 -is_emulator -script ./c2d_script/a5/b51/base/a55_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a51-Tip\ Calculator_v1.1_apkpure.com.apk -o output/a51b52 -is_emulator -script ./c2d_script/a5/b52/base/a51_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a52-Tip\ Calc_v1.11_apkpure.com.apk -o output/a52b52 -is_emulator -script ./c2d_script/a5/b52/base/a52_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a53-Simple\ Tip\ Calculator_v1.2_apkpure.com.apk -o output/a53b52 -is_emulator -script ./c2d_script/a5/b52/base/a53_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a54-Tip\ Calculator\ Plus_v2.0_apkpure.com.apk -o output/a54b52 -is_emulator -script ./c2d_script/a5/b52/base/a54_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a55-Free\ Tip\ Calculator_v1.0.0.9_apkpure.com.apk -o output/a55b52 -is_emulator -script ./c2d_script/a5/b52/base/a55_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a1-browser/a11-acr.browser.lightning_96.apk -o output/a11b11 -is_emulator -script ./c2d_script/a1/b11/base/a11_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a12-Browser\ for\ Android_v1.3.1_apkpure.com.apk -o output/a12b11 -is_emulator -script ./c2d_script/a1/b11/base/a12_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a13-com.stoutner.privacybrowser.standard_33.apk -o output/a13b11 -is_emulator -script ./c2d_script/a1/b11/base/a13_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a14-de.baumann.browser_80.apk -o output/a14b11 -is_emulator -script ./c2d_script/a1/b11/base/a14_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a15-Firefox\ Focus\ The\ privacy\ browser_v6.0_apkpure.com.apk -o output/a15b11 -is_emulator -script ./c2d_script/a1/b11/base/a15_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a11-acr.browser.lightning_96.apk -o output/a11b12 -is_emulator -script ./c2d_script/a1/b12/base/a11_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a12-Browser\ for\ Android_v1.3.1_apkpure.com.apk -o output/a12b12 -is_emulator -script ./c2d_script/a1/b12/base/a12_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a13-com.stoutner.privacybrowser.standard_33.apk -o output/a13b12 -is_emulator -script ./c2d_script/a1/b12/base/a13_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a14-de.baumann.browser_80.apk -o output/a14b12 -is_emulator -script ./c2d_script/a1/b12/base/a14_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a15-Firefox\ Focus\ The\ privacy\ browser_v6.0_apkpure.com.apk -o output/a15b12 -is_emulator -script ./c2d_script/a1/b12/base/a15_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a2-todo/a21-com.rubenroy.minimaltodo_3.apk -o output/a21b21 -is_emulator -script ./c2d_script/a2/b21/base/a21_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a22-douzifly.list_21.apk -o output/a22b21 -is_emulator -script ./c2d_script/a2/b21/base/a22_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a23-org.secuso.privacyfriendlytodolist_4.apk -o output/a23b21 -is_emulator -script ./c2d_script/a2/b21/base/a23_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a24-kdk.android.simplydo_1.apk -o output/a24b21 -is_emulator -script ./c2d_script/a2/b21/base/a24_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a25-com.woefe.shoppinglist_11.apk -o output/a25b21 -is_emulator -script ./c2d_script/a2/b21/base/a25_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a21-com.rubenroy.minimaltodo_3.apk -o output/a21b22 -is_emulator -script ./c2d_script/a2/b22/base/a21_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a22-douzifly.list_21.apk -o output/a22b22 -is_emulator -script ./c2d_script/a2/b22/base/a22_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a23-org.secuso.privacyfriendlytodolist_4.apk -o output/a23b22 -is_emulator -script ./c2d_script/a2/b22/base/a23_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a24-kdk.android.simplydo_1.apk -o output/a24b22 -is_emulator -script ./c2d_script/a2/b22/base/a24_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a25-com.woefe.shoppinglist_11.apk -o output/a25b22 -is_emulator -script ./c2d_script/a2/b22/base/a25_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a3-shopping/a31-Geek\ Smarter\ Shopping_v2.3.7_apkpure.com.apk -o output/a31b31 -is_emulator -script ./c2d_script/a3/b31/base/a31_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a32-Wish\ Shopping\ Made\ Fun_v4.22.6_apkpure.com.apk -o output/a32b31 -is_emulator -script ./c2d_script/a3/b31/base/a32_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a33-Rainbow\ Shops\ Womens\ and\ Plus\ Size\ Clothing_v1.2.9_apkpure.com.apk -o output/a33b31 -is_emulator -script ./c2d_script/a3/b31/base/a33_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a34-Etsy\ Handmade\ Vintage\ Goods_v5.6.0_apkpure.com.apk -o output/a34b31 -is_emulator -script ./c2d_script/a3/b31/base/a34_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a35-Yelp\ Food\ Shopping\ Services\ Nearby_v10.21.1-21020803_apkpure.com.apk -o output/a35b31 -is_emulator -script ./c2d_script/a3/b31/base/a35_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a31-Geek\ Smarter\ Shopping_v2.3.7_apkpure.com.apk -o output/a31b32 -is_emulator -script ./c2d_script/a3/b32/base/a31_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a32-Wish\ Shopping\ Made\ Fun_v4.22.6_apkpure.com.apk -o output/a32b32 -is_emulator -script ./c2d_script/a3/b32/base/a32_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a33-Rainbow\ Shops\ Womens\ and\ Plus\ Size\ Clothing_v1.2.9_apkpure.com.apk -o output/a33b32 -is_emulator -script ./c2d_script/a3/b32/base/a33_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a34-Etsy\ Handmade\ Vintage\ Goods_v5.6.0_apkpure.com.apk -o output/a34b32 -is_emulator -script ./c2d_script/a3/b32/base/a34_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a35-Yelp\ Food\ Shopping\ Services\ Nearby_v10.21.1-21020803_apkpure.com.apk -o output/a35b32 -is_emulator -script ./c2d_script/a3/b32/base/a35_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a4-mail/a41-com.fsck.k9_23630.apk -o output/a41b41 -is_emulator -script ./c2d_script/a4/b41/base/a41_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a42-Email\ mail\ box\ fast\ mail_v1.12.20_apkpure.com.apk -o output/a42b41 -is_emulator -script ./c2d_script/a4/b41/base/a42_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a43-Mail\ Ru\ Email\ App_v7.5.0.24869_apkpure.com.apk -o output/a43b41 -is_emulator -script ./c2d_script/a4/b41/base/a43_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a44-myMail\ ≈\ Email\ for\ Hotmail\ Gmail\ and\ Outlook\ Mail_v7.5.0.24869_apkpure.com.apk -o output/a44b41 -is_emulator -script ./c2d_script/a4/b41/base/a44_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a45-Email\ App\ for\ Outlook\ others_v6.6.0.24788_apkpure.com.apk -o output/a45b41 -is_emulator -script ./c2d_script/a4/b41/base/a45_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a41-com.fsck.k9_23630.apk -o output/a41b42 -is_emulator -script ./c2d_script/a4/b42/base/a41_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a42-Email\ mail\ box\ fast\ mail_v1.12.20_apkpure.com.apk -o output/a42b42 -is_emulator -script ./c2d_script/a4/b42/base/a42_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a43-Mail\ Ru\ Email\ App_v7.5.0.24869_apkpure.com.apk -o output/a43b42 -is_emulator -script ./c2d_script/a4/b42/base/a43_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a44-myMail\ ≈\ Email\ for\ Hotmail\ Gmail\ and\ Outlook\ Mail_v7.5.0.24869_apkpure.com.apk -o output/a44b42 -is_emulator -script ./c2d_script/a4/b42/base/a44_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a45-Email\ App\ for\ Outlook\ others_v6.6.0.24788_apkpure.com.apk -o output/a45b42 -is_emulator -script ./c2d_script/a4/b42/base/a45_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a5-tip/a51-Tip\ Calculator_v1.1_apkpure.com.apk -o output/a51b51 -is_emulator -script ./c2d_script/a5/b51/base/a51_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a52-Tip\ Calc_v1.11_apkpure.com.apk -o output/a52b51 -is_emulator -script ./c2d_script/a5/b51/base/a52_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a53-Simple\ Tip\ Calculator_v1.2_apkpure.com.apk -o output/a53b51 -is_emulator -script ./c2d_script/a5/b51/base/a53_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a54-Tip\ Calculator\ Plus_v2.0_apkpure.com.apk -o output/a54b51 -is_emulator -script ./c2d_script/a5/b51/base/a54_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a55-Free\ Tip\ Calculator_v1.0.0.9_apkpure.com.apk -o output/a55b51 -is_emulator -script ./c2d_script/a5/b51/base/a55_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a51-Tip\ Calculator_v1.1_apkpure.com.apk -o output/a51b52 -is_emulator -script ./c2d_script/a5/b52/base/a51_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a52-Tip\ Calc_v1.11_apkpure.com.apk -o output/a52b52 -is_emulator -script ./c2d_script/a5/b52/base/a52_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a53-Simple\ Tip\ Calculator_v1.2_apkpure.com.apk -o output/a53b52 -is_emulator -script ./c2d_script/a5/b52/base/a53_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a54-Tip\ Calculator\ Plus_v2.0_apkpure.com.apk -o output/a54b52 -is_emulator -script ./c2d_script/a5/b52/base/a54_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a55-Free\ Tip\ Calculator_v1.0.0.9_apkpure.com.apk -o output/a55b52 -is_emulator -script ./c2d_script/a5/b52/base/a55_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a1-browser/a11-acr.browser.lightning_96.apk -o output/a11b11 -is_emulator -script ./c2d_script/a1/b11/base/a11_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a12-Browser\ for\ Android_v1.3.1_apkpure.com.apk -o output/a12b11 -is_emulator -script ./c2d_script/a1/b11/base/a12_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a13-com.stoutner.privacybrowser.standard_33.apk -o output/a13b11 -is_emulator -script ./c2d_script/a1/b11/base/a13_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a14-de.baumann.browser_80.apk -o output/a14b11 -is_emulator -script ./c2d_script/a1/b11/base/a14_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a15-Firefox\ Focus\ The\ privacy\ browser_v6.0_apkpure.com.apk -o output/a15b11 -is_emulator -script ./c2d_script/a1/b11/base/a15_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a11-acr.browser.lightning_96.apk -o output/a11b12 -is_emulator -script ./c2d_script/a1/b12/base/a11_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a12-Browser\ for\ Android_v1.3.1_apkpure.com.apk -o output/a12b12 -is_emulator -script ./c2d_script/a1/b12/base/a12_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a13-com.stoutner.privacybrowser.standard_33.apk -o output/a13b12 -is_emulator -script ./c2d_script/a1/b12/base/a13_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a14-de.baumann.browser_80.apk -o output/a14b12 -is_emulator -script ./c2d_script/a1/b12/base/a14_drb.json -task "Access website, then click BACK key" 
+python3 start.py -a ./c2d_apps/a1-browser/a15-Firefox\ Focus\ The\ privacy\ browser_v6.0_apkpure.com.apk -o output/a15b12 -is_emulator -script ./c2d_script/a1/b12/base/a15_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a2-todo/a21-com.rubenroy.minimaltodo_3.apk -o output/a21b21 -is_emulator -script ./c2d_script/a2/b21/base/a21_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a22-douzifly.list_21.apk -o output/a22b21 -is_emulator -script ./c2d_script/a2/b21/base/a22_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a23-org.secuso.privacyfriendlytodolist_4.apk -o output/a23b21 -is_emulator -script ./c2d_script/a2/b21/base/a23_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a24-kdk.android.simplydo_1.apk -o output/a24b21 -is_emulator -script ./c2d_script/a2/b21/base/a24_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a25-com.woefe.shoppinglist_11.apk -o output/a25b21 -is_emulator -script ./c2d_script/a2/b21/base/a25_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a21-com.rubenroy.minimaltodo_3.apk -o output/a21b22 -is_emulator -script ./c2d_script/a2/b22/base/a21_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a22-douzifly.list_21.apk -o output/a22b22 -is_emulator -script ./c2d_script/a2/b22/base/a22_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a23-org.secuso.privacyfriendlytodolist_4.apk -o output/a23b22 -is_emulator -script ./c2d_script/a2/b22/base/a23_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a24-kdk.android.simplydo_1.apk -o output/a24b22 -is_emulator -script ./c2d_script/a2/b22/base/a24_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a25-com.woefe.shoppinglist_11.apk -o output/a25b22 -is_emulator -script ./c2d_script/a2/b22/base/a25_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a3-shopping/a31-Geek\ Smarter\ Shopping_v2.3.7_apkpure.com.apk -o output/a31b31 -is_emulator -script ./c2d_script/a3/b31/base/a31_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a32-Wish\ Shopping\ Made\ Fun_v4.22.6_apkpure.com.apk -o output/a32b31 -is_emulator -script ./c2d_script/a3/b31/base/a32_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a33-Rainbow\ Shops\ Womens\ and\ Plus\ Size\ Clothing_v1.2.9_apkpure.com.apk -o output/a33b31 -is_emulator -script ./c2d_script/a3/b31/base/a33_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a34-Etsy\ Handmade\ Vintage\ Goods_v5.6.0_apkpure.com.apk -o output/a34b31 -is_emulator -script ./c2d_script/a3/b31/base/a34_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a35-Yelp\ Food\ Shopping\ Services\ Nearby_v10.21.1-21020803_apkpure.com.apk -o output/a35b31 -is_emulator -script ./c2d_script/a3/b31/base/a35_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a31-Geek\ Smarter\ Shopping_v2.3.7_apkpure.com.apk -o output/a31b32 -is_emulator -script ./c2d_script/a3/b32/base/a31_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a32-Wish\ Shopping\ Made\ Fun_v4.22.6_apkpure.com.apk -o output/a32b32 -is_emulator -script ./c2d_script/a3/b32/base/a32_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a33-Rainbow\ Shops\ Womens\ and\ Plus\ Size\ Clothing_v1.2.9_apkpure.com.apk -o output/a33b32 -is_emulator -script ./c2d_script/a3/b32/base/a33_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a34-Etsy\ Handmade\ Vintage\ Goods_v5.6.0_apkpure.com.apk -o output/a34b32 -is_emulator -script ./c2d_script/a3/b32/base/a34_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a35-Yelp\ Food\ Shopping\ Services\ Nearby_v10.21.1-21020803_apkpure.com.apk -o output/a35b32 -is_emulator -script ./c2d_script/a3/b32/base/a35_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a4-mail/a41-com.fsck.k9_23630.apk -o output/a41b41 -is_emulator -script ./c2d_script/a4/b41/base/a41_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a42-Email\ mail\ box\ fast\ mail_v1.12.20_apkpure.com.apk -o output/a42b41 -is_emulator -script ./c2d_script/a4/b41/base/a42_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a43-Mail\ Ru\ Email\ App_v7.5.0.24869_apkpure.com.apk -o output/a43b41 -is_emulator -script ./c2d_script/a4/b41/base/a43_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a44-myMail\ ≈\ Email\ for\ Hotmail\ Gmail\ and\ Outlook\ Mail_v7.5.0.24869_apkpure.com.apk -o output/a44b41 -is_emulator -script ./c2d_script/a4/b41/base/a44_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a45-Email\ App\ for\ Outlook\ others_v6.6.0.24788_apkpure.com.apk -o output/a45b41 -is_emulator -script ./c2d_script/a4/b41/base/a45_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a41-com.fsck.k9_23630.apk -o output/a41b42 -is_emulator -script ./c2d_script/a4/b42/base/a41_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a42-Email\ mail\ box\ fast\ mail_v1.12.20_apkpure.com.apk -o output/a42b42 -is_emulator -script ./c2d_script/a4/b42/base/a42_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a43-Mail\ Ru\ Email\ App_v7.5.0.24869_apkpure.com.apk -o output/a43b42 -is_emulator -script ./c2d_script/a4/b42/base/a43_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a44-myMail\ ≈\ Email\ for\ Hotmail\ Gmail\ and\ Outlook\ Mail_v7.5.0.24869_apkpure.com.apk -o output/a44b42 -is_emulator -script ./c2d_script/a4/b42/base/a44_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a45-Email\ App\ for\ Outlook\ others_v6.6.0.24788_apkpure.com.apk -o output/a45b42 -is_emulator -script ./c2d_script/a4/b42/base/a45_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a5-tip/a51-Tip\ Calculator_v1.1_apkpure.com.apk -o output/a51b51 -is_emulator -script ./c2d_script/a5/b51/base/a51_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a52-Tip\ Calc_v1.11_apkpure.com.apk -o output/a52b51 -is_emulator -script ./c2d_script/a5/b51/base/a52_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a53-Simple\ Tip\ Calculator_v1.2_apkpure.com.apk -o output/a53b51 -is_emulator -script ./c2d_script/a5/b51/base/a53_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a54-Tip\ Calculator\ Plus_v2.0_apkpure.com.apk -o output/a54b51 -is_emulator -script ./c2d_script/a5/b51/base/a54_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a55-Free\ Tip\ Calculator_v1.0.0.9_apkpure.com.apk -o output/a55b51 -is_emulator -script ./c2d_script/a5/b51/base/a55_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a51-Tip\ Calculator_v1.1_apkpure.com.apk -o output/a51b52 -is_emulator -script ./c2d_script/a5/b52/base/a51_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a52-Tip\ Calc_v1.11_apkpure.com.apk -o output/a52b52 -is_emulator -script ./c2d_script/a5/b52/base/a52_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a53-Simple\ Tip\ Calculator_v1.2_apkpure.com.apk -o output/a53b52 -is_emulator -script ./c2d_script/a5/b52/base/a53_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a54-Tip\ Calculator\ Plus_v2.0_apkpure.com.apk -o output/a54b52 -is_emulator -script ./c2d_script/a5/b52/base/a54_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a55-Free\ Tip\ Calculator_v1.0.0.9_apkpure.com.apk -o output/a55b52 -is_emulator -script ./c2d_script/a5/b52/base/a55_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a1-browser/a11-acr.browser.lightning_96.apk -o output/a11b11 -is_emulator -script ./c2d_script/a1/b11/base/a11_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a12-Browser\ for\ Android_v1.3.1_apkpure.com.apk -o output/a12b11 -is_emulator -script ./c2d_script/a1/b11/base/a12_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a13-com.stoutner.privacybrowser.standard_33.apk -o output/a13b11 -is_emulator -script ./c2d_script/a1/b11/base/a13_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a14-de.baumann.browser_80.apk -o output/a14b11 -is_emulator -script ./c2d_script/a1/b11/base/a14_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a15-Firefox\ Focus\ The\ privacy\ browser_v6.0_apkpure.com.apk -o output/a15b11 -is_emulator -script ./c2d_script/a1/b11/base/a15_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a11-acr.browser.lightning_96.apk -o output/a11b12 -is_emulator -script ./c2d_script/a1/b12/base/a11_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a12-Browser\ for\ Android_v1.3.1_apkpure.com.apk -o output/a12b12 -is_emulator -script ./c2d_script/a1/b12/base/a12_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a13-com.stoutner.privacybrowser.standard_33.apk -o output/a13b12 -is_emulator -script ./c2d_script/a1/b12/base/a13_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a14-de.baumann.browser_80.apk -o output/a14b12 -is_emulator -script ./c2d_script/a1/b12/base/a14_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a15-Firefox\ Focus\ The\ privacy\ browser_v6.0_apkpure.com.apk -o output/a15b12 -is_emulator -script ./c2d_script/a1/b12/base/a15_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a2-todo/a21-com.rubenroy.minimaltodo_3.apk -o output/a21b21 -is_emulator -script ./c2d_script/a2/b21/base/a21_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a22-douzifly.list_21.apk -o output/a22b21 -is_emulator -script ./c2d_script/a2/b21/base/a22_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a23-org.secuso.privacyfriendlytodolist_4.apk -o output/a23b21 -is_emulator -script ./c2d_script/a2/b21/base/a23_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a24-kdk.android.simplydo_1.apk -o output/a24b21 -is_emulator -script ./c2d_script/a2/b21/base/a24_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a25-com.woefe.shoppinglist_11.apk -o output/a25b21 -is_emulator -script ./c2d_script/a2/b21/base/a25_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a21-com.rubenroy.minimaltodo_3.apk -o output/a21b22 -is_emulator -script ./c2d_script/a2/b22/base/a21_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a22-douzifly.list_21.apk -o output/a22b22 -is_emulator -script ./c2d_script/a2/b22/base/a22_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a23-org.secuso.privacyfriendlytodolist_4.apk -o output/a23b22 -is_emulator -script ./c2d_script/a2/b22/base/a23_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a24-kdk.android.simplydo_1.apk -o output/a24b22 -is_emulator -script ./c2d_script/a2/b22/base/a24_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a25-com.woefe.shoppinglist_11.apk -o output/a25b22 -is_emulator -script ./c2d_script/a2/b22/base/a25_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a3-shopping/a31-Geek\ Smarter\ Shopping_v2.3.7_apkpure.com.apk -o output/a31b31 -is_emulator -script ./c2d_script/a3/b31/base/a31_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a32-Wish\ Shopping\ Made\ Fun_v4.22.6_apkpure.com.apk -o output/a32b31 -is_emulator -script ./c2d_script/a3/b31/base/a32_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a33-Rainbow\ Shops\ Womens\ and\ Plus\ Size\ Clothing_v1.2.9_apkpure.com.apk -o output/a33b31 -is_emulator -script ./c2d_script/a3/b31/base/a33_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a34-Etsy\ Handmade\ Vintage\ Goods_v5.6.0_apkpure.com.apk -o output/a34b31 -is_emulator -script ./c2d_script/a3/b31/base/a34_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a35-Yelp\ Food\ Shopping\ Services\ Nearby_v10.21.1-21020803_apkpure.com.apk -o output/a35b31 -is_emulator -script ./c2d_script/a3/b31/base/a35_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a31-Geek\ Smarter\ Shopping_v2.3.7_apkpure.com.apk -o output/a31b32 -is_emulator -script ./c2d_script/a3/b32/base/a31_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a32-Wish\ Shopping\ Made\ Fun_v4.22.6_apkpure.com.apk -o output/a32b32 -is_emulator -script ./c2d_script/a3/b32/base/a32_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a33-Rainbow\ Shops\ Womens\ and\ Plus\ Size\ Clothing_v1.2.9_apkpure.com.apk -o output/a33b32 -is_emulator -script ./c2d_script/a3/b32/base/a33_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a34-Etsy\ Handmade\ Vintage\ Goods_v5.6.0_apkpure.com.apk -o output/a34b32 -is_emulator -script ./c2d_script/a3/b32/base/a34_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a35-Yelp\ Food\ Shopping\ Services\ Nearby_v10.21.1-21020803_apkpure.com.apk -o output/a35b32 -is_emulator -script ./c2d_script/a3/b32/base/a35_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a4-mail/a41-com.fsck.k9_23630.apk -o output/a41b41 -is_emulator -script ./c2d_script/a4/b41/base/a41_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a42-Email\ mail\ box\ fast\ mail_v1.12.20_apkpure.com.apk -o output/a42b41 -is_emulator -script ./c2d_script/a4/b41/base/a42_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a43-Mail\ Ru\ Email\ App_v7.5.0.24869_apkpure.com.apk -o output/a43b41 -is_emulator -script ./c2d_script/a4/b41/base/a43_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a44-myMail\ ≈\ Email\ for\ Hotmail\ Gmail\ and\ Outlook\ Mail_v7.5.0.24869_apkpure.com.apk -o output/a44b41 -is_emulator -script ./c2d_script/a4/b41/base/a44_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a45-Email\ App\ for\ Outlook\ others_v6.6.0.24788_apkpure.com.apk -o output/a45b41 -is_emulator -script ./c2d_script/a4/b41/base/a45_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a41-com.fsck.k9_23630.apk -o output/a41b42 -is_emulator -script ./c2d_script/a4/b42/base/a41_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a42-Email\ mail\ box\ fast\ mail_v1.12.20_apkpure.com.apk -o output/a42b42 -is_emulator -script ./c2d_script/a4/b42/base/a42_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a43-Mail\ Ru\ Email\ App_v7.5.0.24869_apkpure.com.apk -o output/a43b42 -is_emulator -script ./c2d_script/a4/b42/base/a43_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a44-myMail\ ≈\ Email\ for\ Hotmail\ Gmail\ and\ Outlook\ Mail_v7.5.0.24869_apkpure.com.apk -o output/a44b42 -is_emulator -script ./c2d_script/a4/b42/base/a44_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a45-Email\ App\ for\ Outlook\ others_v6.6.0.24788_apkpure.com.apk -o output/a45b42 -is_emulator -script ./c2d_script/a4/b42/base/a45_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a5-tip/a51-Tip\ Calculator_v1.1_apkpure.com.apk -o output/a51b51 -is_emulator -script ./c2d_script/a5/b51/base/a51_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a52-Tip\ Calc_v1.11_apkpure.com.apk -o output/a52b51 -is_emulator -script ./c2d_script/a5/b51/base/a52_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a53-Simple\ Tip\ Calculator_v1.2_apkpure.com.apk -o output/a53b51 -is_emulator -script ./c2d_script/a5/b51/base/a53_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a54-Tip\ Calculator\ Plus_v2.0_apkpure.com.apk -o output/a54b51 -is_emulator -script ./c2d_script/a5/b51/base/a54_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a55-Free\ Tip\ Calculator_v1.0.0.9_apkpure.com.apk -o output/a55b51 -is_emulator -script ./c2d_script/a5/b51/base/a55_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a51-Tip\ Calculator_v1.1_apkpure.com.apk -o output/a51b52 -is_emulator -script ./c2d_script/a5/b52/base/a51_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a52-Tip\ Calc_v1.11_apkpure.com.apk -o output/a52b52 -is_emulator -script ./c2d_script/a5/b52/base/a52_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a53-Simple\ Tip\ Calculator_v1.2_apkpure.com.apk -o output/a53b52 -is_emulator -script ./c2d_script/a5/b52/base/a53_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a54-Tip\ Calculator\ Plus_v2.0_apkpure.com.apk -o output/a54b52 -is_emulator -script ./c2d_script/a5/b52/base/a54_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a55-Free\ Tip\ Calculator_v1.0.0.9_apkpure.com.apk -o output/a55b52 -is_emulator -script ./c2d_script/a5/b52/base/a55_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a1-browser/a11-acr.browser.lightning_96.apk -o output/a11b11 -is_emulator -script ./c2d_script/a1/b11/base/a11_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a12-Browser\ for\ Android_v1.3.1_apkpure.com.apk -o output/a12b11 -is_emulator -script ./c2d_script/a1/b11/base/a12_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a13-com.stoutner.privacybrowser.standard_33.apk -o output/a13b11 -is_emulator -script ./c2d_script/a1/b11/base/a13_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a14-de.baumann.browser_80.apk -o output/a14b11 -is_emulator -script ./c2d_script/a1/b11/base/a14_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a15-Firefox\ Focus\ The\ privacy\ browser_v6.0_apkpure.com.apk -o output/a15b11 -is_emulator -script ./c2d_script/a1/b11/base/a15_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a11-acr.browser.lightning_96.apk -o output/a11b12 -is_emulator -script ./c2d_script/a1/b12/base/a11_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a12-Browser\ for\ Android_v1.3.1_apkpure.com.apk -o output/a12b12 -is_emulator -script ./c2d_script/a1/b12/base/a12_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a13-com.stoutner.privacybrowser.standard_33.apk -o output/a13b12 -is_emulator -script ./c2d_script/a1/b12/base/a13_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a14-de.baumann.browser_80.apk -o output/a14b12 -is_emulator -script ./c2d_script/a1/b12/base/a14_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a15-Firefox\ Focus\ The\ privacy\ browser_v6.0_apkpure.com.apk -o output/a15b12 -is_emulator -script ./c2d_script/a1/b12/base/a15_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a2-todo/a21-com.rubenroy.minimaltodo_3.apk -o output/a21b21 -is_emulator -script ./c2d_script/a2/b21/base/a21_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a22-douzifly.list_21.apk -o output/a22b21 -is_emulator -script ./c2d_script/a2/b21/base/a22_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a23-org.secuso.privacyfriendlytodolist_4.apk -o output/a23b21 -is_emulator -script ./c2d_script/a2/b21/base/a23_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a24-kdk.android.simplydo_1.apk -o output/a24b21 -is_emulator -script ./c2d_script/a2/b21/base/a24_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a25-com.woefe.shoppinglist_11.apk -o output/a25b21 -is_emulator -script ./c2d_script/a2/b21/base/a25_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a21-com.rubenroy.minimaltodo_3.apk -o output/a21b22 -is_emulator -script ./c2d_script/a2/b22/base/a21_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a22-douzifly.list_21.apk -o output/a22b22 -is_emulator -script ./c2d_script/a2/b22/base/a22_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a23-org.secuso.privacyfriendlytodolist_4.apk -o output/a23b22 -is_emulator -script ./c2d_script/a2/b22/base/a23_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a24-kdk.android.simplydo_1.apk -o output/a24b22 -is_emulator -script ./c2d_script/a2/b22/base/a24_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a25-com.woefe.shoppinglist_11.apk -o output/a25b22 -is_emulator -script ./c2d_script/a2/b22/base/a25_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a3-shopping/a31-Geek\ Smarter\ Shopping_v2.3.7_apkpure.com.apk -o output/a31b31 -is_emulator -script ./c2d_script/a3/b31/base/a31_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a32-Wish\ Shopping\ Made\ Fun_v4.22.6_apkpure.com.apk -o output/a32b31 -is_emulator -script ./c2d_script/a3/b31/base/a32_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a33-Rainbow\ Shops\ Womens\ and\ Plus\ Size\ Clothing_v1.2.9_apkpure.com.apk -o output/a33b31 -is_emulator -script ./c2d_script/a3/b31/base/a33_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a34-Etsy\ Handmade\ Vintage\ Goods_v5.6.0_apkpure.com.apk -o output/a34b31 -is_emulator -script ./c2d_script/a3/b31/base/a34_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a35-Yelp\ Food\ Shopping\ Services\ Nearby_v10.21.1-21020803_apkpure.com.apk -o output/a35b31 -is_emulator -script ./c2d_script/a3/b31/base/a35_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a31-Geek\ Smarter\ Shopping_v2.3.7_apkpure.com.apk -o output/a31b32 -is_emulator -script ./c2d_script/a3/b32/base/a31_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a32-Wish\ Shopping\ Made\ Fun_v4.22.6_apkpure.com.apk -o output/a32b32 -is_emulator -script ./c2d_script/a3/b32/base/a32_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a33-Rainbow\ Shops\ Womens\ and\ Plus\ Size\ Clothing_v1.2.9_apkpure.com.apk -o output/a33b32 -is_emulator -script ./c2d_script/a3/b32/base/a33_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a34-Etsy\ Handmade\ Vintage\ Goods_v5.6.0_apkpure.com.apk -o output/a34b32 -is_emulator -script ./c2d_script/a3/b32/base/a34_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a35-Yelp\ Food\ Shopping\ Services\ Nearby_v10.21.1-21020803_apkpure.com.apk -o output/a35b32 -is_emulator -script ./c2d_script/a3/b32/base/a35_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a4-mail/a41-com.fsck.k9_23630.apk -o output/a41b41 -is_emulator -script ./c2d_script/a4/b41/base/a41_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a42-Email\ mail\ box\ fast\ mail_v1.12.20_apkpure.com.apk -o output/a42b41 -is_emulator -script ./c2d_script/a4/b41/base/a42_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a43-Mail\ Ru\ Email\ App_v7.5.0.24869_apkpure.com.apk -o output/a43b41 -is_emulator -script ./c2d_script/a4/b41/base/a43_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a44-myMail\ ≈\ Email\ for\ Hotmail\ Gmail\ and\ Outlook\ Mail_v7.5.0.24869_apkpure.com.apk -o output/a44b41 -is_emulator -script ./c2d_script/a4/b41/base/a44_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a45-Email\ App\ for\ Outlook\ others_v6.6.0.24788_apkpure.com.apk -o output/a45b41 -is_emulator -script ./c2d_script/a4/b41/base/a45_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a41-com.fsck.k9_23630.apk -o output/a41b42 -is_emulator -script ./c2d_script/a4/b42/base/a41_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a42-Email\ mail\ box\ fast\ mail_v1.12.20_apkpure.com.apk -o output/a42b42 -is_emulator -script ./c2d_script/a4/b42/base/a42_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a43-Mail\ Ru\ Email\ App_v7.5.0.24869_apkpure.com.apk -o output/a43b42 -is_emulator -script ./c2d_script/a4/b42/base/a43_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a44-myMail\ ≈\ Email\ for\ Hotmail\ Gmail\ and\ Outlook\ Mail_v7.5.0.24869_apkpure.com.apk -o output/a44b42 -is_emulator -script ./c2d_script/a4/b42/base/a44_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a45-Email\ App\ for\ Outlook\ others_v6.6.0.24788_apkpure.com.apk -o output/a45b42 -is_emulator -script ./c2d_script/a4/b42/base/a45_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a5-tip/a51-Tip\ Calculator_v1.1_apkpure.com.apk -o output/a51b51 -is_emulator -script ./c2d_script/a5/b51/base/a51_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a52-Tip\ Calc_v1.11_apkpure.com.apk -o output/a52b51 -is_emulator -script ./c2d_script/a5/b51/base/a52_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a53-Simple\ Tip\ Calculator_v1.2_apkpure.com.apk -o output/a53b51 -is_emulator -script ./c2d_script/a5/b51/base/a53_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a54-Tip\ Calculator\ Plus_v2.0_apkpure.com.apk -o output/a54b51 -is_emulator -script ./c2d_script/a5/b51/base/a54_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a55-Free\ Tip\ Calculator_v1.0.0.9_apkpure.com.apk -o output/a55b51 -is_emulator -script ./c2d_script/a5/b51/base/a55_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a51-Tip\ Calculator_v1.1_apkpure.com.apk -o output/a51b52 -is_emulator -script ./c2d_script/a5/b52/base/a51_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a52-Tip\ Calc_v1.11_apkpure.com.apk -o output/a52b52 -is_emulator -script ./c2d_script/a5/b52/base/a52_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a53-Simple\ Tip\ Calculator_v1.2_apkpure.com.apk -o output/a53b52 -is_emulator -script ./c2d_script/a5/b52/base/a53_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a54-Tip\ Calculator\ Plus_v2.0_apkpure.com.apk -o output/a54b52 -is_emulator -script ./c2d_script/a5/b52/base/a54_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a55-Free\ Tip\ Calculator_v1.0.0.9_apkpure.com.apk -o output/a55b52 -is_emulator -script ./c2d_script/a5/b52/base/a55_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a1-browser/a11-acr.browser.lightning_96.apk -o output/a11b11 -is_emulator -script ./c2d_script/a1/b11/base/a11_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a12-Browser\ for\ Android_v1.3.1_apkpure.com.apk -o output/a12b11 -is_emulator -script ./c2d_script/a1/b11/base/a12_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a13-com.stoutner.privacybrowser.standard_33.apk -o output/a13b11 -is_emulator -script ./c2d_script/a1/b11/base/a13_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a14-de.baumann.browser_80.apk -o output/a14b11 -is_emulator -script ./c2d_script/a1/b11/base/a14_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a15-Firefox\ Focus\ The\ privacy\ browser_v6.0_apkpure.com.apk -o output/a15b11 -is_emulator -script ./c2d_script/a1/b11/base/a15_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a11-acr.browser.lightning_96.apk -o output/a11b12 -is_emulator -script ./c2d_script/a1/b12/base/a11_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a12-Browser\ for\ Android_v1.3.1_apkpure.com.apk -o output/a12b12 -is_emulator -script ./c2d_script/a1/b12/base/a12_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a13-com.stoutner.privacybrowser.standard_33.apk -o output/a13b12 -is_emulator -script ./c2d_script/a1/b12/base/a13_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a14-de.baumann.browser_80.apk -o output/a14b12 -is_emulator -script ./c2d_script/a1/b12/base/a14_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a15-Firefox\ Focus\ The\ privacy\ browser_v6.0_apkpure.com.apk -o output/a15b12 -is_emulator -script ./c2d_script/a1/b12/base/a15_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a2-todo/a21-com.rubenroy.minimaltodo_3.apk -o output/a21b21 -is_emulator -script ./c2d_script/a2/b21/base/a21_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a22-douzifly.list_21.apk -o output/a22b21 -is_emulator -script ./c2d_script/a2/b21/base/a22_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a23-org.secuso.privacyfriendlytodolist_4.apk -o output/a23b21 -is_emulator -script ./c2d_script/a2/b21/base/a23_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a24-kdk.android.simplydo_1.apk -o output/a24b21 -is_emulator -script ./c2d_script/a2/b21/base/a24_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a25-com.woefe.shoppinglist_11.apk -o output/a25b21 -is_emulator -script ./c2d_script/a2/b21/base/a25_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a21-com.rubenroy.minimaltodo_3.apk -o output/a21b22 -is_emulator -script ./c2d_script/a2/b22/base/a21_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a22-douzifly.list_21.apk -o output/a22b22 -is_emulator -script ./c2d_script/a2/b22/base/a22_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a23-org.secuso.privacyfriendlytodolist_4.apk -o output/a23b22 -is_emulator -script ./c2d_script/a2/b22/base/a23_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a24-kdk.android.simplydo_1.apk -o output/a24b22 -is_emulator -script ./c2d_script/a2/b22/base/a24_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a25-com.woefe.shoppinglist_11.apk -o output/a25b22 -is_emulator -script ./c2d_script/a2/b22/base/a25_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a3-shopping/a31-Geek\ Smarter\ Shopping_v2.3.7_apkpure.com.apk -o output/a31b31 -is_emulator -script ./c2d_script/a3/b31/base/a31_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a32-Wish\ Shopping\ Made\ Fun_v4.22.6_apkpure.com.apk -o output/a32b31 -is_emulator -script ./c2d_script/a3/b31/base/a32_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a33-Rainbow\ Shops\ Womens\ and\ Plus\ Size\ Clothing_v1.2.9_apkpure.com.apk -o output/a33b31 -is_emulator -script ./c2d_script/a3/b31/base/a33_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a34-Etsy\ Handmade\ Vintage\ Goods_v5.6.0_apkpure.com.apk -o output/a34b31 -is_emulator -script ./c2d_script/a3/b31/base/a34_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a35-Yelp\ Food\ Shopping\ Services\ Nearby_v10.21.1-21020803_apkpure.com.apk -o output/a35b31 -is_emulator -script ./c2d_script/a3/b31/base/a35_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a31-Geek\ Smarter\ Shopping_v2.3.7_apkpure.com.apk -o output/a31b32 -is_emulator -script ./c2d_script/a3/b32/base/a31_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a32-Wish\ Shopping\ Made\ Fun_v4.22.6_apkpure.com.apk -o output/a32b32 -is_emulator -script ./c2d_script/a3/b32/base/a32_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a33-Rainbow\ Shops\ Womens\ and\ Plus\ Size\ Clothing_v1.2.9_apkpure.com.apk -o output/a33b32 -is_emulator -script ./c2d_script/a3/b32/base/a33_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a34-Etsy\ Handmade\ Vintage\ Goods_v5.6.0_apkpure.com.apk -o output/a34b32 -is_emulator -script ./c2d_script/a3/b32/base/a34_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a35-Yelp\ Food\ Shopping\ Services\ Nearby_v10.21.1-21020803_apkpure.com.apk -o output/a35b32 -is_emulator -script ./c2d_script/a3/b32/base/a35_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a4-mail/a41-com.fsck.k9_23630.apk -o output/a41b41 -is_emulator -script ./c2d_script/a4/b41/base/a41_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a42-Email\ mail\ box\ fast\ mail_v1.12.20_apkpure.com.apk -o output/a42b41 -is_emulator -script ./c2d_script/a4/b41/base/a42_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a43-Mail\ Ru\ Email\ App_v7.5.0.24869_apkpure.com.apk -o output/a43b41 -is_emulator -script ./c2d_script/a4/b41/base/a43_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a44-myMail\ ≈\ Email\ for\ Hotmail\ Gmail\ and\ Outlook\ Mail_v7.5.0.24869_apkpure.com.apk -o output/a44b41 -is_emulator -script ./c2d_script/a4/b41/base/a44_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a45-Email\ App\ for\ Outlook\ others_v6.6.0.24788_apkpure.com.apk -o output/a45b41 -is_emulator -script ./c2d_script/a4/b41/base/a45_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a41-com.fsck.k9_23630.apk -o output/a41b42 -is_emulator -script ./c2d_script/a4/b42/base/a41_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a42-Email\ mail\ box\ fast\ mail_v1.12.20_apkpure.com.apk -o output/a42b42 -is_emulator -script ./c2d_script/a4/b42/base/a42_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a43-Mail\ Ru\ Email\ App_v7.5.0.24869_apkpure.com.apk -o output/a43b42 -is_emulator -script ./c2d_script/a4/b42/base/a43_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a44-myMail\ ≈\ Email\ for\ Hotmail\ Gmail\ and\ Outlook\ Mail_v7.5.0.24869_apkpure.com.apk -o output/a44b42 -is_emulator -script ./c2d_script/a4/b42/base/a44_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a45-Email\ App\ for\ Outlook\ others_v6.6.0.24788_apkpure.com.apk -o output/a45b42 -is_emulator -script ./c2d_script/a4/b42/base/a45_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a5-tip/a51-Tip\ Calculator_v1.1_apkpure.com.apk -o output/a51b51 -is_emulator -script ./c2d_script/a5/b51/base/a51_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a52-Tip\ Calc_v1.11_apkpure.com.apk -o output/a52b51 -is_emulator -script ./c2d_script/a5/b51/base/a52_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a53-Simple\ Tip\ Calculator_v1.2_apkpure.com.apk -o output/a53b51 -is_emulator -script ./c2d_script/a5/b51/base/a53_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a54-Tip\ Calculator\ Plus_v2.0_apkpure.com.apk -o output/a54b51 -is_emulator -script ./c2d_script/a5/b51/base/a54_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a55-Free\ Tip\ Calculator_v1.0.0.9_apkpure.com.apk -o output/a55b51 -is_emulator -script ./c2d_script/a5/b51/base/a55_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a51-Tip\ Calculator_v1.1_apkpure.com.apk -o output/a51b52 -is_emulator -script ./c2d_script/a5/b52/base/a51_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a52-Tip\ Calc_v1.11_apkpure.com.apk -o output/a52b52 -is_emulator -script ./c2d_script/a5/b52/base/a52_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a53-Simple\ Tip\ Calculator_v1.2_apkpure.com.apk -o output/a53b52 -is_emulator -script ./c2d_script/a5/b52/base/a53_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a54-Tip\ Calculator\ Plus_v2.0_apkpure.com.apk -o output/a54b52 -is_emulator -script ./c2d_script/a5/b52/base/a54_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a55-Free\ Tip\ Calculator_v1.0.0.9_apkpure.com.apk -o output/a55b52 -is_emulator -script ./c2d_script/a5/b52/base/a55_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a1-browser/a11-acr.browser.lightning_96.apk -o output/a11b11 -is_emulator -script ./c2d_script/a1/b11/base/a11_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a12-Browser\ for\ Android_v1.3.1_apkpure.com.apk -o output/a12b11 -is_emulator -script ./c2d_script/a1/b11/base/a12_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a13-com.stoutner.privacybrowser.standard_33.apk -o output/a13b11 -is_emulator -script ./c2d_script/a1/b11/base/a13_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a14-de.baumann.browser_80.apk -o output/a14b11 -is_emulator -script ./c2d_script/a1/b11/base/a14_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a15-Firefox\ Focus\ The\ privacy\ browser_v6.0_apkpure.com.apk -o output/a15b11 -is_emulator -script ./c2d_script/a1/b11/base/a15_drb.json -task "Access website by URL" 
+python3 start.py -a ./c2d_apps/a1-browser/a11-acr.browser.lightning_96.apk -o output/a11b12 -is_emulator -script ./c2d_script/a1/b12/base/a11_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a12-Browser\ for\ Android_v1.3.1_apkpure.com.apk -o output/a12b12 -is_emulator -script ./c2d_script/a1/b12/base/a12_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a13-com.stoutner.privacybrowser.standard_33.apk -o output/a13b12 -is_emulator -script ./c2d_script/a1/b12/base/a13_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a14-de.baumann.browser_80.apk -o output/a14b12 -is_emulator -script ./c2d_script/a1/b12/base/a14_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a1-browser/a15-Firefox\ Focus\ The\ privacy\ browser_v6.0_apkpure.com.apk -o output/a15b12 -is_emulator -script ./c2d_script/a1/b12/base/a15_drb.json -task "Back button" 
+python3 start.py -a ./c2d_apps/a2-todo/a21-com.rubenroy.minimaltodo_3.apk -o output/a21b21 -is_emulator -script ./c2d_script/a2/b21/base/a21_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a22-douzifly.list_21.apk -o output/a22b21 -is_emulator -script ./c2d_script/a2/b21/base/a22_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a23-org.secuso.privacyfriendlytodolist_4.apk -o output/a23b21 -is_emulator -script ./c2d_script/a2/b21/base/a23_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a24-kdk.android.simplydo_1.apk -o output/a24b21 -is_emulator -script ./c2d_script/a2/b21/base/a24_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a25-com.woefe.shoppinglist_11.apk -o output/a25b21 -is_emulator -script ./c2d_script/a2/b21/base/a25_drb.json -task "Add task" 
+python3 start.py -a ./c2d_apps/a2-todo/a21-com.rubenroy.minimaltodo_3.apk -o output/a21b22 -is_emulator -script ./c2d_script/a2/b22/base/a21_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a22-douzifly.list_21.apk -o output/a22b22 -is_emulator -script ./c2d_script/a2/b22/base/a22_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a23-org.secuso.privacyfriendlytodolist_4.apk -o output/a23b22 -is_emulator -script ./c2d_script/a2/b22/base/a23_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a24-kdk.android.simplydo_1.apk -o output/a24b22 -is_emulator -script ./c2d_script/a2/b22/base/a24_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a2-todo/a25-com.woefe.shoppinglist_11.apk -o output/a25b22 -is_emulator -script ./c2d_script/a2/b22/base/a25_drb.json -task "Remove task" 
+python3 start.py -a ./c2d_apps/a3-shopping/a31-Geek\ Smarter\ Shopping_v2.3.7_apkpure.com.apk -o output/a31b31 -is_emulator -script ./c2d_script/a3/b31/base/a31_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a32-Wish\ Shopping\ Made\ Fun_v4.22.6_apkpure.com.apk -o output/a32b31 -is_emulator -script ./c2d_script/a3/b31/base/a32_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a33-Rainbow\ Shops\ Womens\ and\ Plus\ Size\ Clothing_v1.2.9_apkpure.com.apk -o output/a33b31 -is_emulator -script ./c2d_script/a3/b31/base/a33_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a34-Etsy\ Handmade\ Vintage\ Goods_v5.6.0_apkpure.com.apk -o output/a34b31 -is_emulator -script ./c2d_script/a3/b31/base/a34_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a35-Yelp\ Food\ Shopping\ Services\ Nearby_v10.21.1-21020803_apkpure.com.apk -o output/a35b31 -is_emulator -script ./c2d_script/a3/b31/base/a35_drb.json -task "Registration" 
+python3 start.py -a ./c2d_apps/a3-shopping/a31-Geek\ Smarter\ Shopping_v2.3.7_apkpure.com.apk -o output/a31b32 -is_emulator -script ./c2d_script/a3/b32/base/a31_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a32-Wish\ Shopping\ Made\ Fun_v4.22.6_apkpure.com.apk -o output/a32b32 -is_emulator -script ./c2d_script/a3/b32/base/a32_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a33-Rainbow\ Shops\ Womens\ and\ Plus\ Size\ Clothing_v1.2.9_apkpure.com.apk -o output/a33b32 -is_emulator -script ./c2d_script/a3/b32/base/a33_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a34-Etsy\ Handmade\ Vintage\ Goods_v5.6.0_apkpure.com.apk -o output/a34b32 -is_emulator -script ./c2d_script/a3/b32/base/a34_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a3-shopping/a35-Yelp\ Food\ Shopping\ Services\ Nearby_v10.21.1-21020803_apkpure.com.apk -o output/a35b32 -is_emulator -script ./c2d_script/a3/b32/base/a35_drb.json -task "Login with valid credentials" 
+python3 start.py -a ./c2d_apps/a4-mail/a41-com.fsck.k9_23630.apk -o output/a41b41 -is_emulator -script ./c2d_script/a4/b41/base/a41_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a42-Email\ mail\ box\ fast\ mail_v1.12.20_apkpure.com.apk -o output/a42b41 -is_emulator -script ./c2d_script/a4/b41/base/a42_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a43-Mail\ Ru\ Email\ App_v7.5.0.24869_apkpure.com.apk -o output/a43b41 -is_emulator -script ./c2d_script/a4/b41/base/a43_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a44-myMail\ ≈\ Email\ for\ Hotmail\ Gmail\ and\ Outlook\ Mail_v7.5.0.24869_apkpure.com.apk -o output/a44b41 -is_emulator -script ./c2d_script/a4/b41/base/a44_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a45-Email\ App\ for\ Outlook\ others_v6.6.0.24788_apkpure.com.apk -o output/a45b41 -is_emulator -script ./c2d_script/a4/b41/base/a45_drb.json -task "Search email by keywords" 
+python3 start.py -a ./c2d_apps/a4-mail/a41-com.fsck.k9_23630.apk -o output/a41b42 -is_emulator -script ./c2d_script/a4/b42/base/a41_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a42-Email\ mail\ box\ fast\ mail_v1.12.20_apkpure.com.apk -o output/a42b42 -is_emulator -script ./c2d_script/a4/b42/base/a42_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a43-Mail\ Ru\ Email\ App_v7.5.0.24869_apkpure.com.apk -o output/a43b42 -is_emulator -script ./c2d_script/a4/b42/base/a43_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a44-myMail\ ≈\ Email\ for\ Hotmail\ Gmail\ and\ Outlook\ Mail_v7.5.0.24869_apkpure.com.apk -o output/a44b42 -is_emulator -script ./c2d_script/a4/b42/base/a44_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a4-mail/a45-Email\ App\ for\ Outlook\ others_v6.6.0.24788_apkpure.com.apk -o output/a45b42 -is_emulator -script ./c2d_script/a4/b42/base/a45_drb.json -task "Send email with valid data" 
+python3 start.py -a ./c2d_apps/a5-tip/a51-Tip\ Calculator_v1.1_apkpure.com.apk -o output/a51b51 -is_emulator -script ./c2d_script/a5/b51/base/a51_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a52-Tip\ Calc_v1.11_apkpure.com.apk -o output/a52b51 -is_emulator -script ./c2d_script/a5/b51/base/a52_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a53-Simple\ Tip\ Calculator_v1.2_apkpure.com.apk -o output/a53b51 -is_emulator -script ./c2d_script/a5/b51/base/a53_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a54-Tip\ Calculator\ Plus_v2.0_apkpure.com.apk -o output/a54b51 -is_emulator -script ./c2d_script/a5/b51/base/a54_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a55-Free\ Tip\ Calculator_v1.0.0.9_apkpure.com.apk -o output/a55b51 -is_emulator -script ./c2d_script/a5/b51/base/a55_drb.json -task "Calculate total bill with tip" 
+python3 start.py -a ./c2d_apps/a5-tip/a51-Tip\ Calculator_v1.1_apkpure.com.apk -o output/a51b52 -is_emulator -script ./c2d_script/a5/b52/base/a51_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a52-Tip\ Calc_v1.11_apkpure.com.apk -o output/a52b52 -is_emulator -script ./c2d_script/a5/b52/base/a52_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a53-Simple\ Tip\ Calculator_v1.2_apkpure.com.apk -o output/a53b52 -is_emulator -script ./c2d_script/a5/b52/base/a53_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a54-Tip\ Calculator\ Plus_v2.0_apkpure.com.apk -o output/a54b52 -is_emulator -script ./c2d_script/a5/b52/base/a54_drb.json -task "Split bill" 
+python3 start.py -a ./c2d_apps/a5-tip/a55-Free\ Tip\ Calculator_v1.0.0.9_apkpure.com.apk -o output/a55b52 -is_emulator -script ./c2d_script/a5/b52/base/a55_drb.json -task "Split bill" 
