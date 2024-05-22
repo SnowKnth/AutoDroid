@@ -1,0 +1,139 @@
+{
+    "views": {
+        "url_rid_c_descedittext_class_https_www_google_com_webhp_client_ms_android_google_source_android_home_text": {
+            "resource_id": ".*url",
+            "class": ".*EditText"
+        },
+        "_rid_donald_bren_school_of_information_and_computer_sciencesc_descview_class__text": {
+            "class": ".*View",
+            "content_desc": ".*Donald Bren School of Information and Computer Sciences"
+        },
+        "url_rid_c_descedittext_class_https_www_ics_uci_edu__text": {
+            "resource_id": ".*url",
+            "class": ".*EditText"
+        },
+        "_rid_uci_homepagec_descview_class__text": {
+            "class": ".*View",
+            "content_desc": ".*UCI homepage"
+        }
+    },
+    "states": {
+        "_BrowserActivity_state1": {
+            "activity": ".*BrowserActivity",
+            "views": [
+                "url_rid_c_descedittext_class_https_www_google_com_webhp_client_ms_android_google_source_android_home_text"
+            ]
+        },
+        "_BrowserActivity_state2": {
+            "activity": ".*BrowserActivity",
+            "views": [
+                "url_rid_c_descedittext_class_https_www_google_com_webhp_client_ms_android_google_source_android_home_text"
+            ]
+        },
+        "_BrowserActivity_state3": {
+            "activity": ".*BrowserActivity",
+            "views": [
+                "_rid_donald_bren_school_of_information_and_computer_sciencesc_descview_class__text"
+            ]
+        },
+        "_BrowserActivity_state4": {
+            "activity": ".*BrowserActivity",
+            "views": [
+                "url_rid_c_descedittext_class_https_www_ics_uci_edu__text"
+            ]
+        },
+        "_BrowserActivity_state5": {
+            "activity": ".*BrowserActivity",
+            "views": [
+                "_rid_uci_homepagec_descview_class__text"
+            ]
+        },
+        "_BrowserActivity_state6": {
+            "activity": ".*BrowserActivity",
+            "views": [
+                "_rid_donald_bren_school_of_information_and_computer_sciencesc_descview_class__text"
+            ]
+        }
+    },
+    "operations": {
+        "_BrowserActivity_operation1": [
+            {
+                "event_type": "click",
+                "target_view": "url_rid_c_descedittext_class_https_www_google_com_webhp_client_ms_android_google_source_android_home_text"
+            }
+        ],
+        "_BrowserActivity_operation2": [
+            {
+                "event_type": "set_text",
+                "target_view": "url_rid_c_descedittext_class_https_www_google_com_webhp_client_ms_android_google_source_android_home_text",
+                "text": "https://www.ics.uci.edu"
+            },
+            {
+                "event_type": "key",
+                "name": "ENTER"
+            }
+        ],
+        "_BrowserActivity_operation3": [
+            {
+                "event_type": "oracle",
+                "target_view": "_rid_donald_bren_school_of_information_and_computer_sciencesc_descview_class__text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 10
+            }
+        ],
+        "_BrowserActivity_operation4": [
+            {
+                "event_type": "set_text",
+                "target_view": "url_rid_c_descedittext_class_https_www_ics_uci_edu__text",
+                "text": "https://uci.edu"
+            },
+            {
+                "event_type": "key",
+                "name": "ENTER"
+            }
+        ],
+        "_BrowserActivity_operation5": [
+            {
+                "event_type": "oracle",
+                "target_view": "_rid_uci_homepagec_descview_class__text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 10
+            },
+            {
+                "event_type": "key",
+                "name": "BACK"
+            }
+        ],
+        "_BrowserActivity_operation6": [
+            {
+                "event_type": "oracle",
+                "target_view": "_rid_donald_bren_school_of_information_and_computer_sciencesc_descview_class__text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 10
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "_BrowserActivity_state1": [
+            "_BrowserActivity_operation1"
+        ],
+        "_BrowserActivity_state2": [
+            "_BrowserActivity_operation2"
+        ],
+        "_BrowserActivity_state3": [
+            "_BrowserActivity_operation3"
+        ],
+        "_BrowserActivity_state4": [
+            "_BrowserActivity_operation4"
+        ],
+        "_BrowserActivity_state5": [
+            "_BrowserActivity_operation5"
+        ],
+        "_BrowserActivity_state6": [
+            "_BrowserActivity_operation6"
+        ]
+    }
+}

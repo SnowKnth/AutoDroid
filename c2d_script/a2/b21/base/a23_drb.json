@@ -1,0 +1,111 @@
+{
+    "views": {
+        "btn_skip_rid_c_descbutton_class_Skip_text": {
+            "resource_id": ".*btn_skip",
+            "class": ".*Button"
+        },
+        "fab_new_task_rid_c_descimagebutton_class__text": {
+            "resource_id": ".*fab_new_task",
+            "class": ".*ImageButton"
+        },
+        "et_new_task_name_rid_c_descedittext_class_Name_text": {
+            "resource_id": ".*et_new_task_name",
+            "class": ".*EditText"
+        },
+        "bt_new_task_ok_rid_c_descbutton_class_Okay_text": {
+            "resource_id": ".*bt_new_task_ok",
+            "class": ".*Button"
+        },
+        "tv_exlv_task_name_rid_c_desctextview_class_Sample_Todo_text": {
+            "resource_id": ".*tv_exlv_task_name",
+            "class": ".*TextView"
+        }
+    },
+    "states": {
+        "_tutorial_TutorialActivity_state1": {
+            "activity": ".*TutorialActivity",
+            "views": [
+                "btn_skip_rid_c_descbutton_class_Skip_text"
+            ]
+        },
+        "_view_MainActivity_state2": {
+            "activity": ".*MainActivity",
+            "views": [
+                "fab_new_task_rid_c_descimagebutton_class__text"
+            ]
+        },
+        "_view_MainActivity_state3": {
+            "activity": ".*MainActivity",
+            "views": [
+                "et_new_task_name_rid_c_descedittext_class_Name_text"
+            ]
+        },
+        "_view_MainActivity_state4": {
+            "activity": ".*MainActivity",
+            "views": [
+                "bt_new_task_ok_rid_c_descbutton_class_Okay_text"
+            ]
+        },
+        "_view_MainActivity_state5": {
+            "activity": ".*MainActivity",
+            "views": [
+                "tv_exlv_task_name_rid_c_desctextview_class_Sample_Todo_text"
+            ]
+        }
+    },
+    "operations": {
+        "_tutorial_TutorialActivity_operation1": [
+            {
+                "event_type": "click",
+                "target_view": "btn_skip_rid_c_descbutton_class_Skip_text"
+            }
+        ],
+        "_view_MainActivity_operation2": [
+            {
+                "event_type": "click",
+                "target_view": "fab_new_task_rid_c_descimagebutton_class__text"
+            }
+        ],
+        "_view_MainActivity_operation3": [
+            {
+                "event_type": "set_text",
+                "target_view": "et_new_task_name_rid_c_descedittext_class_Name_text",
+                "text": "Sample Todo"
+            }
+        ],
+        "_view_MainActivity_operation4": [
+            {
+                "event_type": "click",
+                "target_view": "bt_new_task_ok_rid_c_descbutton_class_Okay_text"
+            }
+        ],
+        "_view_MainActivity_operation5": [
+            {
+                "event_type": "oracle",
+                "target_view": "tv_exlv_task_name_rid_c_desctextview_class_Sample_Todo_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 10
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "_tutorial_TutorialActivity_state1": [
+            "_tutorial_TutorialActivity_operation1"
+        ],
+        "_view_MainActivity_state2": [
+            "_view_MainActivity_operation2"
+        ],
+        "_view_MainActivity_state3": [
+            "_view_MainActivity_operation3"
+        ],
+        "_view_MainActivity_state4": [
+            "_view_MainActivity_operation4"
+        ],
+        "_view_MainActivity_state5": [
+            "_view_MainActivity_operation5"
+        ]
+    }
+}

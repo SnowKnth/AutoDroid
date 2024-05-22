@@ -1,0 +1,298 @@
+{
+    "views": {
+        "hot_button_profile_rid_mec_desctextview_class_Me_text": {
+            "resource_id": ".*hot_button_profile",
+            "class": ".*TextView",
+            "content_desc": ".*Me"
+        },
+        "sign_up_button_rid_c_descbutton_class_Sign_Up_text": {
+            "resource_id": ".*sign_up_button",
+            "class": ".*Button"
+        },
+        "email_sign_up_rid_c_descbutton_class_Sign_up_with_Email_text": {
+            "resource_id": ".*email_sign_up",
+            "class": ".*Button"
+        },
+        "email_address_rid_c_descedittext_class_Email_text": {
+            "resource_id": ".*email_address",
+            "class": ".*EditText"
+        },
+        "password_rid_c_descedittext_class_Password_text": {
+            "resource_id": ".*password",
+            "class": ".*EditText"
+        },
+        "signup_next_button_rid_c_descbutton_class_Next_text": {
+            "resource_id": ".*signup_next_button",
+            "class": ".*Button"
+        },
+        "last_name_rid_c_descedittext_class_Last_Name_text": {
+            "resource_id": ".*last_name",
+            "class": ".*EditText"
+        },
+        "first_name_rid_c_descedittext_class_First_Name_text": {
+            "resource_id": ".*first_name",
+            "class": ".*EditText"
+        },
+        "signup_next_button_2_rid_c_descbutton_class_Next_text": {
+            "resource_id": ".*signup_next_button_2",
+            "class": ".*Button"
+        },
+        "signup_button_rid_c_descbutton_class_Sign_Up_text": {
+            "resource_id": ".*signup_button",
+            "class": ".*Button"
+        },
+        "user_profile_name_rid_c_desctextview_class_Sealbot_L__text": {
+            "resource_id": ".*user_profile_name",
+            "class": ".*TextView"
+        }
+    },
+    "states": {
+        "_nearby_ui_ActivityNearby_state1": {
+            "activity": ".*ActivityNearby",
+            "views": [
+                "hot_button_profile_rid_mec_desctextview_class_Me_text"
+            ]
+        },
+        "_nearby_ui_ActivityNearby_state2": {
+            "activity": ".*ActivityNearby",
+            "views": [
+                "hot_button_profile_rid_mec_desctextview_class_Me_text"
+            ]
+        },
+        "_ui_activities_profile_loggedout_ActivityUserProfileLoggedOut_state3": {
+            "activity": ".*ActivityUserProfileLoggedOut",
+            "views": [
+                "sign_up_button_rid_c_descbutton_class_Sign_Up_text"
+            ]
+        },
+        "_ui_activities_profile_loggedout_ActivityUserProfileLoggedOut_state4": {
+            "activity": ".*ActivityUserProfileLoggedOut",
+            "views": [
+                "sign_up_button_rid_c_descbutton_class_Sign_Up_text"
+            ]
+        },
+        "_ui_activities_ActivityCreateAccount_state5": {
+            "activity": ".*ActivityCreateAccount",
+            "views": [
+                "email_sign_up_rid_c_descbutton_class_Sign_up_with_Email_text"
+            ]
+        },
+        "_ui_activities_ActivityCreateAccount_state6": {
+            "activity": ".*ActivityCreateAccount",
+            "views": [
+                "email_sign_up_rid_c_descbutton_class_Sign_up_with_Email_text"
+            ]
+        },
+        "_ui_activities_ActivityCreateAccount_state7": {
+            "activity": ".*ActivityCreateAccount",
+            "views": [
+                "email_address_rid_c_descedittext_class_Email_text"
+            ]
+        },
+        "_ui_activities_ActivityCreateAccount_state8": {
+            "activity": ".*ActivityCreateAccount",
+            "views": [
+                "email_address_rid_c_descedittext_class_Email_text"
+            ]
+        },
+        "_ui_activities_ActivityCreateAccount_state9": {
+            "activity": ".*ActivityCreateAccount",
+            "views": [
+                "password_rid_c_descedittext_class_Password_text"
+            ]
+        },
+        "_ui_activities_ActivityCreateAccount_state10": {
+            "activity": ".*ActivityCreateAccount",
+            "views": [
+                "signup_next_button_rid_c_descbutton_class_Next_text"
+            ]
+        },
+        "_ui_activities_ActivityCreateAccount_state11": {
+            "activity": ".*ActivityCreateAccount",
+            "views": [
+                "last_name_rid_c_descedittext_class_Last_Name_text"
+            ]
+        },
+        "_ui_activities_ActivityCreateAccount_state12": {
+            "activity": ".*ActivityCreateAccount",
+            "views": [
+                "first_name_rid_c_descedittext_class_First_Name_text"
+            ]
+        },
+        "_ui_activities_ActivityCreateAccount_state13": {
+            "activity": ".*ActivityCreateAccount",
+            "views": [
+                "signup_next_button_2_rid_c_descbutton_class_Next_text"
+            ]
+        },
+        "_ui_activities_ActivityCreateAccount_state14": {
+            "activity": ".*ActivityCreateAccount",
+            "views": [
+                "signup_button_rid_c_descbutton_class_Sign_Up_text"
+            ]
+        },
+        "_ui_activities_profile_ActivityUserProfile_state15": {
+            "activity": ".*ActivityUserProfile",
+            "views": [
+                "user_profile_name_rid_c_desctextview_class_Sealbot_L__text"
+            ]
+        }
+    },
+    "operations": {
+        "_nearby_ui_ActivityNearby_operation1": [
+            {
+                "event_type": "oracle",
+                "target_view": "hot_button_profile_rid_mec_desctextview_class_Me_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 10
+            }
+        ],
+        "_nearby_ui_ActivityNearby_operation2": [
+            {
+                "event_type": "click",
+                "target_view": "hot_button_profile_rid_mec_desctextview_class_Me_text"
+            }
+        ],
+        "_ui_activities_profile_loggedout_ActivityUserProfileLoggedOut_operation3": [
+            {
+                "event_type": "oracle",
+                "target_view": "sign_up_button_rid_c_descbutton_class_Sign_Up_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 10
+            }
+        ],
+        "_ui_activities_profile_loggedout_ActivityUserProfileLoggedOut_operation4": [
+            {
+                "event_type": "click",
+                "target_view": "sign_up_button_rid_c_descbutton_class_Sign_Up_text"
+            }
+        ],
+        "_ui_activities_ActivityCreateAccount_operation5": [
+            {
+                "event_type": "oracle",
+                "target_view": "email_sign_up_rid_c_descbutton_class_Sign_up_with_Email_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 10
+            }
+        ],
+        "_ui_activities_ActivityCreateAccount_operation6": [
+            {
+                "event_type": "click",
+                "target_view": "email_sign_up_rid_c_descbutton_class_Sign_up_with_Email_text"
+            }
+        ],
+        "_ui_activities_ActivityCreateAccount_operation7": [
+            {
+                "event_type": "oracle",
+                "target_view": "email_address_rid_c_descedittext_class_Email_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 10
+            }
+        ],
+        "_ui_activities_ActivityCreateAccount_operation8": [
+            {
+                "event_type": "set_text",
+                "target_view": "email_address_rid_c_descedittext_class_Email_text",
+                "text": "n175773se@nkdjfq.al.net"
+            }
+        ],
+        "_ui_activities_ActivityCreateAccount_operation9": [
+            {
+                "event_type": "set_text",
+                "target_view": "password_rid_c_descedittext_class_Password_text",
+                "text": "1qaz2wsX"
+            }
+        ],
+        "_ui_activities_ActivityCreateAccount_operation10": [
+            {
+                "event_type": "click",
+                "target_view": "signup_next_button_rid_c_descbutton_class_Next_text"
+            }
+        ],
+        "_ui_activities_ActivityCreateAccount_operation11": [
+            {
+                "event_type": "set_text",
+                "target_view": "last_name_rid_c_descedittext_class_Last_Name_text",
+                "text": "Labfellow"
+            }
+        ],
+        "_ui_activities_ActivityCreateAccount_operation12": [
+            {
+                "event_type": "set_text",
+                "target_view": "first_name_rid_c_descedittext_class_First_Name_text",
+                "text": "Sealbot"
+            }
+        ],
+        "_ui_activities_ActivityCreateAccount_operation13": [
+            {
+                "event_type": "click",
+                "target_view": "signup_next_button_2_rid_c_descbutton_class_Next_text"
+            }
+        ],
+        "_ui_activities_ActivityCreateAccount_operation14": [
+            {
+                "event_type": "click",
+                "target_view": "signup_button_rid_c_descbutton_class_Sign_Up_text"
+            }
+        ],
+        "_ui_activities_profile_ActivityUserProfile_operation15": [
+            {
+                "event_type": "oracle",
+                "target_view": "user_profile_name_rid_c_desctextview_class_Sealbot_L__text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 10,
+                "assert_text": "Sealbot"
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "_nearby_ui_ActivityNearby_state1": [
+            "_nearby_ui_ActivityNearby_operation1"
+        ],
+        "_nearby_ui_ActivityNearby_state2": [
+            "_nearby_ui_ActivityNearby_operation2"
+        ],
+        "_ui_activities_profile_loggedout_ActivityUserProfileLoggedOut_state3": [
+            "_ui_activities_profile_loggedout_ActivityUserProfileLoggedOut_operation3"
+        ],
+        "_ui_activities_profile_loggedout_ActivityUserProfileLoggedOut_state4": [
+            "_ui_activities_profile_loggedout_ActivityUserProfileLoggedOut_operation4"
+        ],
+        "_ui_activities_ActivityCreateAccount_state5": [
+            "_ui_activities_ActivityCreateAccount_operation5"
+        ],
+        "_ui_activities_ActivityCreateAccount_state6": [
+            "_ui_activities_ActivityCreateAccount_operation6"
+        ],
+        "_ui_activities_ActivityCreateAccount_state7": [
+            "_ui_activities_ActivityCreateAccount_operation7"
+        ],
+        "_ui_activities_ActivityCreateAccount_state8": [
+            "_ui_activities_ActivityCreateAccount_operation8"
+        ],
+        "_ui_activities_ActivityCreateAccount_state9": [
+            "_ui_activities_ActivityCreateAccount_operation9"
+        ],
+        "_ui_activities_ActivityCreateAccount_state10": [
+            "_ui_activities_ActivityCreateAccount_operation10"
+        ],
+        "_ui_activities_ActivityCreateAccount_state11": [
+            "_ui_activities_ActivityCreateAccount_operation11"
+        ],
+        "_ui_activities_ActivityCreateAccount_state12": [
+            "_ui_activities_ActivityCreateAccount_operation12"
+        ],
+        "_ui_activities_ActivityCreateAccount_state13": [
+            "_ui_activities_ActivityCreateAccount_operation13"
+        ],
+        "_ui_activities_ActivityCreateAccount_state14": [
+            "_ui_activities_ActivityCreateAccount_operation14"
+        ],
+        "_ui_activities_profile_ActivityUserProfile_state15": [
+            "_ui_activities_profile_ActivityUserProfile_operation15"
+        ]
+    }
+}

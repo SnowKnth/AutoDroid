@@ -1,0 +1,183 @@
+{
+    "views": {
+        "login_fragment_sign_in_button_rid_c_desctextview_class_Sign_In_text": {
+            "resource_id": ".*login_fragment_sign_in_button",
+            "class": ".*TextView"
+        },
+        "sign_in_fragment_password_text_rid_c_descedittext_class__text": {
+            "resource_id": ".*sign_in_fragment_password_text",
+            "class": ".*EditText"
+        },
+        "sign_in_fragment_email_text_rid_c_descedittext_class_Email_text": {
+            "resource_id": ".*sign_in_fragment_email_text",
+            "class": ".*EditText"
+        },
+        "sign_in_fragment_sign_in_button_rid_c_desctextview_class_Sign_In_text": {
+            "resource_id": ".*sign_in_fragment_sign_in_button",
+            "class": ".*TextView"
+        },
+        "_rid_open_menuc_descimagebutton_class__text": {
+            "class": ".*ImageButton",
+            "content_desc": ".*Open Menu"
+        },
+        "menu_profile_name_rid_c_desctextview_class_Sealbot_Labfellow_text": {
+            "resource_id": ".*menu_profile_name",
+            "class": ".*TextView"
+        }
+    },
+    "states": {
+        "com_contextlogic_wish_activity_login_LoginActivity_state1": {
+            "activity": ".*LoginActivity",
+            "views": [
+                "login_fragment_sign_in_button_rid_c_desctextview_class_Sign_In_text"
+            ]
+        },
+        "com_contextlogic_wish_activity_login_LoginActivity_state2": {
+            "activity": ".*LoginActivity",
+            "views": [
+                "login_fragment_sign_in_button_rid_c_desctextview_class_Sign_In_text"
+            ]
+        },
+        "com_contextlogic_wish_activity_login_signin_SignInActivity_state3": {
+            "activity": ".*SignInActivity",
+            "views": [
+                "sign_in_fragment_password_text_rid_c_descedittext_class__text"
+            ]
+        },
+        "com_contextlogic_wish_activity_login_signin_SignInActivity_state4": {
+            "activity": ".*SignInActivity",
+            "views": [
+                "sign_in_fragment_password_text_rid_c_descedittext_class__text"
+            ]
+        },
+        "com_contextlogic_wish_activity_login_signin_SignInActivity_state5": {
+            "activity": ".*SignInActivity",
+            "views": [
+                "sign_in_fragment_email_text_rid_c_descedittext_class_Email_text"
+            ]
+        },
+        "com_contextlogic_wish_activity_login_signin_SignInActivity_state6": {
+            "activity": ".*SignInActivity",
+            "views": [
+                "sign_in_fragment_sign_in_button_rid_c_desctextview_class_Sign_In_text"
+            ]
+        },
+        "com_contextlogic_wish_activity_browse_BrowseActivity_state7": {
+            "activity": ".*BrowseActivity",
+            "views": [
+                "_rid_open_menuc_descimagebutton_class__text"
+            ]
+        },
+        "com_contextlogic_wish_activity_browse_BrowseActivity_state8": {
+            "activity": ".*BrowseActivity",
+            "views": [
+                "_rid_open_menuc_descimagebutton_class__text"
+            ]
+        },
+        "com_contextlogic_wish_activity_browse_BrowseActivity_state9": {
+            "activity": ".*BrowseActivity",
+            "views": [
+                "menu_profile_name_rid_c_desctextview_class_Sealbot_Labfellow_text"
+            ]
+        }
+    },
+    "operations": {
+        "com_contextlogic_wish_activity_login_LoginActivity_operation1": [
+            {
+                "event_type": "oracle",
+                "target_view": "login_fragment_sign_in_button_rid_c_desctextview_class_Sign_In_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 15
+            }
+        ],
+        "com_contextlogic_wish_activity_login_LoginActivity_operation2": [
+            {
+                "event_type": "click",
+                "target_view": "login_fragment_sign_in_button_rid_c_desctextview_class_Sign_In_text"
+            }
+        ],
+        "com_contextlogic_wish_activity_login_signin_SignInActivity_operation3": [
+            {
+                "event_type": "oracle",
+                "target_view": "sign_in_fragment_password_text_rid_c_descedittext_class__text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 15
+            }
+        ],
+        "com_contextlogic_wish_activity_login_signin_SignInActivity_operation4": [
+            {
+                "event_type": "set_text",
+                "target_view": "sign_in_fragment_password_text_rid_c_descedittext_class__text",
+                "text": "1qaz2wsX"
+            }
+        ],
+        "com_contextlogic_wish_activity_login_signin_SignInActivity_operation5": [
+            {
+                "event_type": "set_text",
+                "target_view": "sign_in_fragment_email_text_rid_c_descedittext_class_Email_text",
+                "text": "uci.seal@gmail.com"
+            }
+        ],
+        "com_contextlogic_wish_activity_login_signin_SignInActivity_operation6": [
+            {
+                "event_type": "click",
+                "target_view": "sign_in_fragment_sign_in_button_rid_c_desctextview_class_Sign_In_text"
+            }
+        ],
+        "com_contextlogic_wish_activity_browse_BrowseActivity_operation7": [
+            {
+                "event_type": "oracle",
+                "target_view": "_rid_open_menuc_descimagebutton_class__text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 10
+            }
+        ],
+        "com_contextlogic_wish_activity_browse_BrowseActivity_operation8": [
+            {
+                "event_type": "click",
+                "target_view": "_rid_open_menuc_descimagebutton_class__text"
+            }
+        ],
+        "com_contextlogic_wish_activity_browse_BrowseActivity_operation9": [
+            {
+                "event_type": "oracle",
+                "target_view": "menu_profile_name_rid_c_desctextview_class_Sealbot_Labfellow_text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 10,
+                "assert_text": "Sealbot"
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "com_contextlogic_wish_activity_login_LoginActivity_state1": [
+            "com_contextlogic_wish_activity_login_LoginActivity_operation1"
+        ],
+        "com_contextlogic_wish_activity_login_LoginActivity_state2": [
+            "com_contextlogic_wish_activity_login_LoginActivity_operation2"
+        ],
+        "com_contextlogic_wish_activity_login_signin_SignInActivity_state3": [
+            "com_contextlogic_wish_activity_login_signin_SignInActivity_operation3"
+        ],
+        "com_contextlogic_wish_activity_login_signin_SignInActivity_state4": [
+            "com_contextlogic_wish_activity_login_signin_SignInActivity_operation4"
+        ],
+        "com_contextlogic_wish_activity_login_signin_SignInActivity_state5": [
+            "com_contextlogic_wish_activity_login_signin_SignInActivity_operation5"
+        ],
+        "com_contextlogic_wish_activity_login_signin_SignInActivity_state6": [
+            "com_contextlogic_wish_activity_login_signin_SignInActivity_operation6"
+        ],
+        "com_contextlogic_wish_activity_browse_BrowseActivity_state7": [
+            "com_contextlogic_wish_activity_browse_BrowseActivity_operation7"
+        ],
+        "com_contextlogic_wish_activity_browse_BrowseActivity_state8": [
+            "com_contextlogic_wish_activity_browse_BrowseActivity_operation8"
+        ],
+        "com_contextlogic_wish_activity_browse_BrowseActivity_state9": [
+            "com_contextlogic_wish_activity_browse_BrowseActivity_operation9"
+        ]
+    }
+}

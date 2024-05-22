@@ -1,0 +1,118 @@
+{
+    "views": {
+        "subject_rid_c_desctextview_class_Another_rabbit_hole_text": {
+            "resource_id": ".*subject",
+            "class": ".*TextView"
+        },
+        "toolbar_action_search_rid_searchc_desctextview_class__text": {
+            "resource_id": ".*toolbar_action_search",
+            "class": ".*TextView",
+            "content_desc": ".*Search"
+        },
+        "search_text_rid_c_descedittext_class_Search_Text_text": {
+            "resource_id": ".*search_text",
+            "class": ".*EditText"
+        },
+        "subject_rid_c_desctextview_class_Automated_Software_Engineering_text": {
+            "resource_id": ".*subject",
+            "class": ".*TextView"
+        }
+    },
+    "states": {
+        "ru_mail_ui_SlideStackActivity_state1": {
+            "activity": ".*SlideStackActivity",
+            "views": [
+                "subject_rid_c_desctextview_class_Another_rabbit_hole_text"
+            ]
+        },
+        "ru_mail_ui_SlideStackActivity_state2": {
+            "activity": ".*SlideStackActivity",
+            "views": [
+                "toolbar_action_search_rid_searchc_desctextview_class__text"
+            ]
+        },
+        "ru_mail_ui_SearchActivity_state3": {
+            "activity": ".*SearchActivity",
+            "views": [
+                "search_text_rid_c_descedittext_class_Search_Text_text"
+            ]
+        },
+        "ru_mail_ui_SearchActivity_state4": {
+            "activity": ".*SearchActivity",
+            "views": [
+                "search_text_rid_c_descedittext_class_Search_Text_text"
+            ]
+        },
+        "ru_mail_ui_SearchActivity_state5": {
+            "activity": ".*SearchActivity",
+            "views": [
+                "subject_rid_c_desctextview_class_Automated_Software_Engineering_text"
+            ]
+        }
+    },
+    "operations": {
+        "ru_mail_ui_SlideStackActivity_operation1": [
+            {
+                "event_type": "oracle",
+                "target_view": "subject_rid_c_desctextview_class_Another_rabbit_hole_text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 10,
+                "assert_text": "Another rabbit hole"
+            }
+        ],
+        "ru_mail_ui_SlideStackActivity_operation2": [
+            {
+                "event_type": "click",
+                "target_view": "toolbar_action_search_rid_searchc_desctextview_class__text"
+            }
+        ],
+        "ru_mail_ui_SearchActivity_operation3": [
+            {
+                "event_type": "oracle",
+                "target_view": "search_text_rid_c_descedittext_class_Search_Text_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 10
+            }
+        ],
+        "ru_mail_ui_SearchActivity_operation4": [
+            {
+                "event_type": "set_text",
+                "target_view": "search_text_rid_c_descedittext_class_Search_Text_text",
+                "text": "Automated"
+            },
+            {
+                "event_type": "key",
+                "name": "ENTER"
+            }
+        ],
+        "ru_mail_ui_SearchActivity_operation5": [
+            {
+                "event_type": "oracle",
+                "target_view": "subject_rid_c_desctextview_class_Automated_Software_Engineering_text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 10,
+                "assert_text": "Automated Software Engineering"
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "ru_mail_ui_SlideStackActivity_state1": [
+            "ru_mail_ui_SlideStackActivity_operation1"
+        ],
+        "ru_mail_ui_SlideStackActivity_state2": [
+            "ru_mail_ui_SlideStackActivity_operation2"
+        ],
+        "ru_mail_ui_SearchActivity_state3": [
+            "ru_mail_ui_SearchActivity_operation3"
+        ],
+        "ru_mail_ui_SearchActivity_state4": [
+            "ru_mail_ui_SearchActivity_operation4"
+        ],
+        "ru_mail_ui_SearchActivity_state5": [
+            "ru_mail_ui_SearchActivity_operation5"
+        ]
+    }
+}

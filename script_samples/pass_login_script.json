@@ -15,7 +15,11 @@
     },
     "states": {
         "login_state": {
-            "views": ["login_email", "login_password", "login_button"]
+            "views": [
+                "login_email",
+                "login_password",
+                "login_button"
+            ]
         }
     },
     "operations": {
@@ -31,7 +35,7 @@
                 "text": "sample_password"
             },
             {
-                "event_type": "touch",
+                "event_type": "click",
                 "target_view": "login_button"
             },
             {
@@ -40,6 +44,8 @@
         ]
     },
     "main": {
-        "login_state": ["login_operation"]
+        "login_state": [
+            "login_operation"
+        ]
     }
 }

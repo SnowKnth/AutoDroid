@@ -1,0 +1,147 @@
+{
+    "views": {
+        "AddListEditText_rid_c_descedittext_class_New_List_Name_text": {
+            "resource_id": ".*AddListEditText",
+            "class": ".*EditText"
+        },
+        "AddListButton_rid_c_descbutton_class_Add_text": {
+            "resource_id": ".*AddListButton",
+            "class": ".*Button"
+        },
+        "text1_rid_c_desctextview_class_Sample_Todo_text": {
+            "resource_id": ".*text1",
+            "class": ".*TextView"
+        },
+        "title_rid_c_desctextview_class_Delete_text": {
+            "resource_id": ".*title",
+            "class": ".*TextView",
+            "text": "Delete"
+        },
+        "button1_rid_c_descbutton_class_Yes_text": {
+            "resource_id": ".*button1",
+            "class": ".*Button"
+        },
+        "_rid_c_desc_class__text": {}
+    },
+    "states": {
+        "_SimplyDoActivity_state1": {
+            "activity": ".*SimplyDoActivity",
+            "views": [
+                "AddListEditText_rid_c_descedittext_class_New_List_Name_text"
+            ]
+        },
+        "_SimplyDoActivity_state2": {
+            "activity": ".*SimplyDoActivity",
+            "views": [
+                "AddListButton_rid_c_descbutton_class_Add_text"
+            ]
+        },
+        "_SimplyDoActivity_state3": {
+            "activity": ".*SimplyDoActivity",
+            "views": [
+                "text1_rid_c_desctextview_class_Sample_Todo_text"
+            ]
+        },
+        "_SimplyDoActivity_state4": {
+            "activity": ".*SimplyDoActivity",
+            "views": [
+                "text1_rid_c_desctextview_class_Sample_Todo_text"
+            ]
+        },
+        "_SimplyDoActivity_state5": {
+            "activity": ".*SimplyDoActivity",
+            "views": [
+                "title_rid_c_desctextview_class_Delete_text"
+            ]
+        },
+        "_SimplyDoActivity_state6": {
+            "activity": ".*SimplyDoActivity",
+            "views": [
+                "button1_rid_c_descbutton_class_Yes_text"
+            ]
+        },
+        "_SimplyDoActivity_state7": {
+            "activity": ".*SimplyDoActivity",
+            "views": [
+                "_rid_c_desc_class__text"
+            ]
+        }
+    },
+    "operations": {
+        "_SimplyDoActivity_operation1": [
+            {
+                "event_type": "set_text",
+                "target_view": "AddListEditText_rid_c_descedittext_class_New_List_Name_text",
+                "text": "Sample Todo"
+            }
+        ],
+        "_SimplyDoActivity_operation2": [
+            {
+                "event_type": "click",
+                "target_view": "AddListButton_rid_c_descbutton_class_Add_text"
+            }
+        ],
+        "_SimplyDoActivity_operation3": [
+            {
+                "event_type": "oracle",
+                "target_view": "text1_rid_c_desctextview_class_Sample_Todo_text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 10,
+                "assert_text": "Sample Todo"
+            }
+        ],
+        "_SimplyDoActivity_operation4": [
+            {
+                "event_type": "long_click",
+                "target_view": "text1_rid_c_desctextview_class_Sample_Todo_text"
+            }
+        ],
+        "_SimplyDoActivity_operation5": [
+            {
+                "event_type": "click",
+                "target_view": "title_rid_c_desctextview_class_Delete_text"
+            }
+        ],
+        "_SimplyDoActivity_operation6": [
+            {
+                "event_type": "click",
+                "target_view": "button1_rid_c_descbutton_class_Yes_text"
+            }
+        ],
+        "_SimplyDoActivity_operation7": [
+            {
+                "event_type": "oracle",
+                "target_view": "_rid_c_desc_class__text",
+                "condition": "wait_until_text_invisible",
+                "sleep_t": 10,
+                "assert_text": "Sample Todo"
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "_SimplyDoActivity_state1": [
+            "_SimplyDoActivity_operation1"
+        ],
+        "_SimplyDoActivity_state2": [
+            "_SimplyDoActivity_operation2"
+        ],
+        "_SimplyDoActivity_state3": [
+            "_SimplyDoActivity_operation3"
+        ],
+        "_SimplyDoActivity_state4": [
+            "_SimplyDoActivity_operation4"
+        ],
+        "_SimplyDoActivity_state5": [
+            "_SimplyDoActivity_operation5"
+        ],
+        "_SimplyDoActivity_state6": [
+            "_SimplyDoActivity_operation6"
+        ],
+        "_SimplyDoActivity_state7": [
+            "_SimplyDoActivity_operation7"
+        ]
+    }
+}

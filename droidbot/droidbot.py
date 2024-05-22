@@ -50,13 +50,13 @@ class DroidBot(object):
         initiate droidbot with configurations
         :return:
         """
-        logging.basicConfig(level=logging.DEBUG if debug_mode else logging.INFO)
+        logging.basicConfig(filename='droidbot.log',level=logging.DEBUG if debug_mode else logging.INFO)
 
         self.logger = logging.getLogger('DroidBot')
         DroidBot.instance = self
 
         self.output_dir = output_dir
-        if output_dir is not None:
+        if output_dir is not None:##initiate output dir for visualization template
             if not os.path.isdir(output_dir):
                 os.makedirs(output_dir)
             html_index_path = pkg_resources.resource_filename("droidbot", "resources/index.html")
@@ -112,7 +112,8 @@ class DroidBot(object):
                 script_path=script_path,
                 profiling_method=profiling_method,
                 master=master,
-                replay_output=replay_output)
+                replay_output=replay_output,
+                output_dir=self.output_dir)
         except Exception:
             import traceback
             traceback.print_exc()

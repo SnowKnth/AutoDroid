@@ -1,0 +1,95 @@
+{
+    "views": {
+        "billEditText_rid_c_descedittext_class__text": {
+            "resource_id": ".*billEditText",
+            "class": ".*EditText"
+        },
+        "tipEditText_rid_c_descedittext_class_15_0_text": {
+            "resource_id": ".*tipEditText",
+            "class": ".*EditText"
+        },
+        "splitBillEditText_rid_c_descedittext_class__of_ways_text": {
+            "resource_id": ".*splitBillEditText",
+            "class": ".*EditText"
+        },
+        "perPersonEditText_rid_c_descedittext_class_16_27_text": {
+            "resource_id": ".*perPersonEditText",
+            "class": ".*EditText"
+        }
+    },
+    "states": {
+        "_MainActivity_state1": {
+            "activity": ".*MainActivity",
+            "views": [
+                "billEditText_rid_c_descedittext_class__text"
+            ]
+        },
+        "_MainActivity_state2": {
+            "activity": ".*MainActivity",
+            "views": [
+                "tipEditText_rid_c_descedittext_class_15_0_text"
+            ]
+        },
+        "_MainActivity_state3": {
+            "activity": ".*MainActivity",
+            "views": [
+                "splitBillEditText_rid_c_descedittext_class__of_ways_text"
+            ]
+        },
+        "_MainActivity_state4": {
+            "activity": ".*MainActivity",
+            "views": [
+                "perPersonEditText_rid_c_descedittext_class_16_27_text"
+            ]
+        }
+    },
+    "operations": {
+        "_MainActivity_operation1": [
+            {
+                "event_type": "set_text",
+                "target_view": "billEditText_rid_c_descedittext_class__text",
+                "text": "56.6"
+            }
+        ],
+        "_MainActivity_operation2": [
+            {
+                "event_type": "set_text",
+                "target_view": "tipEditText_rid_c_descedittext_class_15_0_text",
+                "text": "15"
+            }
+        ],
+        "_MainActivity_operation3": [
+            {
+                "event_type": "set_text",
+                "target_view": "splitBillEditText_rid_c_descedittext_class__of_ways_text",
+                "text": "4"
+            }
+        ],
+        "_MainActivity_operation4": [
+            {
+                "event_type": "oracle",
+                "target_view": "perPersonEditText_rid_c_descedittext_class_16_27_text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 10,
+                "assert_text": "16.27"
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "_MainActivity_state1": [
+            "_MainActivity_operation1"
+        ],
+        "_MainActivity_state2": [
+            "_MainActivity_operation2"
+        ],
+        "_MainActivity_state3": [
+            "_MainActivity_operation3"
+        ],
+        "_MainActivity_state4": [
+            "_MainActivity_operation4"
+        ]
+    }
+}

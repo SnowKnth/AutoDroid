@@ -1,0 +1,143 @@
+{
+    "views": {
+        "fab_add_rid_c_descimagebutton_class__text": {
+            "resource_id": ".*fab_add",
+            "class": ".*ImageButton"
+        },
+        "edit_text_rid_c_descedittext_class_Title_text": {
+            "resource_id": ".*edit_text",
+            "class": ".*EditText"
+        },
+        "txt_thing_rid_c_desctextview_class_Sample_Todo_text": {
+            "resource_id": ".*txt_thing",
+            "class": ".*TextView"
+        },
+        "btn_delete_rid_c_desctextview_class_DELETE_text": {
+            "resource_id": ".*btn_delete",
+            "class": ".*TextView"
+        },
+        "_rid_c_desc_class__text": {}
+    },
+    "states": {
+        "_ui_home_MainActivity_state1": {
+            "activity": ".*MainActivity",
+            "views": [
+                "fab_add_rid_c_descimagebutton_class__text"
+            ]
+        },
+        "_ui_home_MainActivity_state2": {
+            "activity": ".*MainActivity",
+            "views": [
+                "edit_text_rid_c_descedittext_class_Title_text"
+            ]
+        },
+        "_ui_home_MainActivity_state3": {
+            "activity": ".*MainActivity",
+            "views": [
+                "fab_add_rid_c_descimagebutton_class__text"
+            ]
+        },
+        "_ui_home_MainActivity_state4": {
+            "activity": ".*MainActivity",
+            "views": [
+                "txt_thing_rid_c_desctextview_class_Sample_Todo_text"
+            ]
+        },
+        "_ui_home_MainActivity_state5": {
+            "activity": ".*MainActivity",
+            "views": [
+                "txt_thing_rid_c_desctextview_class_Sample_Todo_text"
+            ]
+        },
+        "_ui_home_MainActivity_state6": {
+            "activity": ".*MainActivity",
+            "views": [
+                "btn_delete_rid_c_desctextview_class_DELETE_text"
+            ]
+        },
+        "_ui_home_MainActivity_state7": {
+            "activity": ".*MainActivity",
+            "views": [
+                "_rid_c_desc_class__text"
+            ]
+        }
+    },
+    "operations": {
+        "_ui_home_MainActivity_operation1": [
+            {
+                "event_type": "click",
+                "target_view": "fab_add_rid_c_descimagebutton_class__text"
+            }
+        ],
+        "_ui_home_MainActivity_operation2": [
+            {
+                "event_type": "set_text",
+                "target_view": "edit_text_rid_c_descedittext_class_Title_text",
+                "text": "Sample Todo"
+            }
+        ],
+        "_ui_home_MainActivity_operation3": [
+            {
+                "event_type": "click",
+                "target_view": "fab_add_rid_c_descimagebutton_class__text"
+            }
+        ],
+        "_ui_home_MainActivity_operation4": [
+            {
+                "event_type": "oracle",
+                "target_view": "txt_thing_rid_c_desctextview_class_Sample_Todo_text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 10,
+                "assert_text": "Sample Todo"
+            }
+        ],
+        "_ui_home_MainActivity_operation5": [
+            {
+                "event_type": "scroll",
+                "target_view": "txt_thing_rid_c_desctextview_class_Sample_Todo_text",
+                "direction": "RIGHT"
+            }
+        ],
+        "_ui_home_MainActivity_operation6": [
+            {
+                "event_type": "click",
+                "target_view": "btn_delete_rid_c_desctextview_class_DELETE_text"
+            }
+        ],
+        "_ui_home_MainActivity_operation7": [
+            {
+                "event_type": "oracle",
+                "target_view": "_rid_c_desc_class__text",
+                "condition": "wait_until_text_invisible",
+                "sleep_t": 10,
+                "assert_text": "Sample Todo"
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "_ui_home_MainActivity_state1": [
+            "_ui_home_MainActivity_operation1"
+        ],
+        "_ui_home_MainActivity_state2": [
+            "_ui_home_MainActivity_operation2"
+        ],
+        "_ui_home_MainActivity_state3": [
+            "_ui_home_MainActivity_operation3"
+        ],
+        "_ui_home_MainActivity_state4": [
+            "_ui_home_MainActivity_operation4"
+        ],
+        "_ui_home_MainActivity_state5": [
+            "_ui_home_MainActivity_operation5"
+        ],
+        "_ui_home_MainActivity_state6": [
+            "_ui_home_MainActivity_operation6"
+        ],
+        "_ui_home_MainActivity_state7": [
+            "_ui_home_MainActivity_operation7"
+        ]
+    }
+}

@@ -53,7 +53,7 @@ class ADB(Adapter):
         :return: output of adb command
         @param extra_args: arguments to run in adb
         """
-        if isinstance(extra_args, str) or isinstance(extra_args, str):
+        if isinstance(extra_args, str):
             extra_args = extra_args.split()
         if not isinstance(extra_args, list):
             msg = "invalid arguments: %s\nshould be list or str, %s given" % (extra_args, type(extra_args))
@@ -78,14 +78,14 @@ class ADB(Adapter):
         @param extra_args:
         @return: output of adb shell command
         """
-        if isinstance(extra_args, str) or isinstance(extra_args, str):
+        if isinstance(extra_args, str):
             extra_args = extra_args.split()
         if not isinstance(extra_args, list):
             msg = "invalid arguments: %s\nshould be list or str, %s given" % (extra_args, type(extra_args))
             self.logger.warning(msg)
             raise ADBException(msg)
 
-        shell_extra_args = ['shell'] + [ quote(arg) for arg in extra_args ]
+        shell_extra_args = ['shell'] + [ quote(arg.replace("#$%^"," ")) for arg in extra_args ]
         return self.run_cmd(shell_extra_args)
 
     def check_connectivity(self):

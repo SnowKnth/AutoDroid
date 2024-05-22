@@ -28,9 +28,9 @@ class InputManager(object):
     """
 
     def __init__(self, device, app, task, policy_name, random_input,
-                 event_count, event_interval,
+                 event_count, event_interval,output_dir,
                  script_path=None, profiling_method=None, master=None,
-                 replay_output=None):
+                 replay_output=None, use_memory=True):
         """
         manage input event sent to the target device
         :param device: instance of Device
@@ -52,6 +52,8 @@ class InputManager(object):
         self.event_count = event_count
         self.event_interval = event_interval
         self.replay_output = replay_output
+        self.output_dir = output_dir
+        self.use_memory = use_memory
 
         self.monkey = None
 
@@ -81,7 +83,7 @@ class InputManager(object):
         elif self.policy_name == POLICY_MANUAL:
             input_policy = ManualPolicy(device, app)
         elif self.policy_name == POLICY_TASK:
-            input_policy = TaskPolicy(device, app, self.random_input, task=self.task)
+            input_policy = TaskPolicy(device, app, self.random_input, task=self.task, use_memory=self.use_memory)
         else:
             self.logger.warning("No valid input policy specified. Using policy \"none\".")
             input_policy = None
@@ -101,12 +103,12 @@ class InputManager(object):
         self.events.append(event)
 
         event_log = EventLog(self.device, self.app, event, self.profiling_method)
-        event_log.start()
+        event_log.start() #event sending to device
         while True:
             time.sleep(self.event_interval)
             if not self.device.pause_sending_event:#if pause_sending_event, we will not send event and stay in the loop
                 break
-        event_log.stop()
+        event_log.stop()##store event and its views(.png) into disk (save wxd)
 
     def start(self):
         """

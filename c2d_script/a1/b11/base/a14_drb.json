@@ -1,0 +1,92 @@
+{
+    "views": {
+        "floatButton_ok_rid_c_descimagebutton_class__text": {
+            "resource_id": ".*floatButton_ok",
+            "class": ".*ImageButton"
+        },
+        "main_omnibox_input_rid_c_descedittext_class_Search_or_type_URL_text": {
+            "resource_id": ".*main_omnibox_input",
+            "class": ".*EditText"
+        },
+        "_rid_donald_bren_school_of_information_and_computer_sciencesc_descview_class__text": {
+            "class": ".*View",
+            "content_desc": ".*Donald Bren School of Information and Computer Sciences"
+        }
+    },
+    "states": {
+        "_Activity_BrowserActivity_state1": {
+            "activity": ".*BrowserActivity",
+            "views": [
+                "floatButton_ok_rid_c_descimagebutton_class__text"
+            ]
+        },
+        "_Activity_BrowserActivity_state2": {
+            "activity": ".*BrowserActivity",
+            "views": [
+                "main_omnibox_input_rid_c_descedittext_class_Search_or_type_URL_text"
+            ]
+        },
+        "_Activity_BrowserActivity_state3": {
+            "activity": ".*BrowserActivity",
+            "views": [
+                "main_omnibox_input_rid_c_descedittext_class_Search_or_type_URL_text"
+            ]
+        },
+        "_Activity_BrowserActivity_state4": {
+            "activity": ".*BrowserActivity",
+            "views": [
+                "_rid_donald_bren_school_of_information_and_computer_sciencesc_descview_class__text"
+            ]
+        }
+    },
+    "operations": {
+        "_Activity_BrowserActivity_operation1": [
+            {
+                "event_type": "click",
+                "target_view": "floatButton_ok_rid_c_descimagebutton_class__text"
+            }
+        ],
+        "_Activity_BrowserActivity_operation2": [
+            {
+                "event_type": "click",
+                "target_view": "main_omnibox_input_rid_c_descedittext_class_Search_or_type_URL_text"
+            }
+        ],
+        "_Activity_BrowserActivity_operation3": [
+            {
+                "event_type": "set_text",
+                "target_view": "main_omnibox_input_rid_c_descedittext_class_Search_or_type_URL_text",
+                "text": "https://www.ics.uci.edu"
+            },
+            {
+                "event_type": "key",
+                "name": "ENTER"
+            }
+        ],
+        "_Activity_BrowserActivity_operation4": [
+            {
+                "event_type": "oracle",
+                "target_view": "_rid_donald_bren_school_of_information_and_computer_sciencesc_descview_class__text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 10
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "_Activity_BrowserActivity_state1": [
+            "_Activity_BrowserActivity_operation1"
+        ],
+        "_Activity_BrowserActivity_state2": [
+            "_Activity_BrowserActivity_operation2"
+        ],
+        "_Activity_BrowserActivity_state3": [
+            "_Activity_BrowserActivity_operation3"
+        ],
+        "_Activity_BrowserActivity_state4": [
+            "_Activity_BrowserActivity_operation4"
+        ]
+    }
+}

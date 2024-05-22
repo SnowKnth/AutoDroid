@@ -1,0 +1,174 @@
+{
+    "views": {
+        "actionbar_title_first_rid_c_desctextview_class_Inbox_text": {
+            "resource_id": ".*actionbar_title_first",
+            "class": ".*TextView"
+        },
+        "compose_rid_composec_desctextview_class__text": {
+            "resource_id": ".*compose",
+            "class": ".*TextView",
+            "content_desc": ".*Compose"
+        },
+        "to_rid_c_descmultiautocompletetextview_class_To_text": {
+            "resource_id": ".*to",
+            "class": ".*MultiAutoCompleteTextView"
+        },
+        "subject_rid_c_descedittext_class_Subject_text": {
+            "resource_id": ".*subject",
+            "class": ".*EditText"
+        },
+        "message_content_rid_c_descedittext_class_Message_text_text": {
+            "resource_id": ".*message_content",
+            "class": ".*EditText"
+        },
+        "send_rid_sendc_desctextview_class__text": {
+            "resource_id": ".*send",
+            "class": ".*TextView",
+            "content_desc": ".*Send"
+        },
+        "subject_rid_c_desctextview_class_ICSTSuperCool_text": {
+            "resource_id": ".*subject",
+            "class": ".*TextView"
+        }
+    },
+    "states": {
+        "com_fsck_k9_activity_MessageList_state1": {
+            "activity": ".*MessageList",
+            "views": [
+                "actionbar_title_first_rid_c_desctextview_class_Inbox_text"
+            ]
+        },
+        "com_fsck_k9_activity_MessageList_state2": {
+            "activity": ".*MessageList",
+            "views": [
+                "compose_rid_composec_desctextview_class__text"
+            ]
+        },
+        "com_fsck_k9_activity_MessageCompose_state3": {
+            "activity": ".*MessageCompose",
+            "views": [
+                "to_rid_c_descmultiautocompletetextview_class_To_text"
+            ]
+        },
+        "com_fsck_k9_activity_MessageCompose_state4": {
+            "activity": ".*MessageCompose",
+            "views": [
+                "to_rid_c_descmultiautocompletetextview_class_To_text"
+            ]
+        },
+        "com_fsck_k9_activity_MessageCompose_state5": {
+            "activity": ".*MessageCompose",
+            "views": [
+                "subject_rid_c_descedittext_class_Subject_text"
+            ]
+        },
+        "com_fsck_k9_activity_MessageCompose_state6": {
+            "activity": ".*MessageCompose",
+            "views": [
+                "message_content_rid_c_descedittext_class_Message_text_text"
+            ]
+        },
+        "com_fsck_k9_activity_MessageCompose_state7": {
+            "activity": ".*MessageCompose",
+            "views": [
+                "send_rid_sendc_desctextview_class__text"
+            ]
+        },
+        "com_fsck_k9_activity_MessageList_state8": {
+            "activity": ".*MessageList",
+            "views": [
+                "subject_rid_c_desctextview_class_ICSTSuperCool_text"
+            ]
+        }
+    },
+    "operations": {
+        "com_fsck_k9_activity_MessageList_operation1": [
+            {
+                "event_type": "oracle",
+                "target_view": "actionbar_title_first_rid_c_desctextview_class_Inbox_text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 15,
+                "assert_text": "Inbox"
+            }
+        ],
+        "com_fsck_k9_activity_MessageList_operation2": [
+            {
+                "event_type": "click",
+                "target_view": "compose_rid_composec_desctextview_class__text"
+            }
+        ],
+        "com_fsck_k9_activity_MessageCompose_operation3": [
+            {
+                "event_type": "oracle",
+                "target_view": "to_rid_c_descmultiautocompletetextview_class_To_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 15
+            }
+        ],
+        "com_fsck_k9_activity_MessageCompose_operation4": [
+            {
+                "event_type": "set_text",
+                "target_view": "to_rid_c_descmultiautocompletetextview_class_To_text",
+                "text": "uci.seal@gmail.com"
+            }
+        ],
+        "com_fsck_k9_activity_MessageCompose_operation5": [
+            {
+                "event_type": "set_text",
+                "target_view": "subject_rid_c_descedittext_class_Subject_text",
+                "text": "ICSTSuperCool"
+            }
+        ],
+        "com_fsck_k9_activity_MessageCompose_operation6": [
+            {
+                "event_type": "set_text",
+                "target_view": "message_content_rid_c_descedittext_class_Message_text_text",
+                "text": "ICSTSuperCoolBody"
+            }
+        ],
+        "com_fsck_k9_activity_MessageCompose_operation7": [
+            {
+                "event_type": "click",
+                "target_view": "send_rid_sendc_desctextview_class__text"
+            }
+        ],
+        "com_fsck_k9_activity_MessageList_operation8": [
+            {
+                "event_type": "oracle",
+                "target_view": "subject_rid_c_desctextview_class_ICSTSuperCool_text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 20,
+                "assert_text": "ICSTSuperCool"
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "com_fsck_k9_activity_MessageList_state1": [
+            "com_fsck_k9_activity_MessageList_operation1"
+        ],
+        "com_fsck_k9_activity_MessageList_state2": [
+            "com_fsck_k9_activity_MessageList_operation2"
+        ],
+        "com_fsck_k9_activity_MessageCompose_state3": [
+            "com_fsck_k9_activity_MessageCompose_operation3"
+        ],
+        "com_fsck_k9_activity_MessageCompose_state4": [
+            "com_fsck_k9_activity_MessageCompose_operation4"
+        ],
+        "com_fsck_k9_activity_MessageCompose_state5": [
+            "com_fsck_k9_activity_MessageCompose_operation5"
+        ],
+        "com_fsck_k9_activity_MessageCompose_state6": [
+            "com_fsck_k9_activity_MessageCompose_operation6"
+        ],
+        "com_fsck_k9_activity_MessageCompose_state7": [
+            "com_fsck_k9_activity_MessageCompose_operation7"
+        ],
+        "com_fsck_k9_activity_MessageList_state8": [
+            "com_fsck_k9_activity_MessageList_operation8"
+        ]
+    }
+}

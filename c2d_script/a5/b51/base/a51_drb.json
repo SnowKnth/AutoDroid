@@ -1,0 +1,75 @@
+{
+    "views": {
+        "bill_rid_c_descedittext_class_0_00_text": {
+            "resource_id": ".*bill",
+            "class": ".*EditText"
+        },
+        "percent_rid_c_descedittext_class_15_text": {
+            "resource_id": ".*percent",
+            "class": ".*EditText"
+        },
+        "total_rid_c_descedittext_class_65_09_text": {
+            "resource_id": ".*total",
+            "class": ".*EditText"
+        }
+    },
+    "states": {
+        "_Tip_state1": {
+            "activity": ".*Tip",
+            "views": [
+                "bill_rid_c_descedittext_class_0_00_text"
+            ]
+        },
+        "_Tip_state2": {
+            "activity": ".*Tip",
+            "views": [
+                "percent_rid_c_descedittext_class_15_text"
+            ]
+        },
+        "_Tip_state3": {
+            "activity": ".*Tip",
+            "views": [
+                "total_rid_c_descedittext_class_65_09_text"
+            ]
+        }
+    },
+    "operations": {
+        "_Tip_operation1": [
+            {
+                "event_type": "set_text",
+                "target_view": "bill_rid_c_descedittext_class_0_00_text",
+                "text": "56.6"
+            }
+        ],
+        "_Tip_operation2": [
+            {
+                "event_type": "set_text",
+                "target_view": "percent_rid_c_descedittext_class_15_text",
+                "text": "15"
+            }
+        ],
+        "_Tip_operation3": [
+            {
+                "event_type": "oracle",
+                "target_view": "total_rid_c_descedittext_class_65_09_text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 10,
+                "assert_text": "65.09"
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "_Tip_state1": [
+            "_Tip_operation1"
+        ],
+        "_Tip_state2": [
+            "_Tip_operation2"
+        ],
+        "_Tip_state3": [
+            "_Tip_operation3"
+        ]
+    }
+}

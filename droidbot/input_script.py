@@ -8,6 +8,7 @@ import re
 from abc import abstractmethod
 from .input_event import InputEvent
 from .utils import safe_re_match
+from collections import OrderedDict
 
 VIEW_ID = '<view_id>'
 STATE_ID = '<state_id>'
@@ -51,8 +52,10 @@ class DroidBotScript(object):
         self.script_dict = script_dict
         self.views = {}
         self.states = {}
+        self.states_visited = {}
+        self.states_try_visit = {}
         self.operations = {}
-        self.main = {}
+        self.main = OrderedDict()
         self.parse()
 
     def parse(self):
@@ -81,6 +84,8 @@ class DroidBotScript(object):
             state_selector_dict = script_value[state_id]
             state_seletor = StateSelector(state_id, state_selector_dict, self)
             self.states[state_id] = state_seletor
+            self.states_visited[state_id] = False
+            self.states_try_visit[state_id] = 0
 
     def parse_operations(self):
         script_key = 'operations'
@@ -123,6 +128,49 @@ class DroidBotScript(object):
             if state_selector.match(state):
                 matched_state_selector = state_selector
                 break
+        if not matched_state_selector:
+            return None
+
+        # get the action corresponding to the matched state
+        action = self.main[matched_state_selector]
+        operation = action.get_next_operation()
+
+        if operation:
+            msg = "matched state: %s, taking operation: %s" % (matched_state_selector.id, operation.id)
+            self.logger.info(msg)
+
+        return operation
+    
+    def get_operation_based_on_state_norepeat(self, state):
+        """
+        get ScriptEvents based on the DeviceState given, according to the script definition
+        @param state: DeviceState
+        @return:
+        """
+        if not state:
+            return None
+
+        matched_state_selector = None
+
+        # find the state that matches current DeviceState
+        for state_selector in self.main:
+            # 假如尝试失败两次则不再尝试（有中间插入task LLM引导事件），继续向下探索           
+            if not self.states_visited[state_selector.id]:                
+                if self.states_try_visit[state_selector.id] < 2:    
+                    if state_selector.match(state):
+                        matched_state_selector = state_selector
+                        self.states_visited[state_selector.id] = True
+                        break                
+                    else:
+                        self.states_try_visit[state_selector.id] += 1
+                        if self.states_try_visit[state_selector.id] == 1:
+                            break
+                        else:
+                            continue
+                else:
+                    continue
+            else:
+                continue
         if not matched_state_selector:
             return None
 
@@ -286,13 +334,13 @@ class ViewSelector(object):
             key_tag = "%s.%s" % (self.tag, selector_key)
             DroidBotScript.check_grammar_type(selector_value, grammar_value, key_tag)
             if selector_key == 'text':
-                self.text_re = re.compile(selector_value)
+                self.text_re = re.compile(selector_value+"$")
             elif selector_key == 'resource_id':
-                self.resource_id_re = re.compile(selector_value)
+                self.resource_id_re = re.compile(selector_value+"$")
             elif selector_key == 'content_desc':
-                self.content_desc_re = re.compile(selector_value)
+                self.content_desc_re = re.compile(selector_value+"$")
             elif selector_key == 'class':
-                self.class_re = re.compile(selector_value)
+                self.class_re = re.compile(selector_value+"$")
             elif selector_key == 'out_coordinates':
                 for out_coordinate in selector_value:
                     DroidBotScript.check_grammar_is_coordinate(out_coordinate)
@@ -317,7 +365,7 @@ class ViewSelector(object):
             return False
         if self.resource_id_re and not safe_re_match(self.resource_id_re, view_dict['resource_id']):
             return False
-        if self.content_desc_re and not safe_re_match(self.content_desc_re, view_dict['content_description']):
+        if self.content_desc_re and not safe_re_match(self.content_desc_re, view_dict['content_description']): # watch out when view_dict['content_description']==None
             return False
         if self.class_re and not safe_re_match(self.class_re, view_dict['class']):
             return False

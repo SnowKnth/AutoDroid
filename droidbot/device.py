@@ -619,12 +619,16 @@ class Device(object):
                 install_cmd.append("-g")
             install_cmd.append(app.app_path)
             install_p = subprocess.Popen(install_cmd, stdout=subprocess.PIPE)
-            while self.connected and package_name not in self.adb.get_installed_apps():
+            install_count = 0
+            while self.connected and package_name not in self.adb.get_installed_apps() and install_count < 20:
                 print("Please wait while installing the app...")
                 time.sleep(2)
-            if not self.connected:
+                install_count += 1
+            if not self.connected or install_count == 20:
                 install_p.terminate()
+                raise RuntimeError("install failure!")
                 return
+
 
         dumpsys_p = subprocess.Popen(["adb", "-s", self.serial, "shell",
                                       "dumpsys", "package", package_name], stdout=subprocess.PIPE)

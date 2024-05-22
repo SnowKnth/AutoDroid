@@ -27,8 +27,14 @@
     },
     "states": {
         "home_state": {
-            "views": ["frm_weather", "frm_mylocation", "frm_cities",
-                      "frm_map", "frm_about", "frm_settings"]
+            "views": [
+                "frm_weather",
+                "frm_mylocation",
+                "frm_cities",
+                "frm_map",
+                "frm_about",
+                "frm_settings"
+            ]
         }
     },
     "operations": {
@@ -54,12 +60,14 @@
                 "target_view": "frm_about"
             },
             {
-                "event_type": "touch",
+                "event_type": "click",
                 "target_view": "frm_map"
             }
         ]
     },
     "main": {
-        "home_state": ["home_spawn_operation"]
+        "home_state": [
+            "home_spawn_operation"
+        ]
     }
 }

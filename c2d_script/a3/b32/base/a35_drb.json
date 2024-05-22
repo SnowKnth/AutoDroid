@@ -1,0 +1,184 @@
+{
+    "views": {
+        "hot_button_profile_rid_mec_desctextview_class_Me_text": {
+            "resource_id": ".*hot_button_profile",
+            "class": ".*TextView",
+            "content_desc": ".*Me"
+        },
+        "log_in_button_rid_c_descbutton_class_Log_In_text": {
+            "resource_id": ".*log_in_button",
+            "class": ".*Button"
+        },
+        "activity_login_editPassword_rid_c_descedittext_class_Password_text": {
+            "resource_id": ".*activity_login_editPassword",
+            "class": ".*EditText"
+        },
+        "activity_login_editUsername_rid_c_descedittext_class_Email_text": {
+            "resource_id": ".*activity_login_editUsername",
+            "class": ".*EditText"
+        },
+        "activity_login_btnLogin_rid_c_descbutton_class_Log_In_text": {
+            "resource_id": ".*activity_login_btnLogin",
+            "class": ".*Button"
+        },
+        "user_profile_name_rid_c_desctextview_class_Sealbot_L__text": {
+            "resource_id": ".*user_profile_name",
+            "class": ".*TextView"
+        }
+    },
+    "states": {
+        "_nearby_ui_ActivityNearby_state1": {
+            "activity": ".*ActivityNearby",
+            "views": [
+                "hot_button_profile_rid_mec_desctextview_class_Me_text"
+            ]
+        },
+        "_nearby_ui_ActivityNearby_state2": {
+            "activity": ".*ActivityNearby",
+            "views": [
+                "hot_button_profile_rid_mec_desctextview_class_Me_text"
+            ]
+        },
+        "_ui_activities_profile_loggedout_ActivityUserProfileLoggedOut_state3": {
+            "activity": ".*ActivityUserProfileLoggedOut",
+            "views": [
+                "log_in_button_rid_c_descbutton_class_Log_In_text"
+            ]
+        },
+        "_ui_activities_profile_loggedout_ActivityUserProfileLoggedOut_state4": {
+            "activity": ".*ActivityUserProfileLoggedOut",
+            "views": [
+                "log_in_button_rid_c_descbutton_class_Log_In_text"
+            ]
+        },
+        "_ui_activities_ActivityLogin_state5": {
+            "activity": ".*ActivityLogin",
+            "views": [
+                "activity_login_editPassword_rid_c_descedittext_class_Password_text"
+            ]
+        },
+        "_ui_activities_ActivityLogin_state6": {
+            "activity": ".*ActivityLogin",
+            "views": [
+                "activity_login_editPassword_rid_c_descedittext_class_Password_text"
+            ]
+        },
+        "_ui_activities_ActivityLogin_state7": {
+            "activity": ".*ActivityLogin",
+            "views": [
+                "activity_login_editUsername_rid_c_descedittext_class_Email_text"
+            ]
+        },
+        "_ui_activities_ActivityLogin_state8": {
+            "activity": ".*ActivityLogin",
+            "views": [
+                "activity_login_btnLogin_rid_c_descbutton_class_Log_In_text"
+            ]
+        },
+        "_ui_activities_profile_ActivityUserProfile_state9": {
+            "activity": ".*ActivityUserProfile",
+            "views": [
+                "user_profile_name_rid_c_desctextview_class_Sealbot_L__text"
+            ]
+        }
+    },
+    "operations": {
+        "_nearby_ui_ActivityNearby_operation1": [
+            {
+                "event_type": "oracle",
+                "target_view": "hot_button_profile_rid_mec_desctextview_class_Me_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 10
+            }
+        ],
+        "_nearby_ui_ActivityNearby_operation2": [
+            {
+                "event_type": "click",
+                "target_view": "hot_button_profile_rid_mec_desctextview_class_Me_text"
+            }
+        ],
+        "_ui_activities_profile_loggedout_ActivityUserProfileLoggedOut_operation3": [
+            {
+                "event_type": "oracle",
+                "target_view": "log_in_button_rid_c_descbutton_class_Log_In_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 15
+            }
+        ],
+        "_ui_activities_profile_loggedout_ActivityUserProfileLoggedOut_operation4": [
+            {
+                "event_type": "click",
+                "target_view": "log_in_button_rid_c_descbutton_class_Log_In_text"
+            }
+        ],
+        "_ui_activities_ActivityLogin_operation5": [
+            {
+                "event_type": "oracle",
+                "target_view": "activity_login_editPassword_rid_c_descedittext_class_Password_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 15
+            }
+        ],
+        "_ui_activities_ActivityLogin_operation6": [
+            {
+                "event_type": "set_text",
+                "target_view": "activity_login_editPassword_rid_c_descedittext_class_Password_text",
+                "text": "1qaz2wsX"
+            }
+        ],
+        "_ui_activities_ActivityLogin_operation7": [
+            {
+                "event_type": "set_text",
+                "target_view": "activity_login_editUsername_rid_c_descedittext_class_Email_text",
+                "text": "uci.seal@gmail.com"
+            }
+        ],
+        "_ui_activities_ActivityLogin_operation8": [
+            {
+                "event_type": "click",
+                "target_view": "activity_login_btnLogin_rid_c_descbutton_class_Log_In_text"
+            }
+        ],
+        "_ui_activities_profile_ActivityUserProfile_operation9": [
+            {
+                "event_type": "oracle",
+                "target_view": "user_profile_name_rid_c_desctextview_class_Sealbot_L__text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 10,
+                "assert_text": "Sealbot"
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "_nearby_ui_ActivityNearby_state1": [
+            "_nearby_ui_ActivityNearby_operation1"
+        ],
+        "_nearby_ui_ActivityNearby_state2": [
+            "_nearby_ui_ActivityNearby_operation2"
+        ],
+        "_ui_activities_profile_loggedout_ActivityUserProfileLoggedOut_state3": [
+            "_ui_activities_profile_loggedout_ActivityUserProfileLoggedOut_operation3"
+        ],
+        "_ui_activities_profile_loggedout_ActivityUserProfileLoggedOut_state4": [
+            "_ui_activities_profile_loggedout_ActivityUserProfileLoggedOut_operation4"
+        ],
+        "_ui_activities_ActivityLogin_state5": [
+            "_ui_activities_ActivityLogin_operation5"
+        ],
+        "_ui_activities_ActivityLogin_state6": [
+            "_ui_activities_ActivityLogin_operation6"
+        ],
+        "_ui_activities_ActivityLogin_state7": [
+            "_ui_activities_ActivityLogin_operation7"
+        ],
+        "_ui_activities_ActivityLogin_state8": [
+            "_ui_activities_ActivityLogin_operation8"
+        ],
+        "_ui_activities_profile_ActivityUserProfile_state9": [
+            "_ui_activities_profile_ActivityUserProfile_operation9"
+        ]
+    }
+}

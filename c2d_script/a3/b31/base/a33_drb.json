@@ -1,0 +1,187 @@
+{
+    "views": {
+        "button_sign_up_rid_c_descbutton_class_Join_text": {
+            "resource_id": ".*button_sign_up",
+            "class": ".*Button"
+        },
+        "text_email_rid_c_descedittext_class__text": {
+            "resource_id": ".*text_email",
+            "class": ".*EditText"
+        },
+        "text_password_rid_c_descedittext_class__text": {
+            "resource_id": ".*text_password",
+            "class": ".*EditText"
+        },
+        "text_last_name_rid_c_descedittext_class__text": {
+            "resource_id": ".*text_last_name",
+            "class": ".*EditText"
+        },
+        "text_first_name_rid_c_descedittext_class__text": {
+            "resource_id": ".*text_first_name",
+            "class": ".*EditText"
+        },
+        "button_sign_up_rid_c_descbutton_class_Create_Account_text": {
+            "resource_id": ".*button_sign_up",
+            "class": ".*Button"
+        },
+        "text_customer_name_rid_c_desctextview_class_Hi_Sealbot_text": {
+            "resource_id": ".*text_customer_name",
+            "class": ".*TextView"
+        }
+    },
+    "states": {
+        "_activity_ProfileActivity_state1": {
+            "activity": ".*ProfileActivity",
+            "views": [
+                "button_sign_up_rid_c_descbutton_class_Join_text"
+            ]
+        },
+        "_activity_ProfileActivity_state2": {
+            "activity": ".*ProfileActivity",
+            "views": [
+                "button_sign_up_rid_c_descbutton_class_Join_text"
+            ]
+        },
+        "_activity_LoginAndSignUpActivity_state3": {
+            "activity": ".*LoginAndSignUpActivity",
+            "views": [
+                "text_email_rid_c_descedittext_class__text"
+            ]
+        },
+        "_activity_LoginAndSignUpActivity_state4": {
+            "activity": ".*LoginAndSignUpActivity",
+            "views": [
+                "text_email_rid_c_descedittext_class__text"
+            ]
+        },
+        "_activity_LoginAndSignUpActivity_state5": {
+            "activity": ".*LoginAndSignUpActivity",
+            "views": [
+                "text_password_rid_c_descedittext_class__text"
+            ]
+        },
+        "_activity_LoginAndSignUpActivity_state6": {
+            "activity": ".*LoginAndSignUpActivity",
+            "views": [
+                "text_last_name_rid_c_descedittext_class__text"
+            ]
+        },
+        "_activity_LoginAndSignUpActivity_state7": {
+            "activity": ".*LoginAndSignUpActivity",
+            "views": [
+                "text_first_name_rid_c_descedittext_class__text"
+            ]
+        },
+        "_activity_LoginAndSignUpActivity_state8": {
+            "activity": ".*LoginAndSignUpActivity",
+            "views": [
+                "button_sign_up_rid_c_descbutton_class_Create_Account_text"
+            ]
+        },
+        "_activity_ProfileActivity_state9": {
+            "activity": ".*ProfileActivity",
+            "views": [
+                "text_customer_name_rid_c_desctextview_class_Hi_Sealbot_text"
+            ]
+        }
+    },
+    "operations": {
+        "_activity_ProfileActivity_operation1": [
+            {
+                "event_type": "oracle",
+                "target_view": "button_sign_up_rid_c_descbutton_class_Join_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 20
+            }
+        ],
+        "_activity_ProfileActivity_operation2": [
+            {
+                "event_type": "click",
+                "target_view": "button_sign_up_rid_c_descbutton_class_Join_text"
+            }
+        ],
+        "_activity_LoginAndSignUpActivity_operation3": [
+            {
+                "event_type": "oracle",
+                "target_view": "text_email_rid_c_descedittext_class__text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 20
+            }
+        ],
+        "_activity_LoginAndSignUpActivity_operation4": [
+            {
+                "event_type": "set_text",
+                "target_view": "text_email_rid_c_descedittext_class__text",
+                "text": "p198573se@sxwabw.al.net"
+            }
+        ],
+        "_activity_LoginAndSignUpActivity_operation5": [
+            {
+                "event_type": "set_text",
+                "target_view": "text_password_rid_c_descedittext_class__text",
+                "text": "1qaz2wsX"
+            }
+        ],
+        "_activity_LoginAndSignUpActivity_operation6": [
+            {
+                "event_type": "set_text",
+                "target_view": "text_last_name_rid_c_descedittext_class__text",
+                "text": "Labfellow"
+            }
+        ],
+        "_activity_LoginAndSignUpActivity_operation7": [
+            {
+                "event_type": "set_text",
+                "target_view": "text_first_name_rid_c_descedittext_class__text",
+                "text": "Sealbot"
+            }
+        ],
+        "_activity_LoginAndSignUpActivity_operation8": [
+            {
+                "event_type": "click",
+                "target_view": "button_sign_up_rid_c_descbutton_class_Create_Account_text"
+            }
+        ],
+        "_activity_ProfileActivity_operation9": [
+            {
+                "event_type": "oracle",
+                "target_view": "text_customer_name_rid_c_desctextview_class_Hi_Sealbot_text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 10,
+                "assert_text": "Sealbot"
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "_activity_ProfileActivity_state1": [
+            "_activity_ProfileActivity_operation1"
+        ],
+        "_activity_ProfileActivity_state2": [
+            "_activity_ProfileActivity_operation2"
+        ],
+        "_activity_LoginAndSignUpActivity_state3": [
+            "_activity_LoginAndSignUpActivity_operation3"
+        ],
+        "_activity_LoginAndSignUpActivity_state4": [
+            "_activity_LoginAndSignUpActivity_operation4"
+        ],
+        "_activity_LoginAndSignUpActivity_state5": [
+            "_activity_LoginAndSignUpActivity_operation5"
+        ],
+        "_activity_LoginAndSignUpActivity_state6": [
+            "_activity_LoginAndSignUpActivity_operation6"
+        ],
+        "_activity_LoginAndSignUpActivity_state7": [
+            "_activity_LoginAndSignUpActivity_operation7"
+        ],
+        "_activity_LoginAndSignUpActivity_state8": [
+            "_activity_LoginAndSignUpActivity_operation8"
+        ],
+        "_activity_ProfileActivity_state9": [
+            "_activity_ProfileActivity_operation9"
+        ]
+    }
+}

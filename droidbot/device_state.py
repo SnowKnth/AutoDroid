@@ -37,12 +37,13 @@ class DeviceState(object):
         self.__assemble_view_tree(self.view_tree, self.views)
         self.__generate_view_strs()
         self.state_str = self.__get_hashed_state_str()
+        # self.state_str = self.__get_state_str
         self.structure_str = self.__get_content_free_state_str()
         self.search_content = self.__get_search_content()
         self.possible_events = None
         self.width = device.get_width(refresh=True)
         self.height = device.get_height(refresh=False)
-        self._save_important_view_ids()
+        self._save_important_view_ids() # Save to states_view_ids directory (save wxd)
         
 
     @property
@@ -51,6 +52,7 @@ class DeviceState(object):
     
         
     def _save_important_view_ids(self):
+        """Save the important view ids to a file in states_view_ids directory naming with state_str."""
         _, _, _, important_view_ids = self.get_described_actions(remove_time_and_ip=False)
         ids_path = self.device.output_dir +'/states_view_ids'
         if not os.path.exists(ids_path):
@@ -134,6 +136,11 @@ class DeviceState(object):
     def __get_state_str(self):
         state_str_raw = self.__get_state_str_raw()
         return md5(state_str_raw)
+    
+    def get_state_str_new(self):
+        state, _, _, _ = self.get_described_actions(remove_time_and_ip=True)
+        hashed_string = tools.hash_string(state)
+        return hashed_string
 
     def __get_state_str_raw(self):
         if self.device.humanoid is not None:
@@ -194,6 +201,7 @@ class DeviceState(object):
                 property_values.add(property_value)
         return property_values
 
+# save states including image and json into states directory
     def save2dir(self, output_dir=None):
         try:
             if output_dir is None:
@@ -220,6 +228,7 @@ class DeviceState(object):
         except Exception as e:
             self.device.logger.warning(e)
 
+# save action view image into views directory
     def save_view_img(self, view_dict, output_dir=None):
         try:
             if output_dir is None:
@@ -664,6 +673,7 @@ class DeviceState(object):
                         break
     
     def _get_ancestor_id(self, view, key, default=None):
+        """Find the first ancestor of the view (inluding itself) that has the given key such as clickable=true."""
         if self.__safe_dict_get(view, key=key, default=False):
             return view['temp_id']
         all_views = [view] + [self.views[i] for i in self.get_all_ancestors(view)]
@@ -674,7 +684,9 @@ class DeviceState(object):
         return default
     
     def _extract_all_children(self, id):
+        """Finf all children of view id (not including itself), return list of ids."""
         successors = []
+        #successors_of_view is dict containing element like 14:[15, 63, 111], 15\63\111 also have their chidren
         successors_of_view = nx.dfs_successors(self.view_graph, source=id, depth_limit=100)
         # print(successors_of_view)
         for k, v in successors_of_view.items():
@@ -690,6 +702,7 @@ class DeviceState(object):
         #         self._extract_all_children(ch_ele, childrenlist)
         # return childrenlist
     def _merge_textv2(self, children_ids, remove_time_and_ip=False, important_view_ids=[]):
+        """merge all texts and content-desc of view id list children_ids, seperated by <br>; if any text or content-desc of a view is not empty, it is included in important_view_ids."""
         texts, content_descriptions = [], []
         for childid in children_ids:
 
@@ -777,11 +790,16 @@ class DeviceState(object):
     def get_described_actions(self, prefix='', remove_time_and_ip=False,
                                 merge_buttons =True, add_edit_box = True, add_check_box = True, add_pure_text = True):
         """
-        Get a text description of current state
+        Get a text description of current state, making up new_state_str. can't handle situation where number of views changes or text|content_description changes. return 
+        state_desc e.g.: '<button id=0>Add holidays</button>\n<button id=1>Add contact birthdays</button>"
+        available_actions : [] of input_event object
+        views_without_id e.g. : ['<button>Add holidays</button>', '<button>Add contact birthdays</button>']
+        important_view_ids e.g.: [['Add holidays', 5], ['Add contact birthdays', 8]]
         """
         enabled_view_ids = []
         for view_dict in self.views:
-            # exclude navigation bar if exists
+            # exclude navigation bar if exists; 
+            # by wxd, should 'enabled' be included?
             if self.__safe_dict_get(view_dict, 'visible') and \
                 self.__safe_dict_get(view_dict, 'resource_id') not in \
                ['android:id/navigationBarBackground',
@@ -817,7 +835,7 @@ class DeviceState(object):
             content_description = self.__safe_dict_get(view, 'content_description', default='')
             view_text = self.__safe_dict_get(view, 'text', default='')
             view_class = self.__safe_dict_get(view, 'class').split('.')[-1]
-            if not content_description and not view_text and not scrollable:  # actionable?
+            if not content_description and not view_text and not scrollable:  # actionable? #need modify wxd (how to judge whether it shows the content and should be included，previous method is content-based, action-based can be included)
                 continue
 
             # text = self._merge_text(view_text, content_description)
@@ -882,7 +900,7 @@ class DeviceState(object):
                 if merge_buttons:
                     for clickable_child in clickable_children_ids:
                         if clickable_child in enabled_view_ids and clickable_child != view_id:
-                            removed_view_ids.append(clickable_child)
+                            removed_view_ids.append(clickable_child)#避免重复处理
 
                 # view_dict_list.append(
                 #     {'id': len(view_descs) - 1, 'text': view_text, 'content_description': content_description,

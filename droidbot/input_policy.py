@@ -3,19 +3,18 @@ import json
 import re
 import logging
 import random
-from abc import abstractmethod
 import yaml
-import copy
-import requests
-import ast
-from .input_event import *
+from abc import abstractmethod
+from .input_script import ViewSelector
+from .input_script import StateSelector
 from .utg import UTG
-import time
-from .input_event import ScrollEvent
+from .input_event import *
 # from memory.memory_builder import Memory
 import tools
+import copy
 import pdb
 import os
+import time
 # from query_lmql import prompt_llm_with_history
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
@@ -66,7 +65,8 @@ class InputPolicy(object):
     """
 
     def __init__(self, device, app):
-        self.logger = logging.getLogger(self.__class__.__name__)
+        # self.logger = logging.getLogger(self.__class__.__name__)
+        self.logger = logging.getLogger('Log2File')
         self.device = device
         self.app = app
         self.action_count = 0
@@ -77,10 +77,16 @@ class InputPolicy(object):
         start producing events
         :param input_manager: instance of InputManager
         """
+        start_time = time.time()
         self.action_count = 0
-        while input_manager.enabled and self.action_count < input_manager.event_count:
+ #       view_selected_match = 0
+        # while input_manager.enabled and self.action_count < input_manager.event_count:
+ #       action_max_count = 30
+        time_limit = 3000
+        while input_manager.enabled and (time.time() - start_time < time_limit) and self.action_count < input_manager.event_count:
+        # while input_manager.enabled and self.action_count < action_max_count:
             try:
-                # # make sure the first event is go to HOME screen
+                # # make sure the first event is go to HOME screen    
                 # # the second event is to start the app
                 # if self.action_count == 0 and self.master is None:
                 #     event = KeyEvent(name="HOME")
@@ -90,9 +96,24 @@ class InputPolicy(object):
                     event = KillAppEvent(app=self.app)
                 else:
                     event = self.generate_event(input_manager)
-                if event == FINISHED:
+                
+                if event == None or event == FINISHED:
+                    end_time = time.time()
+                    last_time = end_time - start_time
+                    self.logger.info(
+                        "Have finish the search and the action number is %s/logger_info.txt" % self.action_count)  # Todo: how to get info string
+                    self.logger.info("save output_file is %s" % input_manager.output_dir)
+                    info_str = "Have finished the search and the action number is " + str(self.action_count)
+                    time_str = "Lasting time is " + str(last_time)
+                    if input_manager.output_dir is not None:
+                        logger_info_file_name = "%s/logger_info.txt" % (input_manager.output_dir)
+                        logger_info_file = open(logger_info_file_name, "w")
+                        logger_info_file.writelines(info_str)
+                        logger_info_file.writelines("\n")
+                        logger_info_file.writelines(time_str)
+                        logger_info_file.close()
                     break
-                input_manager.add_event(event)
+                input_manager.add_event(event)#output event and its views(.png) into disk
             except KeyboardInterrupt:
                 break
             except InputInterruptedException as e:
@@ -107,6 +128,37 @@ class InputPolicy(object):
                 traceback.print_exc()
                 continue
             self.action_count += 1
+        # if cannot finish the search with the action_max_count
+        if self.action_count >= input_manager.event_count:
+            self.logger.info("Cannot finish the search within action number is %s" % input_manager.event_count)
+            self.logger.info("save output_file is %s" % self.output_dir)
+            info_str = "Cannot finish the search within action number is " + str(input_manager.event_count)
+            end_time = time.time()
+            last_time = end_time - start_time
+            time_str = "last time is " + str(last_time)
+            if input_manager.output_dir is not None:
+                logger_info_file_name = "%s/logger_info.txt" % (input_manager.output_dir)
+                logger_info_file = open(logger_info_file_name, "w")
+                logger_info_file.writelines(info_str)
+                logger_info_file.writelines("\n")
+                logger_info_file.writelines(time_str)
+                logger_info_file.close()
+        else:
+            # since the time_limit  is up and cannot completion
+            self.logger.info("Reach the time limit or event == FINISHED, and the action number is %s" % self.action_count)
+            self.logger.info("save output_file is %s" % input_manager.output_dir)
+            info_str = 'Reach the time limit and the action number is' + str(self.action_count)
+            end_time = time.time()
+            last_time = end_time - start_time
+            time_str = "last time is " + str(last_time)
+            if input_manager.output_dir is not None:
+                logger_info_file_name = "%s/logger_info.txt" % (input_manager.output_dir)
+                logger_info_file = open(logger_info_file_name, "w")
+                logger_info_file.writelines(info_str)
+                logger_info_file.writelines("\n")
+                logger_info_file.writelines(time_str)
+                logger_info_file.close()
+        print("time cost:", time.time() - start_time)
 
     @abstractmethod
     def generate_event(self, input_manager):
@@ -147,11 +199,13 @@ class UtgBasedInputPolicy(InputPolicy):
         self.last_event = None
         self.last_state = None
         self.current_state = None
+        self.current_operation = None
         self.utg = UTG(device=device, app=app, random_input=random_input)
         self.script_event_idx = 0
         if self.device.humanoid is not None:
             self.humanoid_view_trees = []
             self.humanoid_events = []
+        self.script_target_view = None
 
     def generate_event(self, input_manager):
         """
@@ -166,7 +220,7 @@ class UtgBasedInputPolicy(InputPolicy):
             time.sleep(5)
             return KeyEvent(name="BACK")
 
-        self.__update_utg()
+        self.__update_utg()#update utg in memory, also export to utg.json ; output states(.png and .json) here
 
         # update last view trees for humanoid
         if self.device.humanoid is not None:
@@ -176,24 +230,33 @@ class UtgBasedInputPolicy(InputPolicy):
 
         event = None
 
-        # if the previous operation is not finished, continue
+        # if the previous event in operation in the script is not finished, continue
         if len(self.script_events) > self.script_event_idx:
             event = self.script_events[self.script_event_idx].get_transformed_event(self)
             self.script_event_idx += 1
 
-        # First try matching a state defined in the script
+        # if the previous operation is finished or firstly start, first try matching a state defined in the script
         if event is None and self.script is not None:
-            operation = self.script.get_operation_based_on_state(self.current_state)
+            operation = self.script.get_operation_based_on_state_norepeat(self.current_state)
             if operation is not None:
                 self.script_events = operation.events
                 # restart script
                 event = self.script_events[0].get_transformed_event(self)
                 self.script_event_idx = 1
-
+                import time
+                time.sleep(3)
+        # no operation matched in the state for script
         if event is None:
-            old_state, event = self.generate_event_based_on_utg(input_manager)
+            if isinstance(self, TaskPolicy):
+                old_state, event = self.generate_event_based_on_utg(input_manager)
+            else:
+                old_state = None
+                event = self.generate_event_based_on_utg(input_manager)
             import time
             time.sleep(3)
+        else:
+            old_state = None
+        
         # update last events for humanoid
         if self.device.humanoid is not None:
             self.humanoid_events = self.humanoid_events + [event]
@@ -205,7 +268,7 @@ class UtgBasedInputPolicy(InputPolicy):
         return event
 
     def __update_utg(self):
-        self.utg.add_transition(self.last_event, self.last_state, self.current_state)
+        self.utg.add_transition(self.last_event, self.last_state, self.current_state) #add utg in memory, also export to utg.json ; also export to states(.png and .json)
 
     @abstractmethod
     def generate_event_based_on_utg(self, input_manager):
@@ -223,7 +286,8 @@ class UtgNaiveSearchPolicy(UtgBasedInputPolicy):
 
     def __init__(self, device, app, random_input, search_method):
         super(UtgNaiveSearchPolicy, self).__init__(device, app, random_input)
-        self.logger = logging.getLogger(self.__class__.__name__)
+        # self.logger = logging.getLogger(self.__class__.__name__)
+        self.logger = logging.getLogger('Log2File')
 
         self.explored_views = set()
         self.state_transitions = set()
@@ -377,7 +441,8 @@ class UtgGreedySearchPolicy(UtgBasedInputPolicy):
 
     def __init__(self, device, app, random_input, search_method):
         super(UtgGreedySearchPolicy, self).__init__(device, app, random_input)
-        self.logger = logging.getLogger(self.__class__.__name__)
+        # self.logger = logging.getLogger(self.__class__.__name__)
+        self.logger = logging.getLogger('Log2File')
         self.search_method = search_method
 
         self.preferred_buttons = ["yes", "ok", "activate", "detail", "more", "access",
@@ -566,7 +631,8 @@ class UtgReplayPolicy(InputPolicy):
 
     def __init__(self, device, app, replay_output):
         super(UtgReplayPolicy, self).__init__(device, app)
-        self.logger = logging.getLogger(self.__class__.__name__)
+        # self.logger = logging.getLogger(self.__class__.__name__)
+        self.logger = logging.getLogger('Log2File')
         self.replay_output = replay_output
 
         import os
@@ -583,26 +649,52 @@ class UtgReplayPolicy(InputPolicy):
         self.last_event = None
         self.last_state = None
         self.current_state = None
+        self.__num_steps_outside = 0
 
-    def generate_event(self):
+    def generate_event(self, input_manager):
         """
         generate an event based on replay_output
         @return: InputEvent
         """
         import time
-        while self.event_idx < len(self.event_paths) and \
-              self.num_replay_tries < MAX_REPLY_TRIES:
+
+            
+            
+        while self.event_idx < len(self.event_paths) and self.num_replay_tries < MAX_REPLY_TRIES:
             self.num_replay_tries += 1
             current_state = self.device.get_current_state()
             if current_state is None:
                 time.sleep(5)
                 self.num_replay_tries = 0
                 return KeyEvent(name="BACK")
+            elif current_state.get_app_activity_depth(self.app) < 0:
+                # If the app is not in the activity stack
+                start_app_intent = self.app.get_start_intent()
+                return IntentEvent(start_app_intent)
+                # pass (START) through
 
+
+            elif current_state.get_app_activity_depth(self.app) > 0:
+                # If the app is in activity stack but is not in foreground
+                self.__num_steps_outside += 1
+
+                if self.__num_steps_outside > MAX_NUM_STEPS_OUTSIDE:
+                    # If the app has not been in foreground for too long, try to go back
+                    if self.__num_steps_outside > MAX_NUM_STEPS_OUTSIDE_KILL:
+                        stop_app_intent = self.app.get_stop_intent()
+                        go_back_event = IntentEvent(stop_app_intent)
+                    else:
+                        go_back_event = KeyEvent(name="BACK")
+                    return go_back_event
+            else:
+                # If the app is in foreground
+                self.__num_steps_outside = 0
+                
+                
             curr_event_idx = self.event_idx
             self.__update_utg()
             while curr_event_idx < len(self.event_paths):
-                event_path = self.event_paths[curr_event_idx]
+                event_path = self.event_paths[curr_event_idx]   
                 with open(event_path, "r") as f:
                     curr_event_idx += 1
 
@@ -613,6 +705,8 @@ class UtgReplayPolicy(InputPolicy):
                         continue
 
                     if event_dict["start_state"] != current_state.state_str:
+                        print('overlooked event %s,%s,%s,%s and continued matching (first event is with index 0)\n' % (curr_event_idx,event_path,event_dict["start_state"],current_state.state_str))
+                        time.sleep(4)
                         continue
                     if not self.device.is_foreground(self.app):
                         # if current app is in background, bring it to foreground
@@ -644,11 +738,12 @@ class ManualPolicy(UtgBasedInputPolicy):
 
     def __init__(self, device, app):
         super(ManualPolicy, self).__init__(device, app, False)
-        self.logger = logging.getLogger(self.__class__.__name__)
+        # self.logger = logging.getLogger(self.__class__.__name__)
+        self.logger = logging.getLogger('Log2File')
 
         self.__first_event = True
 
-    def generate_event_based_on_utg(self):
+    def generate_event_based_on_utg(self, input_manager):
         """
         generate an event based on current UTG
         @return: InputEvent
@@ -664,7 +759,7 @@ class ManualPolicy(UtgBasedInputPolicy):
 
 class TaskPolicy(UtgBasedInputPolicy):
 
-    def __init__(self, device, app, random_input, task, use_memory=False, debug_mode=False):
+    def __init__(self, device, app, random_input, task, use_memory=True, debug_mode=False):
         super(TaskPolicy, self).__init__(device, app, random_input)
         self.logger = logging.getLogger(self.__class__.__name__)
         self.task = task
@@ -691,6 +786,12 @@ class TaskPolicy(UtgBasedInputPolicy):
                 self.state_ele_memory = {}  # memorize some important states that contain elements of insight
 
     def get_most_similar_element(self):
+        """
+        an example of return value for calendar app:  
+        similar_ele_path: ["<button text='More options'></button>", '<button>Settings</button>', '<button>Reminder sound<br>Default (Pixie Dust)</button>']
+        similar_ele_desc: 'task: change the reminder sound for calendar events to "Adara" on a smartphone.'
+        similar_ele: '<checkbox checked=False>Adara</checkbox>'
+        """
         from InstructorEmbedding import INSTRUCTOR
         from sklearn.metrics.pairwise import cosine_similarity
         import numpy as np
@@ -699,7 +800,7 @@ class TaskPolicy(UtgBasedInputPolicy):
 
         with open('memory/node_filtered_elements.json') as file:
             ele_statements = json.load(file)
-        with open('memory/element_description.json') as file:
+        with open('memory/element_description.json') as file:#根据state
             ele_functions = json.load(file)
         with open('memory/embedded_elements_desc.json') as file:
             embeddings = json.load(file)
@@ -928,7 +1029,8 @@ class TaskPolicy(UtgBasedInputPolicy):
         self.__event_trace += EVENT_FLAG_STOP_APP
         return None, IntentEvent(intent=stop_app_intent)
     
-    def _save2yaml(self, file_name, state_prompt, idx, state_str, inputs='null'):
+    def _save2yaml(self, file_name, state_prompt, idx, state_str, inputs='null'): 
+        """Save and update the execution result in file like 'change the event reminder sound of Calendar app to adara.yaml (save wxd)'"""
         if not os.path.exists(file_name):
             tmp_data = {
             'task_name': self.task,
@@ -956,6 +1058,7 @@ class TaskPolicy(UtgBasedInputPolicy):
         }
         with open(file_name, 'w', encoding='utf-8') as f:
             yaml.dump(data, f)
+            
     def _make_prompt_lmql(self, state_prompt, action_history, is_text, state_str, view_text=None, thought_history=None, use_thoughts=False):
         if self.use_memory:
             # if isinstance(state_str, list):
@@ -984,6 +1087,7 @@ class TaskPolicy(UtgBasedInputPolicy):
 
 
         return '\n'.join(history_with_thought),state_prompt
+    
     def _make_prompt(self, state_prompt, action_history, is_text, state_str, view_text=None, thought_history=None, use_thoughts=False):
         if self.use_memory:
             # if isinstance(state_str, list):
@@ -1054,7 +1158,7 @@ class TaskPolicy(UtgBasedInputPolicy):
         if current_state:
             state_prompt, candidate_actions, _, _ = current_state.get_described_actions()
             state_str = current_state.state_str
-            if USE_LMQL:
+            if USE_LMQL:#seems useless,somehow the same with self._make_prompt
                 history, state_prompt = self._make_prompt_lmql(state_prompt, action_history, is_text=False, state_str=state_str,
                                                       thought_history=thought_history)  
             else:
@@ -1096,7 +1200,7 @@ class TaskPolicy(UtgBasedInputPolicy):
 
         if isinstance(selected_action, SetTextEvent):
             if input_text != "N/A" and input_text != None:
-                selected_action.text = input_text.replace('"', '').replace(' ', '-')
+                selected_action.text = input_text.replace('"', '').replace(' ', '-') # by wxd. Should the second replace happen here?
                 if len(selected_action.text) > 30:  # heuristically disable long text input
                     selected_action.text = ''
             else:

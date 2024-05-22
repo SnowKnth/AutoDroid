@@ -84,10 +84,12 @@ class DroidBotIme(Adapter):
         """
         Input text to target device
         :param text: text to input, can be unicode format
-        :param mode: 0 - set text; 1 - append text.
+        :param mode: 0 - set text; 1 - append text. 
         """
-        input_cmd = "am broadcast -a DROIDBOT_INPUT_TEXT --es text %s --ei mode %d" % (text, mode)
-        self.device.adb.shell(str(input_cmd))
+        #adb shell input text "your_text_here" -- using this is also ok, but watch out for blank " "
+        
+        input_cmd = "am broadcast -a DROIDBOT_INPUT_TEXT --es text".split() + [text] + "--ei mode".split() + [str(mode)]
+        self.device.adb.shell(input_cmd)
 
 
 if __name__ == "__main__":
