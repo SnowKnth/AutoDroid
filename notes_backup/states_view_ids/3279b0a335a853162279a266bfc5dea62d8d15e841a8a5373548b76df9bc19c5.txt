@@ -1,0 +1,1 @@
+[['Add a new note', 7], ['Label', 13], ['New note type:', 14], ['Cancel', 20], ['OK', 21]]
