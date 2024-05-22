@@ -1,3 +1,4 @@
+import logging
 import json
 import os
 import random
@@ -80,7 +81,9 @@ KEY_SetTextEvent = "set_text"
 KEY_IntentEvent = "intent"
 KEY_SpawnEvent = "spawn"
 KEY_KillAppEvent = "kill_app"
-
+# add oracle event -- create on 1009-2022
+KEY_OracleEvent = "oracle"
+KEY_SetTextEnterEvent = 'set_text_and_enter'
 
 class InvalidEventException(Exception):
     pass
@@ -148,6 +151,10 @@ class InputEvent(object):
             return ExitEvent(event_dict=event_dict)
         elif event_type == KEY_SpawnEvent:
             return SpawnEvent(event_dict=event_dict)
+        elif event_type == KEY_OracleEvent:
+            return OracleEvent(event_dict=event_dict)
+        elif event_type == KEY_SetTextEnterEvent:
+            return SetTextEnterEvent(event_dict=event_dict)
 
     @abstractmethod
     def get_event_str(self, state):
@@ -195,6 +202,7 @@ class EventLog(object):
             "event_str": self.event_str
         }
 
+# save event to local file system (events directory)
     def save2dir(self, output_dir=None):
         # Save event
         if output_dir is None:
@@ -213,6 +221,7 @@ class EventLog(object):
             self.device.logger.warning("Saving event to dir failed.")
             self.device.logger.warning(e)
 
+# save event images to local file system (views directory)
     def save_views(self, output_dir=None):
         # Save views
         views = self.event.get_views()
@@ -234,8 +243,11 @@ class EventLog(object):
         self.from_state = self.device.get_current_state()
         self.start_profiling()
         self.event_str = self.event.get_event_str(self.from_state)
+        logging.getLogger('Log2File').info("Action: %s" % self.event_str)
         print("Action: %s" % self.event_str)
         self.device.send_event(self.event)
+        if self.is_start_event():
+            time.sleep(5)
 
     def start_profiling(self):
         """
@@ -318,6 +330,7 @@ class ManualEvent(InputEvent):
         return None
 
     def send(self, device):
+        raise KeyboardInterrupt()
         # do nothing
         pass
 
@@ -650,30 +663,32 @@ class ScrollEvent(UIEvent):
         #     end_x -= width * 2 / 5
 
         if self.direction == "UP":
-            start_y -= height * drag_length
-            end_y += height * drag_length
-            # do not drag from the center to avoid mis-touch
-            # start_x += width * bias
-            # end_x += width * bias
-            # print(height, start_y, end_y, start_x, end_x, width)
-        elif self.direction == "DOWN":
             start_y += height * drag_length
             end_y -= height * drag_length
             # do not drag from the center to avoid mis-touch
             # start_x += width * bias
             # end_x += width * bias
+            # print(height, start_y, end_y, start_x, end_x, width)
+        elif self.direction == "DOWN":
+            start_y -= height * drag_length
+            end_y += height * drag_length
+            # do not drag from the center to avoid mis-touch
+            # start_x += width * bias
+            # end_x += width * bias
             # print(height, start_y, end_y)
         elif self.direction == "LEFT":
-            start_x -= width * drag_length
-            end_x += width * drag_length
-        elif self.direction == "RIGHT":
             start_x += width * drag_length
             end_x -= width * drag_length
+        elif self.direction == "RIGHT":
+            start_x -= width * drag_length
+            end_x += width * drag_length
         '''
         this has been used for special case for calendar application. You can change 200 due to other special cases
         '''
-        if abs(end_y - start_y) >= 200:
-            device.view_drag((start_x, start_y), (end_x, end_y), duration)
+        # if abs(end_y - start_y) >= 200:
+        #     device.view_drag((start_x, start_y), (end_x, end_y), duration)
+        
+        device.view_drag((start_x, start_y), (end_x, end_y), duration)
         return True
 
     def get_event_str(self, state):
@@ -725,6 +740,87 @@ class SetTextEvent(UIEvent):
         elif self.x is not None and self.y is not None:
             return "%s(state=%s, x=%s, y=%s, text=%s)" %\
                    (self.__class__.__name__, state.state_str, self.x, self.y, self.text)
+        else:
+            msg = "Invalid %s!" % self.__class__.__name__
+            raise InvalidEventException(msg)
+
+    def get_views(self):
+        return [self.view] if self.view else []
+
+class SetTextEnterEvent(UIEvent):
+    """
+    input text to target UI
+    """
+
+    @staticmethod
+    def get_random_instance(device, app):
+        pass
+
+    def __init__(self, x=None, y=None, view=None, text=None, event_dict=None):
+        super().__init__()
+        self.event_type = KEY_SetTextEnterEvent
+        self.x = x
+        self.y = y
+        self.view = view
+        self.text = text
+        if event_dict is not None:
+            self.__dict__.update(event_dict)
+
+    def send(self, device):
+        x, y = UIEvent.get_xy(x=self.x, y=self.y, view=self.view)
+        touch_event = TouchEvent(x=x, y=y)
+        touch_event.send(device)
+        device.view_set_text(self.text)
+        device.key_press(66)
+        return True
+
+    def get_event_str(self, state):
+        if self.view is not None:
+            return f"{self.__class__.__name__}({UIEvent.view_str(state, self.view)}, text={self.text})"
+        elif self.x is not None and self.y is not None:
+            return "%s(state=%s, x=%s, y=%s, text=%s)" %\
+                   (self.__class__.__name__, state.state_str, self.x, self.y, self.text)
+        else:
+            msg = "Invalid %s!" % self.__class__.__name__
+            raise InvalidEventException(msg)
+
+    def get_views(self):
+        return [self.view] if self.view else []
+
+
+
+
+class OracleEvent(UIEvent):
+    """
+    an event describing oracles
+    """
+
+    def __init__(self, x=None, y=None, view=None, event_dict=None,condition=None, sleep_t=0, assert_text=None):
+        super().__init__()
+        self.event_type = KEY_OracleEvent
+        self.x = x
+        self.y = y
+        self.view = view
+        self.condition = condition
+        self.sleep_t = sleep_t
+        self.assert_text = assert_text
+        if event_dict is not None:
+            self.__dict__.update(event_dict)
+
+    @staticmethod
+    def get_random_instance(device, app):
+        return None
+
+    def send(self, device):
+    # do nothing
+        time.sleep(self.sleep_t)
+        pass
+
+    def get_event_str(self, state):
+        if self.view is not None:
+            return f"{self.__class__.__name__}({UIEvent.view_str(state, self.view)})"
+        elif self.x is not None and self.y is not None:
+            return "%s(state=%s, x=%s, y=%s)" % (self.__class__.__name__, state.state_str, self.x, self.y)
         else:
             msg = "Invalid %s!" % self.__class__.__name__
             raise InvalidEventException(msg)
@@ -798,7 +894,7 @@ class SpawnEvent(InputEvent):
             "operations": {
                 "droid_master_operation": [
                     {
-                        "event_type": "touch",
+                        "event_type": "click",
                         "target_view": "droid_master_view"
                     }
                 ]
@@ -823,5 +919,7 @@ EVENT_TYPES = {
     KEY_SwipeEvent: SwipeEvent,
     KEY_ScrollEvent: ScrollEvent,
     KEY_IntentEvent: IntentEvent,
-    KEY_SpawnEvent: SpawnEvent
+    KEY_SpawnEvent: SpawnEvent,
+    KEY_OracleEvent: OracleEvent
+
 }

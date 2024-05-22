@@ -1,0 +1,174 @@
+{
+    "views": {
+        "folder_name_rid_c_desctextview_class_Inbox_text": {
+            "resource_id": ".*folder_name",
+            "class": ".*TextView"
+        },
+        "toolbar_action_new_rid_new_messagec_desctextview_class__text": {
+            "resource_id": ".*toolbar_action_new",
+            "class": ".*TextView",
+            "content_desc": ".*New Message"
+        },
+        "edit_text_to_rid_c_descedittext_class___text": {
+            "resource_id": ".*edit_text_to",
+            "class": ".*EditText"
+        },
+        "subject_rid_c_descedittext_class__text": {
+            "resource_id": ".*subject",
+            "class": ".*EditText"
+        },
+        "mailbox_create_new_body_rid_c_descedittext_class__Sent_from_Mail_Ru_app_for_Android_text": {
+            "resource_id": ".*mailbox_create_new_body",
+            "class": ".*EditText"
+        },
+        "toolbar_action_send_rid_sendc_desctextview_class__text": {
+            "resource_id": ".*toolbar_action_send",
+            "class": ".*TextView",
+            "content_desc": ".*Send"
+        },
+        "subject_rid_c_desctextview_class_ICSTSuperCool_text": {
+            "resource_id": ".*subject",
+            "class": ".*TextView"
+        }
+    },
+    "states": {
+        "ru_mail_ui_SlideStackActivity_state1": {
+            "activity": ".*SlideStackActivity",
+            "views": [
+                "folder_name_rid_c_desctextview_class_Inbox_text"
+            ]
+        },
+        "ru_mail_ui_SlideStackActivity_state2": {
+            "activity": ".*SlideStackActivity",
+            "views": [
+                "toolbar_action_new_rid_new_messagec_desctextview_class__text"
+            ]
+        },
+        "ru_mail_ui_writemail_WriteActivity_state3": {
+            "activity": ".*WriteActivity",
+            "views": [
+                "edit_text_to_rid_c_descedittext_class___text"
+            ]
+        },
+        "ru_mail_ui_writemail_WriteActivity_state4": {
+            "activity": ".*WriteActivity",
+            "views": [
+                "edit_text_to_rid_c_descedittext_class___text"
+            ]
+        },
+        "ru_mail_ui_writemail_WriteActivity_state5": {
+            "activity": ".*WriteActivity",
+            "views": [
+                "subject_rid_c_descedittext_class__text"
+            ]
+        },
+        "ru_mail_ui_writemail_WriteActivity_state6": {
+            "activity": ".*WriteActivity",
+            "views": [
+                "mailbox_create_new_body_rid_c_descedittext_class__Sent_from_Mail_Ru_app_for_Android_text"
+            ]
+        },
+        "ru_mail_ui_writemail_WriteActivity_state7": {
+            "activity": ".*WriteActivity",
+            "views": [
+                "toolbar_action_send_rid_sendc_desctextview_class__text"
+            ]
+        },
+        "ru_mail_ui_SlideStackActivity_state8": {
+            "activity": ".*SlideStackActivity",
+            "views": [
+                "subject_rid_c_desctextview_class_ICSTSuperCool_text"
+            ]
+        }
+    },
+    "operations": {
+        "ru_mail_ui_SlideStackActivity_operation1": [
+            {
+                "event_type": "oracle",
+                "target_view": "folder_name_rid_c_desctextview_class_Inbox_text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 15,
+                "assert_text": "Inbox"
+            }
+        ],
+        "ru_mail_ui_SlideStackActivity_operation2": [
+            {
+                "event_type": "click",
+                "target_view": "toolbar_action_new_rid_new_messagec_desctextview_class__text"
+            }
+        ],
+        "ru_mail_ui_writemail_WriteActivity_operation3": [
+            {
+                "event_type": "oracle",
+                "target_view": "edit_text_to_rid_c_descedittext_class___text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 15
+            }
+        ],
+        "ru_mail_ui_writemail_WriteActivity_operation4": [
+            {
+                "event_type": "set_text",
+                "target_view": "edit_text_to_rid_c_descedittext_class___text",
+                "text": "uci.seal@gmail.com"
+            }
+        ],
+        "ru_mail_ui_writemail_WriteActivity_operation5": [
+            {
+                "event_type": "set_text",
+                "target_view": "subject_rid_c_descedittext_class__text",
+                "text": "ICSTSuperCool"
+            }
+        ],
+        "ru_mail_ui_writemail_WriteActivity_operation6": [
+            {
+                "event_type": "set_text",
+                "target_view": "mailbox_create_new_body_rid_c_descedittext_class__Sent_from_Mail_Ru_app_for_Android_text",
+                "text": "ICSTSuperCoolBody"
+            }
+        ],
+        "ru_mail_ui_writemail_WriteActivity_operation7": [
+            {
+                "event_type": "click",
+                "target_view": "toolbar_action_send_rid_sendc_desctextview_class__text"
+            }
+        ],
+        "ru_mail_ui_SlideStackActivity_operation8": [
+            {
+                "event_type": "oracle",
+                "target_view": "subject_rid_c_desctextview_class_ICSTSuperCool_text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 20,
+                "assert_text": "ICSTSuperCool"
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "ru_mail_ui_SlideStackActivity_state1": [
+            "ru_mail_ui_SlideStackActivity_operation1"
+        ],
+        "ru_mail_ui_SlideStackActivity_state2": [
+            "ru_mail_ui_SlideStackActivity_operation2"
+        ],
+        "ru_mail_ui_writemail_WriteActivity_state3": [
+            "ru_mail_ui_writemail_WriteActivity_operation3"
+        ],
+        "ru_mail_ui_writemail_WriteActivity_state4": [
+            "ru_mail_ui_writemail_WriteActivity_operation4"
+        ],
+        "ru_mail_ui_writemail_WriteActivity_state5": [
+            "ru_mail_ui_writemail_WriteActivity_operation5"
+        ],
+        "ru_mail_ui_writemail_WriteActivity_state6": [
+            "ru_mail_ui_writemail_WriteActivity_operation6"
+        ],
+        "ru_mail_ui_writemail_WriteActivity_state7": [
+            "ru_mail_ui_writemail_WriteActivity_operation7"
+        ],
+        "ru_mail_ui_SlideStackActivity_state8": [
+            "ru_mail_ui_SlideStackActivity_operation8"
+        ]
+    }
+}

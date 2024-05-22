@@ -1,0 +1,94 @@
+{
+    "views": {
+        "etBillTotal_rid_c_descedittext_class_1_text": {
+            "resource_id": ".*etBillTotal",
+            "class": ".*EditText"
+        },
+        "etTipAmount_rid_c_descedittext_class_15_text": {
+            "resource_id": ".*etTipAmount",
+            "class": ".*EditText"
+        },
+        "btCalculate_rid_c_descbutton_class_Calculate_text": {
+            "resource_id": ".*btCalculate",
+            "class": ".*Button"
+        },
+        "tvTotalWithTip_rid_c_desctextview_class__65_09_text": {
+            "resource_id": ".*tvTotalWithTip",
+            "class": ".*TextView"
+        }
+    },
+    "states": {
+        "_MainActivity_state1": {
+            "activity": ".*MainActivity",
+            "views": [
+                "etBillTotal_rid_c_descedittext_class_1_text"
+            ]
+        },
+        "_MainActivity_state2": {
+            "activity": ".*MainActivity",
+            "views": [
+                "etTipAmount_rid_c_descedittext_class_15_text"
+            ]
+        },
+        "_MainActivity_state3": {
+            "activity": ".*MainActivity",
+            "views": [
+                "btCalculate_rid_c_descbutton_class_Calculate_text"
+            ]
+        },
+        "_MainActivity_state4": {
+            "activity": ".*MainActivity",
+            "views": [
+                "tvTotalWithTip_rid_c_desctextview_class__65_09_text"
+            ]
+        }
+    },
+    "operations": {
+        "_MainActivity_operation1": [
+            {
+                "event_type": "set_text",
+                "target_view": "etBillTotal_rid_c_descedittext_class_1_text",
+                "text": "56.6"
+            }
+        ],
+        "_MainActivity_operation2": [
+            {
+                "event_type": "set_text",
+                "target_view": "etTipAmount_rid_c_descedittext_class_15_text",
+                "text": "15"
+            }
+        ],
+        "_MainActivity_operation3": [
+            {
+                "event_type": "click",
+                "target_view": "btCalculate_rid_c_descbutton_class_Calculate_text"
+            }
+        ],
+        "_MainActivity_operation4": [
+            {
+                "event_type": "oracle",
+                "target_view": "tvTotalWithTip_rid_c_desctextview_class__65_09_text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 10,
+                "assert_text": "65.09"
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "_MainActivity_state1": [
+            "_MainActivity_operation1"
+        ],
+        "_MainActivity_state2": [
+            "_MainActivity_operation2"
+        ],
+        "_MainActivity_state3": [
+            "_MainActivity_operation3"
+        ],
+        "_MainActivity_state4": [
+            "_MainActivity_operation4"
+        ]
+    }
+}

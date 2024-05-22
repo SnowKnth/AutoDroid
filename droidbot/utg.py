@@ -48,6 +48,7 @@ class UTG(object):
     def num_transitions(self):
         return len(self.transitions)
 
+# output the device state (in .add_node) to states dir and utg.js (in .__output_utg) to file
     def add_transition(self, event, old_state, new_state):
         self.add_node(old_state)
         self.add_node(new_state)
@@ -103,6 +104,7 @@ class UTG(object):
             if len(events) == 0:
                 self.G2.remove_edge(old_state.structure_str, new_state.structure_str)
 
+    # output the device state to memory and output file 
     def add_node(self, state):
         if not state:
             return
@@ -119,9 +121,10 @@ class UTG(object):
         if state.foreground_activity.startswith(self.app.package_name):
             self.reached_activities.add(state.foreground_activity)
 
+    # output utg.js
     def __output_utg(self):
         """
-        Output current UTG to a js file
+        Output current UTG to a js file, G graph
         """
         if not self.device.output_dir:
             return

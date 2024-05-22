@@ -1,0 +1,113 @@
+{
+    "views": {
+        "button1_rid_c_descbutton_class_Accept_text": {
+            "resource_id": ".*button1",
+            "class": ".*Button"
+        },
+        "editTextBill_rid_c_descedittext_class_100_00_text": {
+            "resource_id": ".*editTextBill",
+            "class": ".*EditText"
+        },
+        "editTextTip_rid_c_descedittext_class_15_text": {
+            "resource_id": ".*editTextTip",
+            "class": ".*EditText"
+        },
+        "buttonCalculate_rid_c_descbutton_class_Calculate_text": {
+            "resource_id": ".*buttonCalculate",
+            "class": ".*Button"
+        },
+        "textViewTotalToPay_rid_c_desctextview_class__65_09_text": {
+            "resource_id": ".*textViewTotalToPay",
+            "class": ".*TextView"
+        }
+    },
+    "states": {
+        "_MainActivity_state1": {
+            "activity": ".*MainActivity",
+            "views": [
+                "button1_rid_c_descbutton_class_Accept_text"
+            ]
+        },
+        "_MainActivity_state2": {
+            "activity": ".*MainActivity",
+            "views": [
+                "editTextBill_rid_c_descedittext_class_100_00_text"
+            ]
+        },
+        "_MainActivity_state3": {
+            "activity": ".*MainActivity",
+            "views": [
+                "editTextTip_rid_c_descedittext_class_15_text"
+            ]
+        },
+        "_MainActivity_state4": {
+            "activity": ".*MainActivity",
+            "views": [
+                "buttonCalculate_rid_c_descbutton_class_Calculate_text"
+            ]
+        },
+        "_MainActivity_state5": {
+            "activity": ".*MainActivity",
+            "views": [
+                "textViewTotalToPay_rid_c_desctextview_class__65_09_text"
+            ]
+        }
+    },
+    "operations": {
+        "_MainActivity_operation1": [
+            {
+                "event_type": "click",
+                "target_view": "button1_rid_c_descbutton_class_Accept_text"
+            }
+        ],
+        "_MainActivity_operation2": [
+            {
+                "event_type": "set_text",
+                "target_view": "editTextBill_rid_c_descedittext_class_100_00_text",
+                "text": "56.6"
+            }
+        ],
+        "_MainActivity_operation3": [
+            {
+                "event_type": "set_text",
+                "target_view": "editTextTip_rid_c_descedittext_class_15_text",
+                "text": "15"
+            }
+        ],
+        "_MainActivity_operation4": [
+            {
+                "event_type": "click",
+                "target_view": "buttonCalculate_rid_c_descbutton_class_Calculate_text"
+            }
+        ],
+        "_MainActivity_operation5": [
+            {
+                "event_type": "oracle",
+                "target_view": "textViewTotalToPay_rid_c_desctextview_class__65_09_text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 10,
+                "assert_text": "65.09"
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "_MainActivity_state1": [
+            "_MainActivity_operation1"
+        ],
+        "_MainActivity_state2": [
+            "_MainActivity_operation2"
+        ],
+        "_MainActivity_state3": [
+            "_MainActivity_operation3"
+        ],
+        "_MainActivity_state4": [
+            "_MainActivity_operation4"
+        ],
+        "_MainActivity_state5": [
+            "_MainActivity_operation5"
+        ]
+    }
+}

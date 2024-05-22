@@ -1,0 +1,114 @@
+{
+    "views": {
+        "billAmountET_rid_c_descedittext_class_0_text": {
+            "resource_id": ".*billAmountET",
+            "class": ".*EditText"
+        },
+        "tipPercentET_rid_c_descedittext_class_0_text": {
+            "resource_id": ".*tipPercentET",
+            "class": ".*EditText"
+        },
+        "guestNumberET_rid_c_descedittext_class_1_text": {
+            "resource_id": ".*guestNumberET",
+            "class": ".*EditText"
+        },
+        "calculateBtn_rid_c_descbutton_class_Calculate_text": {
+            "resource_id": ".*calculateBtn",
+            "class": ".*Button"
+        },
+        "perPersonBillTV_rid_c_desctextview_class_16_27_text": {
+            "resource_id": ".*perPersonBillTV",
+            "class": ".*TextView"
+        }
+    },
+    "states": {
+        "_Calculator_state1": {
+            "activity": ".*Calculator",
+            "views": [
+                "billAmountET_rid_c_descedittext_class_0_text"
+            ]
+        },
+        "_Calculator_state2": {
+            "activity": ".*Calculator",
+            "views": [
+                "tipPercentET_rid_c_descedittext_class_0_text"
+            ]
+        },
+        "_Calculator_state3": {
+            "activity": ".*Calculator",
+            "views": [
+                "guestNumberET_rid_c_descedittext_class_1_text"
+            ]
+        },
+        "_Calculator_state4": {
+            "activity": ".*Calculator",
+            "views": [
+                "calculateBtn_rid_c_descbutton_class_Calculate_text"
+            ]
+        },
+        "_Calculator_state5": {
+            "activity": ".*Calculator",
+            "views": [
+                "perPersonBillTV_rid_c_desctextview_class_16_27_text"
+            ]
+        }
+    },
+    "operations": {
+        "_Calculator_operation1": [
+            {
+                "event_type": "set_text",
+                "target_view": "billAmountET_rid_c_descedittext_class_0_text",
+                "text": "56.6"
+            }
+        ],
+        "_Calculator_operation2": [
+            {
+                "event_type": "set_text",
+                "target_view": "tipPercentET_rid_c_descedittext_class_0_text",
+                "text": "15"
+            }
+        ],
+        "_Calculator_operation3": [
+            {
+                "event_type": "set_text",
+                "target_view": "guestNumberET_rid_c_descedittext_class_1_text",
+                "text": "4"
+            }
+        ],
+        "_Calculator_operation4": [
+            {
+                "event_type": "click",
+                "target_view": "calculateBtn_rid_c_descbutton_class_Calculate_text"
+            }
+        ],
+        "_Calculator_operation5": [
+            {
+                "event_type": "oracle",
+                "target_view": "perPersonBillTV_rid_c_desctextview_class_16_27_text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 10,
+                "assert_text": "16.27"
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "_Calculator_state1": [
+            "_Calculator_operation1"
+        ],
+        "_Calculator_state2": [
+            "_Calculator_operation2"
+        ],
+        "_Calculator_state3": [
+            "_Calculator_operation3"
+        ],
+        "_Calculator_state4": [
+            "_Calculator_operation4"
+        ],
+        "_Calculator_state5": [
+            "_Calculator_operation5"
+        ]
+    }
+}

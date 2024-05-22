@@ -1,0 +1,147 @@
+{
+    "views": {
+        "sign_in_fragment_password_text_rid_c_descedittext_class__text": {
+            "resource_id": ".*sign_in_fragment_password_text",
+            "class": ".*EditText"
+        },
+        "sign_in_fragment_email_text_rid_c_descedittext_class_Email_text": {
+            "resource_id": ".*sign_in_fragment_email_text",
+            "class": ".*EditText"
+        },
+        "sign_in_fragment_sign_in_button_rid_c_desctextview_class_Sign_In_text": {
+            "resource_id": ".*sign_in_fragment_sign_in_button",
+            "class": ".*TextView"
+        },
+        "_rid_open_menuc_descimagebutton_class__text": {
+            "class": ".*ImageButton",
+            "content_desc": ".*Open Menu"
+        },
+        "menu_profile_name_rid_c_desctextview_class_Sealbot_Labfellow_text": {
+            "resource_id": ".*menu_profile_name",
+            "class": ".*TextView"
+        }
+    },
+    "states": {
+        "_activity_login_signin_SignInActivity_state1": {
+            "activity": ".*SignInActivity",
+            "views": [
+                "sign_in_fragment_password_text_rid_c_descedittext_class__text"
+            ]
+        },
+        "_activity_login_signin_SignInActivity_state2": {
+            "activity": ".*SignInActivity",
+            "views": [
+                "sign_in_fragment_password_text_rid_c_descedittext_class__text"
+            ]
+        },
+        "_activity_login_signin_SignInActivity_state3": {
+            "activity": ".*SignInActivity",
+            "views": [
+                "sign_in_fragment_email_text_rid_c_descedittext_class_Email_text"
+            ]
+        },
+        "_activity_login_signin_SignInActivity_state4": {
+            "activity": ".*SignInActivity",
+            "views": [
+                "sign_in_fragment_sign_in_button_rid_c_desctextview_class_Sign_In_text"
+            ]
+        },
+        "_activity_browse_BrowseActivity_state5": {
+            "activity": ".*BrowseActivity",
+            "views": [
+                "_rid_open_menuc_descimagebutton_class__text"
+            ]
+        },
+        "_activity_browse_BrowseActivity_state6": {
+            "activity": ".*BrowseActivity",
+            "views": [
+                "_rid_open_menuc_descimagebutton_class__text"
+            ]
+        },
+        "_activity_browse_BrowseActivity_state7": {
+            "activity": ".*BrowseActivity",
+            "views": [
+                "menu_profile_name_rid_c_desctextview_class_Sealbot_Labfellow_text"
+            ]
+        }
+    },
+    "operations": {
+        "_activity_login_signin_SignInActivity_operation1": [
+            {
+                "event_type": "oracle",
+                "target_view": "sign_in_fragment_password_text_rid_c_descedittext_class__text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 15
+            }
+        ],
+        "_activity_login_signin_SignInActivity_operation2": [
+            {
+                "event_type": "set_text",
+                "target_view": "sign_in_fragment_password_text_rid_c_descedittext_class__text",
+                "text": "1qaz2wsX"
+            }
+        ],
+        "_activity_login_signin_SignInActivity_operation3": [
+            {
+                "event_type": "set_text",
+                "target_view": "sign_in_fragment_email_text_rid_c_descedittext_class_Email_text",
+                "text": "uci.seal@gmail.com"
+            }
+        ],
+        "_activity_login_signin_SignInActivity_operation4": [
+            {
+                "event_type": "click",
+                "target_view": "sign_in_fragment_sign_in_button_rid_c_desctextview_class_Sign_In_text"
+            }
+        ],
+        "_activity_browse_BrowseActivity_operation5": [
+            {
+                "event_type": "oracle",
+                "target_view": "_rid_open_menuc_descimagebutton_class__text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 10
+            }
+        ],
+        "_activity_browse_BrowseActivity_operation6": [
+            {
+                "event_type": "click",
+                "target_view": "_rid_open_menuc_descimagebutton_class__text"
+            }
+        ],
+        "_activity_browse_BrowseActivity_operation7": [
+            {
+                "event_type": "oracle",
+                "target_view": "menu_profile_name_rid_c_desctextview_class_Sealbot_Labfellow_text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 10,
+                "assert_text": "Sealbot"
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "_activity_login_signin_SignInActivity_state1": [
+            "_activity_login_signin_SignInActivity_operation1"
+        ],
+        "_activity_login_signin_SignInActivity_state2": [
+            "_activity_login_signin_SignInActivity_operation2"
+        ],
+        "_activity_login_signin_SignInActivity_state3": [
+            "_activity_login_signin_SignInActivity_operation3"
+        ],
+        "_activity_login_signin_SignInActivity_state4": [
+            "_activity_login_signin_SignInActivity_operation4"
+        ],
+        "_activity_browse_BrowseActivity_state5": [
+            "_activity_browse_BrowseActivity_operation5"
+        ],
+        "_activity_browse_BrowseActivity_state6": [
+            "_activity_browse_BrowseActivity_operation6"
+        ],
+        "_activity_browse_BrowseActivity_state7": [
+            "_activity_browse_BrowseActivity_operation7"
+        ]
+    }
+}

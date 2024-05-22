@@ -1,0 +1,255 @@
+{
+    "views": {
+        "btn_link_rid_c_descbutton_class_Get_Started_text": {
+            "resource_id": ".*btn_link",
+            "class": ".*Button"
+        },
+        "btn_sign_in_dialog_rid_c_descbutton_class_Sign_In_text": {
+            "resource_id": ".*btn_sign_in_dialog",
+            "class": ".*Button"
+        },
+        "edit_password_rid_c_descedittext_class__text": {
+            "resource_id": ".*edit_password",
+            "class": ".*EditText"
+        },
+        "edit_username_rid_c_descedittext_class_Email_or_Username_text": {
+            "resource_id": ".*edit_username",
+            "class": ".*EditText"
+        },
+        "button_signin_rid_c_descbutton_class_Sign_In_text": {
+            "resource_id": ".*button_signin",
+            "class": ".*Button"
+        },
+        "_rid_navigate_upc_descimagebutton_class__text": {
+            "class": ".*ImageButton",
+            "content_desc": ".*Navigate up"
+        },
+        "etsy_menu_text_rid_c_desctextview_class_1ihlaveb_text": {
+            "resource_id": ".*etsy_menu_text",
+            "class": ".*TextView"
+        },
+        "username_rid_c_desctextview_class_Sealbot_text": {
+            "resource_id": ".*username",
+            "class": ".*TextView"
+        }
+    },
+    "states": {
+        "_ui_homescreen_HomescreenTabsActivity_state1": {
+            "activity": ".*HomescreenTabsActivity",
+            "views": [
+                "btn_link_rid_c_descbutton_class_Get_Started_text"
+            ]
+        },
+        "_ui_homescreen_HomescreenTabsActivity_state2": {
+            "activity": ".*HomescreenTabsActivity",
+            "views": [
+                "btn_link_rid_c_descbutton_class_Get_Started_text"
+            ]
+        },
+        "_ui_user_auth_SignInActivity_state3": {
+            "activity": ".*SignInActivity",
+            "views": [
+                "btn_sign_in_dialog_rid_c_descbutton_class_Sign_In_text"
+            ]
+        },
+        "_ui_user_auth_SignInActivity_state4": {
+            "activity": ".*SignInActivity",
+            "views": [
+                "btn_sign_in_dialog_rid_c_descbutton_class_Sign_In_text"
+            ]
+        },
+        "_ui_user_auth_SignInActivity_state5": {
+            "activity": ".*SignInActivity",
+            "views": [
+                "edit_password_rid_c_descedittext_class__text"
+            ]
+        },
+        "_ui_user_auth_SignInActivity_state6": {
+            "activity": ".*SignInActivity",
+            "views": [
+                "edit_password_rid_c_descedittext_class__text"
+            ]
+        },
+        "_ui_user_auth_SignInActivity_state7": {
+            "activity": ".*SignInActivity",
+            "views": [
+                "edit_username_rid_c_descedittext_class_Email_or_Username_text"
+            ]
+        },
+        "_ui_user_auth_SignInActivity_state8": {
+            "activity": ".*SignInActivity",
+            "views": [
+                "button_signin_rid_c_descbutton_class_Sign_In_text"
+            ]
+        },
+        "_ui_homescreen_HomescreenTabsActivity_state9": {
+            "activity": ".*HomescreenTabsActivity",
+            "views": [
+                "_rid_navigate_upc_descimagebutton_class__text"
+            ]
+        },
+        "_ui_homescreen_HomescreenTabsActivity_state10": {
+            "activity": ".*HomescreenTabsActivity",
+            "views": [
+                "_rid_navigate_upc_descimagebutton_class__text"
+            ]
+        },
+        "_ui_homescreen_HomescreenTabsActivity_state11": {
+            "activity": ".*HomescreenTabsActivity",
+            "views": [
+                "etsy_menu_text_rid_c_desctextview_class_1ihlaveb_text"
+            ]
+        },
+        "_ui_homescreen_HomescreenTabsActivity_state12": {
+            "activity": ".*HomescreenTabsActivity",
+            "views": [
+                "etsy_menu_text_rid_c_desctextview_class_1ihlaveb_text"
+            ]
+        },
+        "_ui_user_UserActivity_state13": {
+            "activity": ".*UserActivity",
+            "views": [
+                "username_rid_c_desctextview_class_Sealbot_text"
+            ]
+        }
+    },
+    "operations": {
+        "_ui_homescreen_HomescreenTabsActivity_operation1": [
+            {
+                "event_type": "oracle",
+                "target_view": "btn_link_rid_c_descbutton_class_Get_Started_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 15
+            }
+        ],
+        "_ui_homescreen_HomescreenTabsActivity_operation2": [
+            {
+                "event_type": "click",
+                "target_view": "btn_link_rid_c_descbutton_class_Get_Started_text"
+            }
+        ],
+        "_ui_user_auth_SignInActivity_operation3": [
+            {
+                "event_type": "oracle",
+                "target_view": "btn_sign_in_dialog_rid_c_descbutton_class_Sign_In_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 15
+            }
+        ],
+        "_ui_user_auth_SignInActivity_operation4": [
+            {
+                "event_type": "click",
+                "target_view": "btn_sign_in_dialog_rid_c_descbutton_class_Sign_In_text"
+            }
+        ],
+        "_ui_user_auth_SignInActivity_operation5": [
+            {
+                "event_type": "oracle",
+                "target_view": "edit_password_rid_c_descedittext_class__text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 15
+            }
+        ],
+        "_ui_user_auth_SignInActivity_operation6": [
+            {
+                "event_type": "set_text",
+                "target_view": "edit_password_rid_c_descedittext_class__text",
+                "text": "1qaz2wsX"
+            }
+        ],
+        "_ui_user_auth_SignInActivity_operation7": [
+            {
+                "event_type": "set_text",
+                "target_view": "edit_username_rid_c_descedittext_class_Email_or_Username_text",
+                "text": "uci.seal@gmail.com"
+            }
+        ],
+        "_ui_user_auth_SignInActivity_operation8": [
+            {
+                "event_type": "click",
+                "target_view": "button_signin_rid_c_descbutton_class_Sign_In_text"
+            }
+        ],
+        "_ui_homescreen_HomescreenTabsActivity_operation9": [
+            {
+                "event_type": "oracle",
+                "target_view": "_rid_navigate_upc_descimagebutton_class__text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 10
+            }
+        ],
+        "_ui_homescreen_HomescreenTabsActivity_operation10": [
+            {
+                "event_type": "click",
+                "target_view": "_rid_navigate_upc_descimagebutton_class__text"
+            }
+        ],
+        "_ui_homescreen_HomescreenTabsActivity_operation11": [
+            {
+                "event_type": "oracle",
+                "target_view": "etsy_menu_text_rid_c_desctextview_class_1ihlaveb_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 10
+            }
+        ],
+        "_ui_homescreen_HomescreenTabsActivity_operation12": [
+            {
+                "event_type": "click",
+                "target_view": "etsy_menu_text_rid_c_desctextview_class_1ihlaveb_text"
+            }
+        ],
+        "_ui_user_UserActivity_operation13": [
+            {
+                "event_type": "oracle",
+                "target_view": "username_rid_c_desctextview_class_Sealbot_text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 10,
+                "assert_text": "Sealbot"
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "_ui_homescreen_HomescreenTabsActivity_state1": [
+            "_ui_homescreen_HomescreenTabsActivity_operation1"
+        ],
+        "_ui_homescreen_HomescreenTabsActivity_state2": [
+            "_ui_homescreen_HomescreenTabsActivity_operation2"
+        ],
+        "_ui_user_auth_SignInActivity_state3": [
+            "_ui_user_auth_SignInActivity_operation3"
+        ],
+        "_ui_user_auth_SignInActivity_state4": [
+            "_ui_user_auth_SignInActivity_operation4"
+        ],
+        "_ui_user_auth_SignInActivity_state5": [
+            "_ui_user_auth_SignInActivity_operation5"
+        ],
+        "_ui_user_auth_SignInActivity_state6": [
+            "_ui_user_auth_SignInActivity_operation6"
+        ],
+        "_ui_user_auth_SignInActivity_state7": [
+            "_ui_user_auth_SignInActivity_operation7"
+        ],
+        "_ui_user_auth_SignInActivity_state8": [
+            "_ui_user_auth_SignInActivity_operation8"
+        ],
+        "_ui_homescreen_HomescreenTabsActivity_state9": [
+            "_ui_homescreen_HomescreenTabsActivity_operation9"
+        ],
+        "_ui_homescreen_HomescreenTabsActivity_state10": [
+            "_ui_homescreen_HomescreenTabsActivity_operation10"
+        ],
+        "_ui_homescreen_HomescreenTabsActivity_state11": [
+            "_ui_homescreen_HomescreenTabsActivity_operation11"
+        ],
+        "_ui_homescreen_HomescreenTabsActivity_state12": [
+            "_ui_homescreen_HomescreenTabsActivity_operation12"
+        ],
+        "_ui_user_UserActivity_state13": [
+            "_ui_user_UserActivity_operation13"
+        ]
+    }
+}

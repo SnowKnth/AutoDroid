@@ -1,0 +1,118 @@
+{
+    "views": {
+        "subject_rid_c_desctextview_class_Another_rabbit_hole_text": {
+            "resource_id": ".*subject",
+            "class": ".*TextView"
+        },
+        "search_rid_searchc_desctextview_class__text": {
+            "resource_id": ".*search",
+            "class": ".*TextView",
+            "content_desc": ".*Search"
+        },
+        "search_src_text_rid_c_descedittext_class__Search_text": {
+            "resource_id": ".*search_src_text",
+            "class": ".*EditText"
+        },
+        "subject_rid_c_desctextview_class_Automated_Software_Engineering_text": {
+            "resource_id": ".*subject",
+            "class": ".*TextView"
+        }
+    },
+    "states": {
+        "com_fsck_k9_activity_MessageList_state1": {
+            "activity": ".*MessageList",
+            "views": [
+                "subject_rid_c_desctextview_class_Another_rabbit_hole_text"
+            ]
+        },
+        "com_fsck_k9_activity_MessageList_state2": {
+            "activity": ".*MessageList",
+            "views": [
+                "search_rid_searchc_desctextview_class__text"
+            ]
+        },
+        "com_fsck_k9_activity_MessageList_state3": {
+            "activity": ".*MessageList",
+            "views": [
+                "search_src_text_rid_c_descedittext_class__Search_text"
+            ]
+        },
+        "com_fsck_k9_activity_MessageList_state4": {
+            "activity": ".*MessageList",
+            "views": [
+                "search_src_text_rid_c_descedittext_class__Search_text"
+            ]
+        },
+        "com_fsck_k9_activity_Search_state5": {
+            "activity": ".*Search",
+            "views": [
+                "subject_rid_c_desctextview_class_Automated_Software_Engineering_text"
+            ]
+        }
+    },
+    "operations": {
+        "com_fsck_k9_activity_MessageList_operation1": [
+            {
+                "event_type": "oracle",
+                "target_view": "subject_rid_c_desctextview_class_Another_rabbit_hole_text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 10,
+                "assert_text": "Another rabbit hole"
+            }
+        ],
+        "com_fsck_k9_activity_MessageList_operation2": [
+            {
+                "event_type": "click",
+                "target_view": "search_rid_searchc_desctextview_class__text"
+            }
+        ],
+        "com_fsck_k9_activity_MessageList_operation3": [
+            {
+                "event_type": "oracle",
+                "target_view": "search_src_text_rid_c_descedittext_class__Search_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 10
+            }
+        ],
+        "com_fsck_k9_activity_MessageList_operation4": [
+            {
+                "event_type": "set_text",
+                "target_view": "search_src_text_rid_c_descedittext_class__Search_text",
+                "text": "Automated"
+            },
+            {
+                "event_type": "key",
+                "name": "ENTER"
+            }
+        ],
+        "com_fsck_k9_activity_Search_operation5": [
+            {
+                "event_type": "oracle",
+                "target_view": "subject_rid_c_desctextview_class_Automated_Software_Engineering_text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 10,
+                "assert_text": "Automated Software Engineering"
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "com_fsck_k9_activity_MessageList_state1": [
+            "com_fsck_k9_activity_MessageList_operation1"
+        ],
+        "com_fsck_k9_activity_MessageList_state2": [
+            "com_fsck_k9_activity_MessageList_operation2"
+        ],
+        "com_fsck_k9_activity_MessageList_state3": [
+            "com_fsck_k9_activity_MessageList_operation3"
+        ],
+        "com_fsck_k9_activity_MessageList_state4": [
+            "com_fsck_k9_activity_MessageList_operation4"
+        ],
+        "com_fsck_k9_activity_Search_state5": [
+            "com_fsck_k9_activity_Search_operation5"
+        ]
+    }
+}

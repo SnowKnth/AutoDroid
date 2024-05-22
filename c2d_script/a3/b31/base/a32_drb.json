@@ -1,0 +1,259 @@
+{
+    "views": {
+        "sign_in_fragment_create_account_button_rid_c_desctextview_class_New_Create_an_Account_text": {
+            "resource_id": ".*sign_in_fragment_create_account_button",
+            "class": ".*TextView"
+        },
+        "create_account_fragment_email_text_rid_c_descedittext_class_Email_Address_text": {
+            "resource_id": ".*create_account_fragment_email_text",
+            "class": ".*EditText"
+        },
+        "create_account_fragment_password_text_rid_c_descedittext_class__text": {
+            "resource_id": ".*create_account_fragment_password_text",
+            "class": ".*EditText"
+        },
+        "create_account_fragment_last_name_text_rid_c_descedittext_class_Last_Name_text": {
+            "resource_id": ".*create_account_fragment_last_name_text",
+            "class": ".*EditText"
+        },
+        "create_account_fragment_first_name_text_rid_c_descedittext_class_First_Name_text": {
+            "resource_id": ".*create_account_fragment_first_name_text",
+            "class": ".*EditText"
+        },
+        "create_account_fragment_create_account_button_rid_c_descbutton_class_Create_an_Account_text": {
+            "resource_id": ".*create_account_fragment_create_account_button",
+            "class": ".*Button"
+        },
+        "signup_flow_footer_button_rid_c_desctextview_class_Finish_text": {
+            "resource_id": ".*signup_flow_footer_button",
+            "class": ".*TextView"
+        },
+        "_rid_open_menuc_descimagebutton_class__text": {
+            "class": ".*ImageButton",
+            "content_desc": ".*Open Menu"
+        },
+        "menu_profile_name_rid_c_desctextview_class_Sealbot_Labfellow_text": {
+            "resource_id": ".*menu_profile_name",
+            "class": ".*TextView"
+        }
+    },
+    "states": {
+        "_activity_login_signin_SignInActivity_state1": {
+            "activity": ".*SignInActivity",
+            "views": [
+                "sign_in_fragment_create_account_button_rid_c_desctextview_class_New_Create_an_Account_text"
+            ]
+        },
+        "_activity_login_signin_SignInActivity_state2": {
+            "activity": ".*SignInActivity",
+            "views": [
+                "sign_in_fragment_create_account_button_rid_c_desctextview_class_New_Create_an_Account_text"
+            ]
+        },
+        "_activity_login_createaccount_CreateAccountActivity_state3": {
+            "activity": ".*CreateAccountActivity",
+            "views": [
+                "create_account_fragment_email_text_rid_c_descedittext_class_Email_Address_text"
+            ]
+        },
+        "_activity_login_createaccount_CreateAccountActivity_state4": {
+            "activity": ".*CreateAccountActivity",
+            "views": [
+                "create_account_fragment_email_text_rid_c_descedittext_class_Email_Address_text"
+            ]
+        },
+        "_activity_login_createaccount_CreateAccountActivity_state5": {
+            "activity": ".*CreateAccountActivity",
+            "views": [
+                "create_account_fragment_password_text_rid_c_descedittext_class__text"
+            ]
+        },
+        "_activity_login_createaccount_CreateAccountActivity_state6": {
+            "activity": ".*CreateAccountActivity",
+            "views": [
+                "create_account_fragment_last_name_text_rid_c_descedittext_class_Last_Name_text"
+            ]
+        },
+        "_activity_login_createaccount_CreateAccountActivity_state7": {
+            "activity": ".*CreateAccountActivity",
+            "views": [
+                "create_account_fragment_first_name_text_rid_c_descedittext_class_First_Name_text"
+            ]
+        },
+        "_activity_login_createaccount_CreateAccountActivity_state8": {
+            "activity": ".*CreateAccountActivity",
+            "views": [
+                "create_account_fragment_create_account_button_rid_c_descbutton_class_Create_an_Account_text"
+            ]
+        },
+        "_activity_signup_redesign_SignupFlowActivity_state9": {
+            "activity": ".*SignupFlowActivity",
+            "views": [
+                "signup_flow_footer_button_rid_c_desctextview_class_Finish_text"
+            ]
+        },
+        "_activity_signup_redesign_SignupFlowActivity_state10": {
+            "activity": ".*SignupFlowActivity",
+            "views": [
+                "signup_flow_footer_button_rid_c_desctextview_class_Finish_text"
+            ]
+        },
+        "_activity_browse_BrowseActivity_state11": {
+            "activity": ".*BrowseActivity",
+            "views": [
+                "_rid_open_menuc_descimagebutton_class__text"
+            ]
+        },
+        "_activity_browse_BrowseActivity_state12": {
+            "activity": ".*BrowseActivity",
+            "views": [
+                "_rid_open_menuc_descimagebutton_class__text"
+            ]
+        },
+        "_activity_browse_BrowseActivity_state13": {
+            "activity": ".*BrowseActivity",
+            "views": [
+                "menu_profile_name_rid_c_desctextview_class_Sealbot_Labfellow_text"
+            ]
+        }
+    },
+    "operations": {
+        "_activity_login_signin_SignInActivity_operation1": [
+            {
+                "event_type": "oracle",
+                "target_view": "sign_in_fragment_create_account_button_rid_c_desctextview_class_New_Create_an_Account_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 20
+            }
+        ],
+        "_activity_login_signin_SignInActivity_operation2": [
+            {
+                "event_type": "click",
+                "target_view": "sign_in_fragment_create_account_button_rid_c_desctextview_class_New_Create_an_Account_text"
+            }
+        ],
+        "_activity_login_createaccount_CreateAccountActivity_operation3": [
+            {
+                "event_type": "oracle",
+                "target_view": "create_account_fragment_email_text_rid_c_descedittext_class_Email_Address_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 20
+            }
+        ],
+        "_activity_login_createaccount_CreateAccountActivity_operation4": [
+            {
+                "event_type": "set_text",
+                "target_view": "create_account_fragment_email_text_rid_c_descedittext_class_Email_Address_text",
+                "text": "e271266se@ojtmxq.al.net"
+            }
+        ],
+        "_activity_login_createaccount_CreateAccountActivity_operation5": [
+            {
+                "event_type": "set_text",
+                "target_view": "create_account_fragment_password_text_rid_c_descedittext_class__text",
+                "text": "1qaz2wsX"
+            }
+        ],
+        "_activity_login_createaccount_CreateAccountActivity_operation6": [
+            {
+                "event_type": "set_text",
+                "target_view": "create_account_fragment_last_name_text_rid_c_descedittext_class_Last_Name_text",
+                "text": "Labfellow"
+            }
+        ],
+        "_activity_login_createaccount_CreateAccountActivity_operation7": [
+            {
+                "event_type": "set_text",
+                "target_view": "create_account_fragment_first_name_text_rid_c_descedittext_class_First_Name_text",
+                "text": "Sealbot"
+            }
+        ],
+        "_activity_login_createaccount_CreateAccountActivity_operation8": [
+            {
+                "event_type": "click",
+                "target_view": "create_account_fragment_create_account_button_rid_c_descbutton_class_Create_an_Account_text"
+            }
+        ],
+        "_activity_signup_redesign_SignupFlowActivity_operation9": [
+            {
+                "event_type": "oracle",
+                "target_view": "signup_flow_footer_button_rid_c_desctextview_class_Finish_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 20
+            }
+        ],
+        "_activity_signup_redesign_SignupFlowActivity_operation10": [
+            {
+                "event_type": "click",
+                "target_view": "signup_flow_footer_button_rid_c_desctextview_class_Finish_text"
+            }
+        ],
+        "_activity_browse_BrowseActivity_operation11": [
+            {
+                "event_type": "oracle",
+                "target_view": "_rid_open_menuc_descimagebutton_class__text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 10
+            }
+        ],
+        "_activity_browse_BrowseActivity_operation12": [
+            {
+                "event_type": "click",
+                "target_view": "_rid_open_menuc_descimagebutton_class__text"
+            }
+        ],
+        "_activity_browse_BrowseActivity_operation13": [
+            {
+                "event_type": "oracle",
+                "target_view": "menu_profile_name_rid_c_desctextview_class_Sealbot_Labfellow_text",
+                "condition": "wait_until_text_presence",
+                "sleep_t": 10,
+                "assert_text": "Sealbot"
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "_activity_login_signin_SignInActivity_state1": [
+            "_activity_login_signin_SignInActivity_operation1"
+        ],
+        "_activity_login_signin_SignInActivity_state2": [
+            "_activity_login_signin_SignInActivity_operation2"
+        ],
+        "_activity_login_createaccount_CreateAccountActivity_state3": [
+            "_activity_login_createaccount_CreateAccountActivity_operation3"
+        ],
+        "_activity_login_createaccount_CreateAccountActivity_state4": [
+            "_activity_login_createaccount_CreateAccountActivity_operation4"
+        ],
+        "_activity_login_createaccount_CreateAccountActivity_state5": [
+            "_activity_login_createaccount_CreateAccountActivity_operation5"
+        ],
+        "_activity_login_createaccount_CreateAccountActivity_state6": [
+            "_activity_login_createaccount_CreateAccountActivity_operation6"
+        ],
+        "_activity_login_createaccount_CreateAccountActivity_state7": [
+            "_activity_login_createaccount_CreateAccountActivity_operation7"
+        ],
+        "_activity_login_createaccount_CreateAccountActivity_state8": [
+            "_activity_login_createaccount_CreateAccountActivity_operation8"
+        ],
+        "_activity_signup_redesign_SignupFlowActivity_state9": [
+            "_activity_signup_redesign_SignupFlowActivity_operation9"
+        ],
+        "_activity_signup_redesign_SignupFlowActivity_state10": [
+            "_activity_signup_redesign_SignupFlowActivity_operation10"
+        ],
+        "_activity_browse_BrowseActivity_state11": [
+            "_activity_browse_BrowseActivity_operation11"
+        ],
+        "_activity_browse_BrowseActivity_state12": [
+            "_activity_browse_BrowseActivity_operation12"
+        ],
+        "_activity_browse_BrowseActivity_state13": [
+            "_activity_browse_BrowseActivity_operation13"
+        ]
+    }
+}

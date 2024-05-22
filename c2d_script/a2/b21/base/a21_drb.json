@@ -1,0 +1,92 @@
+{
+    "views": {
+        "addToDoItemFAB_rid_c_descimagebutton_class__text": {
+            "resource_id": ".*addToDoItemFAB",
+            "class": ".*ImageButton"
+        },
+        "userToDoEditText_rid_c_descedittext_class__text": {
+            "resource_id": ".*userToDoEditText",
+            "class": ".*EditText"
+        },
+        "makeToDoFloatingActionButton_rid_c_descimagebutton_class__text": {
+            "resource_id": ".*makeToDoFloatingActionButton",
+            "class": ".*ImageButton"
+        },
+        "toDoListItemTextview_rid_c_desctextview_class_Sample_Todo_text": {
+            "resource_id": ".*toDoListItemTextview",
+            "class": ".*TextView"
+        }
+    },
+    "states": {
+        "_MainActivity_state1": {
+            "activity": ".*MainActivity",
+            "views": [
+                "addToDoItemFAB_rid_c_descimagebutton_class__text"
+            ]
+        },
+        "_AddToDoActivity_state2": {
+            "activity": ".*AddToDoActivity",
+            "views": [
+                "userToDoEditText_rid_c_descedittext_class__text"
+            ]
+        },
+        "_AddToDoActivity_state3": {
+            "activity": ".*AddToDoActivity",
+            "views": [
+                "makeToDoFloatingActionButton_rid_c_descimagebutton_class__text"
+            ]
+        },
+        "_MainActivity_state4": {
+            "activity": ".*MainActivity",
+            "views": [
+                "toDoListItemTextview_rid_c_desctextview_class_Sample_Todo_text"
+            ]
+        }
+    },
+    "operations": {
+        "_MainActivity_operation1": [
+            {
+                "event_type": "click",
+                "target_view": "addToDoItemFAB_rid_c_descimagebutton_class__text"
+            }
+        ],
+        "_AddToDoActivity_operation2": [
+            {
+                "event_type": "set_text",
+                "target_view": "userToDoEditText_rid_c_descedittext_class__text",
+                "text": "Sample Todo"
+            }
+        ],
+        "_AddToDoActivity_operation3": [
+            {
+                "event_type": "click",
+                "target_view": "makeToDoFloatingActionButton_rid_c_descimagebutton_class__text"
+            }
+        ],
+        "_MainActivity_operation4": [
+            {
+                "event_type": "oracle",
+                "target_view": "toDoListItemTextview_rid_c_desctextview_class_Sample_Todo_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 10
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "_MainActivity_state1": [
+            "_MainActivity_operation1"
+        ],
+        "_AddToDoActivity_state2": [
+            "_AddToDoActivity_operation2"
+        ],
+        "_AddToDoActivity_state3": [
+            "_AddToDoActivity_operation3"
+        ],
+        "_MainActivity_state4": [
+            "_MainActivity_operation4"
+        ]
+    }
+}

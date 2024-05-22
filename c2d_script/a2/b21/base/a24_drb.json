@@ -1,0 +1,73 @@
+{
+    "views": {
+        "AddListEditText_rid_c_descedittext_class_New_List_Name_text": {
+            "resource_id": ".*AddListEditText",
+            "class": ".*EditText"
+        },
+        "AddListButton_rid_c_descbutton_class_Add_text": {
+            "resource_id": ".*AddListButton",
+            "class": ".*Button"
+        },
+        "text1_rid_c_desctextview_class_Sample_Todo_text": {
+            "resource_id": ".*text1",
+            "class": ".*TextView"
+        }
+    },
+    "states": {
+        "_SimplyDoActivity_state1": {
+            "activity": ".*SimplyDoActivity",
+            "views": [
+                "AddListEditText_rid_c_descedittext_class_New_List_Name_text"
+            ]
+        },
+        "_SimplyDoActivity_state2": {
+            "activity": ".*SimplyDoActivity",
+            "views": [
+                "AddListButton_rid_c_descbutton_class_Add_text"
+            ]
+        },
+        "_SimplyDoActivity_state3": {
+            "activity": ".*SimplyDoActivity",
+            "views": [
+                "text1_rid_c_desctextview_class_Sample_Todo_text"
+            ]
+        }
+    },
+    "operations": {
+        "_SimplyDoActivity_operation1": [
+            {
+                "event_type": "set_text",
+                "target_view": "AddListEditText_rid_c_descedittext_class_New_List_Name_text",
+                "text": "Sample Todo"
+            }
+        ],
+        "_SimplyDoActivity_operation2": [
+            {
+                "event_type": "click",
+                "target_view": "AddListButton_rid_c_descbutton_class_Add_text"
+            }
+        ],
+        "_SimplyDoActivity_operation3": [
+            {
+                "event_type": "oracle",
+                "target_view": "text1_rid_c_desctextview_class_Sample_Todo_text",
+                "condition": "wait_until_element_presence",
+                "sleep_t": 10
+            },
+            {
+                "event_type": "exit"
+            }
+        ]
+    },
+    "main": {
+        "_SimplyDoActivity_state1": [
+            "_SimplyDoActivity_operation1"
+        ],
+        "_SimplyDoActivity_state2": [
+            "_SimplyDoActivity_operation2"
+        ],
+        "_SimplyDoActivity_state3": [
+            "_SimplyDoActivity_operation3"
+        ]
+    }
+}

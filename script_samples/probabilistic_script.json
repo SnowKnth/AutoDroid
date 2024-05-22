@@ -9,7 +9,10 @@
     },
     "states": {
         "welcome_state": {
-            "views": ["first_time_use_carousel", "skip_welcome_button"]
+            "views": [
+                "first_time_use_carousel",
+                "skip_welcome_button"
+            ]
         }
     },
     "operations": {
@@ -27,7 +30,7 @@
         ],
         "skip_operation": [
             {
-                "event_type": "touch",
+                "event_type": "click",
                 "target_view": "skip_welcome_button"
             }
         ]
