@@ -1,0 +1,538 @@
+--------- beginning of main
+03-26 14:17:59.504  2814  2814 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:17:59.514  2814  2814 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:17:59.514  2814  2814 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:17:59.515  2814  2814 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:17:59.844  2823  2823 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:17:59.852  2823  2823 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:17:59.852  2823  2823 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:17:59.853  2823  2823 I Radio-JNI: register_android_hardware_Radio DONE
+--------- beginning of system
+03-26 14:17:59.857  1822  1976 I LatinIME:LogUtils: Dictionary info: dictionary = UserHistoryDictionary.en_US ; version = 1705313819 ; date = 1711433879
+03-26 14:17:59.859  1822  2550 E Surface : getSlotFromBufferLocked: unknown buffer: 0x733f1b9dc0
+03-26 14:17:59.861   887  1293 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:17:59.891  1915  2833 I OpenGLRenderer: Initialized EGL, version 1.4
+03-26 14:17:59.891  1915  2833 W OpenGLRenderer: Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+03-26 14:17:59.892  1915  2833 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008cdf
+03-26 14:17:59.892  1915  2833 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008824
+03-26 14:17:59.924  1915  2833 E Surface : getSlotFromBufferLocked: unknown buffer: 0x733f1ba860
+03-26 14:18:00.298  2852  2852 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:00.308  2852  2852 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:00.308  2852  2852 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:00.308  2852  2852 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:00.312  2852  2852 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_MENU, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=1141061, downTime=1141061, deviceId=-1, source=0x101 }
+03-26 14:18:00.313  2852  2852 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_MENU, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=1141061, downTime=1141061, deviceId=-1, source=0x101 }
+03-26 14:18:00.622  2863  2863 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:00.630  2863  2863 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:00.630  2863  2863 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:00.631  2863  2863 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:00.633  2863  2863 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_BACK, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=1141383, downTime=1141383, deviceId=-1, source=0x101 }
+03-26 14:18:00.634  2863  2863 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_BACK, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=1141383, downTime=1141383, deviceId=-1, source=0x101 }
+03-26 14:18:00.646  1915  2833 E Surface : getSlotFromBufferLocked: unknown buffer: 0x733f1ba900
+03-26 14:18:00.992  2872  2872 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:01.000  2872  2872 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:01.000  2872  2872 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:01.001  2872  2872 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:01.005  2872  2872 I art     : System.exit called, status: 0
+03-26 14:18:01.005  2872  2872 I AndroidRuntime: VM exiting with result code 0.
+03-26 14:18:01.136   887   992 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:01.137  2892  2892 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:01.139   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:01.268  2898  2898 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:01.277  2898  2898 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:01.277  2898  2898 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:01.277  2898  2898 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:01.520  1822  1822 I LatinIME: Timeout waiting for dictionary load
+03-26 14:18:01.892  2918  2918 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:01.900  2918  2918 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:01.900  2918  2918 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:01.901  2918  2918 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:01.904  1449  1842 I ActivityManager: Force stopping com.simplemobiletools.notes.pro appid=10081 user=0: from pid 2918
+03-26 14:18:01.904  1449  1842 I ActivityManager: Killing 2505:com.simplemobiletools.notes.pro/u0a81 (adj 0): stop com.simplemobiletools.notes.pro
+03-26 14:18:01.931  1449  1562 W InputDispatcher: channel '71ebfa7 com.simplemobiletools.notes.pro/com.simplemobiletools.notes.pro.activities.MainActivity (server)' ~ Consumer closed input channel or an error occurred.  events=0x9
+03-26 14:18:01.931  1449  1562 E InputDispatcher: channel '71ebfa7 com.simplemobiletools.notes.pro/com.simplemobiletools.notes.pro.activities.MainActivity (server)' ~ Channel is unrecoverably broken and will be disposed!
+03-26 14:18:01.931  1449  1555 I WindowState: WIN DEATH: Window{71ebfa7 u0 com.simplemobiletools.notes.pro/com.simplemobiletools.notes.pro.activities.MainActivity}
+03-26 14:18:01.931  1449  1555 W InputDispatcher: Attempted to unregister already unregistered input channel '71ebfa7 com.simplemobiletools.notes.pro/com.simplemobiletools.notes.pro.activities.MainActivity (server)'
+03-26 14:18:01.933  1449  1842 W ActivityManager: Force removing ActivityRecord{bf85d8e u0 com.simplemobiletools.notes.pro/.activities.MainActivity t31}: app died, no saved state
+03-26 14:18:01.934  1449  1886 W ActivityManager: Spurious death for ProcessRecord{df648c5 0:com.simplemobiletools.notes.pro/u0a81}, curProc for 2505: null
+03-26 14:18:01.951   887   887 W SurfaceFlinger: couldn't log to binary event log: overflow.
+03-26 14:18:01.971  1449  1887 W InputMethodManagerService: Got RemoteException sending setActive(false) notification to pid 2505 uid 10081
+03-26 14:18:02.262  2932  2932 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:02.270  2932  2932 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:02.270  2932  2932 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:02.270  2932  2932 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:02.273  2932  2932 I Input   : injectKeyEvent: KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_HOME, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=1143023, downTime=1143023, deviceId=-1, source=0x101 }
+03-26 14:18:02.274  2932  2932 I Input   : injectKeyEvent: KeyEvent { action=ACTION_UP, keyCode=KEYCODE_HOME, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=1143023, downTime=1143023, deviceId=-1, source=0x101 }
+03-26 14:18:02.275  1449  1562 I ActivityManager: START u0 {act=android.intent.action.MAIN cat=[android.intent.category.HOME] flg=0x10200000 cmp=com.android.launcher3/.Launcher (has extras)} from uid 1000 on display 0
+03-26 14:18:02.300  1858  2039 W OpenGLRenderer: Incorrectly called buildLayer on View: PageIndicator, destroying layer...
+03-26 14:18:02.300  1858  2039 W OpenGLRenderer: Incorrectly called buildLayer on View: FrameLayout, destroying layer...
+03-26 14:18:02.300  1858  2039 W OpenGLRenderer: Incorrectly called buildLayer on View: AllAppsRecyclerViewContainerView, destroying layer...
+03-26 14:18:02.300  1858  2039 W OpenGLRenderer: Incorrectly called buildLayer on View: FrameLayout, destroying layer...
+03-26 14:18:02.300  1858  2039 W OpenGLRenderer: Incorrectly called buildLayer on View: Hotseat, destroying layer...
+03-26 14:18:02.514  1858  2039 W OpenGLRenderer: Incorrectly called buildLayer on View: ShortcutAndWidgetContainer, destroying layer...
+03-26 14:18:03.667   887  1293 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:03.667  2968  2968 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:03.672   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:03.854  2974  2974 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:03.863  2974  2974 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:03.863  2974  2974 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:03.863  2974  2974 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:04.335   887   936 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:04.336  3000  3000 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:04.340   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:04.525  3005  3005 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:04.533  3005  3005 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:04.533  3005  3005 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:04.534  3005  3005 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:08.079   887   992 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:08.079  3042  3042 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:08.083   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:08.261  3048  3048 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:08.270  3048  3048 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:08.270  3048  3048 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:08.270  3048  3048 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:08.704  3066  3066 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:08.713  3066  3066 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:08.713  3066  3066 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:08.714  3066  3066 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:08.717  1449  1886 I ActivityManager: START u0 {act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10000000 cmp=com.simplemobiletools.notes.pro/.activities.SplashActivity.Orange} from uid 0 on display 0
+03-26 14:18:08.732  1449  1887 I ActivityManager: Start proc 3075:com.simplemobiletools.notes.pro/u0a81 for activity com.simplemobiletools.notes.pro/.activities.SplashActivity.Orange
+03-26 14:18:08.859  3075  3075 W System  : ClassLoader referenced unknown path: /data/app/com.simplemobiletools.notes.pro-1/lib/arm64
+03-26 14:18:08.866  1858  2039 E Surface : getSlotFromBufferLocked: unknown buffer: 0x73336550a0
+03-26 14:18:08.870  1449  1887 I ActivityManager: START u0 {cmp=com.simplemobiletools.notes.pro/.activities.MainActivity} from uid 10081 on display 0
+03-26 14:18:08.906   887   992 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:08.933  3075  3097 I OpenGLRenderer: Initialized EGL, version 1.4
+03-26 14:18:08.934  3075  3097 W OpenGLRenderer: Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+03-26 14:18:08.935  3075  3097 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008cdf
+03-26 14:18:08.935  3075  3097 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008824
+03-26 14:18:08.955  1449  1510 I ActivityManager: Displayed com.simplemobiletools.notes.pro/.activities.MainActivity: +82ms (total +235ms)
+03-26 14:18:10.072   887   992 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:10.072  3133  3133 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:10.076   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:10.208  3139  3139 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:10.217  3139  3139 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:10.217  3139  3139 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:10.218  3139  3139 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:10.654   887   936 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:10.654  3165  3165 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:10.657   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:10.794  3171  3171 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:10.804  3171  3171 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:10.804  3171  3171 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:10.804  3171  3171 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:11.387  3213  3213 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:11.396  3213  3213 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:11.396  3213  3213 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:11.396  3213  3213 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:11.399  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=540.0, y[0]=599.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152148, downTime=1152148, deviceId=0, source=0x1002 }
+03-26 14:18:11.400  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=599.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152148, downTime=1152148, deviceId=0, source=0x1002 }
+03-26 14:18:11.413  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=628.988, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152162, downTime=1152162, deviceId=0, source=0x1002 }
+03-26 14:18:11.429  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=665.402, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152179, downTime=1152179, deviceId=0, source=0x1002 }
+03-26 14:18:11.449  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=706.1, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152198, downTime=1152198, deviceId=0, source=0x1002 }
+03-26 14:18:11.463  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=736.088, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152212, downTime=1152212, deviceId=0, source=0x1002 }
+03-26 14:18:11.483  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=778.928, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152232, downTime=1152232, deviceId=0, source=0x1002 }
+03-26 14:18:11.499  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=815.34204, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152249, downTime=1152249, deviceId=0, source=0x1002 }
+03-26 14:18:11.515  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=849.614, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152265, downTime=1152265, deviceId=0, source=0x1002 }
+03-26 14:18:11.534  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=888.17004, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152283, downTime=1152283, deviceId=0, source=0x1002 }
+03-26 14:18:11.553  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=931.01, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152303, downTime=1152303, deviceId=0, source=0x1002 }
+03-26 14:18:11.570  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=967.424, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152320, downTime=1152320, deviceId=0, source=0x1002 }
+03-26 14:18:11.590  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1010.26404, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152340, downTime=1152340, deviceId=0, source=0x1002 }
+03-26 14:18:11.608  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1046.678, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152357, downTime=1152357, deviceId=0, source=0x1002 }
+03-26 14:18:11.625  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1085.234, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152375, downTime=1152375, deviceId=0, source=0x1002 }
+03-26 14:18:11.643  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1121.648, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152392, downTime=1152392, deviceId=0, source=0x1002 }
+03-26 14:18:11.660  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1160.204, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152410, downTime=1152410, deviceId=0, source=0x1002 }
+03-26 14:18:11.680  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1203.044, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152430, downTime=1152430, deviceId=0, source=0x1002 }
+03-26 14:18:11.701  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1248.026, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152451, downTime=1152451, deviceId=0, source=0x1002 }
+03-26 14:18:11.719  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1284.44, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152468, downTime=1152468, deviceId=0, source=0x1002 }
+03-26 14:18:11.736  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1320.854, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152485, downTime=1152485, deviceId=0, source=0x1002 }
+03-26 14:18:11.753  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1359.4099, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152503, downTime=1152503, deviceId=0, source=0x1002 }
+03-26 14:18:11.775  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1404.392, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152524, downTime=1152524, deviceId=0, source=0x1002 }
+03-26 14:18:11.792  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1442.948, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152542, downTime=1152542, deviceId=0, source=0x1002 }
+03-26 14:18:11.811  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1481.504, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152560, downTime=1152560, deviceId=0, source=0x1002 }
+03-26 14:18:11.830  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1524.344, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152580, downTime=1152580, deviceId=0, source=0x1002 }
+03-26 14:18:11.848  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1560.758, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152597, downTime=1152597, deviceId=0, source=0x1002 }
+03-26 14:18:11.865  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1599.314, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152615, downTime=1152615, deviceId=0, source=0x1002 }
+03-26 14:18:11.884  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1640.012, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152634, downTime=1152634, deviceId=0, source=0x1002 }
+03-26 14:18:11.906  3213  3213 I Input   : injectMotionEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1670.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1152655, downTime=1152655, deviceId=0, source=0x1002 }
+03-26 14:18:12.279   887   936 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:12.279  3236  3236 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:12.283   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:12.414  3244  3244 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:12.422  3244  3244 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:12.422  3244  3244 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:12.423  3244  3244 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:12.856   887   950 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:12.856  3271  3271 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:12.859   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:12.989  3277  3277 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:12.998  3277  3277 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:12.998  3277  3277 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:12.999  3277  3277 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:13.578  3317  3317 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:13.587  3317  3317 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:13.587  3317  3317 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:13.587  3317  3317 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:13.590  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1670.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154340, downTime=1154340, deviceId=0, source=0x1002 }
+03-26 14:18:13.591  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1670.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154340, downTime=1154340, deviceId=0, source=0x1002 }
+03-26 14:18:13.612  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1622.876, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154362, downTime=1154362, deviceId=0, source=0x1002 }
+03-26 14:18:13.613  3075  3097 E Surface : getSlotFromBufferLocked: unknown buffer: 0x733f1bb440
+03-26 14:18:13.629  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1586.462, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154379, downTime=1154379, deviceId=0, source=0x1002 }
+03-26 14:18:13.646  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1552.19, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154395, downTime=1154395, deviceId=0, source=0x1002 }
+03-26 14:18:13.662  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1515.776, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154412, downTime=1154412, deviceId=0, source=0x1002 }
+03-26 14:18:13.683  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1470.794, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154433, downTime=1154433, deviceId=0, source=0x1002 }
+03-26 14:18:13.704  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1427.954, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154453, downTime=1154453, deviceId=0, source=0x1002 }
+03-26 14:18:13.721  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1389.398, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154471, downTime=1154471, deviceId=0, source=0x1002 }
+03-26 14:18:13.739  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1350.842, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154489, downTime=1154489, deviceId=0, source=0x1002 }
+03-26 14:18:13.758  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1312.286, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154507, downTime=1154507, deviceId=0, source=0x1002 }
+03-26 14:18:13.778  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1267.304, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154528, downTime=1154528, deviceId=0, source=0x1002 }
+03-26 14:18:13.796  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1228.748, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154546, downTime=1154546, deviceId=0, source=0x1002 }
+03-26 14:18:13.816  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1185.908, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154566, downTime=1154566, deviceId=0, source=0x1002 }
+03-26 14:18:13.833  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1149.494, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154583, downTime=1154583, deviceId=0, source=0x1002 }
+03-26 14:18:13.852  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1108.796, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154602, downTime=1154602, deviceId=0, source=0x1002 }
+03-26 14:18:13.872  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1068.098, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154621, downTime=1154621, deviceId=0, source=0x1002 }
+03-26 14:18:13.893  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1023.116, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154642, downTime=1154642, deviceId=0, source=0x1002 }
+03-26 14:18:13.911  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=982.41797, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154661, downTime=1154661, deviceId=0, source=0x1002 }
+03-26 14:18:13.929  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=943.862, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154679, downTime=1154679, deviceId=0, source=0x1002 }
+03-26 14:18:13.950  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=898.87994, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154700, downTime=1154700, deviceId=0, source=0x1002 }
+03-26 14:18:13.968  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=862.466, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154717, downTime=1154717, deviceId=0, source=0x1002 }
+03-26 14:18:13.988  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=817.484, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154738, downTime=1154738, deviceId=0, source=0x1002 }
+03-26 14:18:14.009  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=774.644, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154758, downTime=1154758, deviceId=0, source=0x1002 }
+03-26 14:18:14.026  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=736.088, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154776, downTime=1154776, deviceId=0, source=0x1002 }
+03-26 14:18:14.046  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=695.38995, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154795, downTime=1154795, deviceId=0, source=0x1002 }
+03-26 14:18:14.063  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=656.83405, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154813, downTime=1154813, deviceId=0, source=0x1002 }
+03-26 14:18:14.081  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=620.4199, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154830, downTime=1154830, deviceId=0, source=0x1002 }
+03-26 14:18:14.099  3317  3317 I Input   : injectMotionEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=540.0, y[0]=599.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1154849, downTime=1154849, deviceId=0, source=0x1002 }
+03-26 14:18:14.476   887   950 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:14.476  3341  3341 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:14.480   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:14.610  3349  3349 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:14.618  3349  3349 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:14.618  3349  3349 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:14.618  3349  3349 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:15.207  3389  3389 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:15.215  3389  3389 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:15.215  3389  3389 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:15.215  3389  3389 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:15.218  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=540.0, y[0]=599.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1155968, downTime=1155968, deviceId=0, source=0x1002 }
+03-26 14:18:15.219  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=599.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1155968, downTime=1155968, deviceId=0, source=0x1002 }
+03-26 14:18:15.233  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=628.988, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1155982, downTime=1155982, deviceId=0, source=0x1002 }
+03-26 14:18:15.234  3075  3097 E Surface : getSlotFromBufferLocked: unknown buffer: 0x733f1bb1c0
+03-26 14:18:15.251  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=667.544, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156000, downTime=1156000, deviceId=0, source=0x1002 }
+03-26 14:18:15.268  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=706.1, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156018, downTime=1156018, deviceId=0, source=0x1002 }
+03-26 14:18:15.288  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=748.94, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156038, downTime=1156038, deviceId=0, source=0x1002 }
+03-26 14:18:15.302  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=778.928, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156052, downTime=1156052, deviceId=0, source=0x1002 }
+03-26 14:18:15.321  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=819.626, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156071, downTime=1156071, deviceId=0, source=0x1002 }
+03-26 14:18:15.338  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=856.04004, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156088, downTime=1156088, deviceId=0, source=0x1002 }
+03-26 14:18:15.355  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=892.454, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156105, downTime=1156105, deviceId=0, source=0x1002 }
+03-26 14:18:15.372  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=928.86804, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156122, downTime=1156122, deviceId=0, source=0x1002 }
+03-26 14:18:15.393  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=971.708, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156142, downTime=1156142, deviceId=0, source=0x1002 }
+03-26 14:18:15.413  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1016.68994, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156163, downTime=1156163, deviceId=0, source=0x1002 }
+03-26 14:18:15.432  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1057.388, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156182, downTime=1156182, deviceId=0, source=0x1002 }
+03-26 14:18:15.453  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1102.37, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156203, downTime=1156203, deviceId=0, source=0x1002 }
+03-26 14:18:15.471  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1140.926, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156221, downTime=1156221, deviceId=0, source=0x1002 }
+03-26 14:18:15.489  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1177.3401, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156238, downTime=1156238, deviceId=0, source=0x1002 }
+03-26 14:18:15.510  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1222.322, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156259, downTime=1156259, deviceId=0, source=0x1002 }
+03-26 14:18:15.527  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1260.8779, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156277, downTime=1156277, deviceId=0, source=0x1002 }
+03-26 14:18:15.545  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1299.434, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156295, downTime=1156295, deviceId=0, source=0x1002 }
+03-26 14:18:15.564  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1337.99, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156313, downTime=1156313, deviceId=0, source=0x1002 }
+03-26 14:18:15.583  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1378.688, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156332, downTime=1156332, deviceId=0, source=0x1002 }
+03-26 14:18:15.600  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1415.102, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156349, downTime=1156349, deviceId=0, source=0x1002 }
+03-26 14:18:15.619  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1457.9419, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156369, downTime=1156369, deviceId=0, source=0x1002 }
+03-26 14:18:15.638  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1496.498, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156387, downTime=1156387, deviceId=0, source=0x1002 }
+03-26 14:18:15.656  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1535.054, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156405, downTime=1156405, deviceId=0, source=0x1002 }
+03-26 14:18:15.674  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1575.752, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156424, downTime=1156424, deviceId=0, source=0x1002 }
+03-26 14:18:15.694  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1616.45, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156443, downTime=1156443, deviceId=0, source=0x1002 }
+03-26 14:18:15.715  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1661.432, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156464, downTime=1156464, deviceId=0, source=0x1002 }
+03-26 14:18:15.731  3389  3389 I Input   : injectMotionEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1670.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1156480, downTime=1156480, deviceId=0, source=0x1002 }
+03-26 14:18:16.099   887   936 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:16.099  3410  3410 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:16.103   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:16.234  3421  3421 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:16.242  3421  3421 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:16.242  3421  3421 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:16.242  3421  3421 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:16.803  3460  3460 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:16.813  3460  3460 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:16.813  3460  3460 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:16.813  3460  3460 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:16.816  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=540.0, y[0]=599.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157565, downTime=1157565, deviceId=0, source=0x1002 }
+03-26 14:18:16.816  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=599.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157565, downTime=1157565, deviceId=0, source=0x1002 }
+03-26 14:18:16.832  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=635.414, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157582, downTime=1157582, deviceId=0, source=0x1002 }
+03-26 14:18:16.833  3075  3097 E Surface : getSlotFromBufferLocked: unknown buffer: 0x733f1bb300
+03-26 14:18:16.851  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=676.112, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157601, downTime=1157601, deviceId=0, source=0x1002 }
+03-26 14:18:16.866  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=706.1, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157615, downTime=1157615, deviceId=0, source=0x1002 }
+03-26 14:18:16.882  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=742.51404, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157632, downTime=1157632, deviceId=0, source=0x1002 }
+03-26 14:18:16.908  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=796.06396, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157657, downTime=1157657, deviceId=0, source=0x1002 }
+03-26 14:18:16.927  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=836.762, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157676, downTime=1157676, deviceId=0, source=0x1002 }
+03-26 14:18:16.945  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=877.45996, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157695, downTime=1157695, deviceId=0, source=0x1002 }
+03-26 14:18:16.963  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=913.874, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157712, downTime=1157712, deviceId=0, source=0x1002 }
+03-26 14:18:16.981  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=952.43005, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157730, downTime=1157730, deviceId=0, source=0x1002 }
+03-26 14:18:16.998  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=988.844, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157747, downTime=1157747, deviceId=0, source=0x1002 }
+03-26 14:18:17.017  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1029.542, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157766, downTime=1157766, deviceId=0, source=0x1002 }
+03-26 14:18:17.037  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1072.382, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157786, downTime=1157786, deviceId=0, source=0x1002 }
+03-26 14:18:17.056  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1115.2219, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157806, downTime=1157806, deviceId=0, source=0x1002 }
+03-26 14:18:17.074  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1151.636, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157823, downTime=1157823, deviceId=0, source=0x1002 }
+03-26 14:18:17.092  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1190.1919, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157841, downTime=1157841, deviceId=0, source=0x1002 }
+03-26 14:18:17.110  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1230.8899, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157860, downTime=1157860, deviceId=0, source=0x1002 }
+03-26 14:18:17.131  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1273.73, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157880, downTime=1157880, deviceId=0, source=0x1002 }
+03-26 14:18:17.148  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1310.144, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157897, downTime=1157897, deviceId=0, source=0x1002 }
+03-26 14:18:17.166  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1348.7, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157915, downTime=1157915, deviceId=0, source=0x1002 }
+03-26 14:18:17.182  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1385.114, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157932, downTime=1157932, deviceId=0, source=0x1002 }
+03-26 14:18:17.199  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1421.5281, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157949, downTime=1157949, deviceId=0, source=0x1002 }
+03-26 14:18:17.217  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1460.084, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157967, downTime=1157967, deviceId=0, source=0x1002 }
+03-26 14:18:17.235  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1496.498, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1157984, downTime=1157984, deviceId=0, source=0x1002 }
+03-26 14:18:17.253  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1535.054, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1158002, downTime=1158002, deviceId=0, source=0x1002 }
+03-26 14:18:17.271  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1575.752, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1158021, downTime=1158021, deviceId=0, source=0x1002 }
+03-26 14:18:17.289  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1612.166, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1158038, downTime=1158038, deviceId=0, source=0x1002 }
+03-26 14:18:17.308  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1652.864, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1158057, downTime=1158057, deviceId=0, source=0x1002 }
+03-26 14:18:17.326  3460  3460 I Input   : injectMotionEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1670.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1158075, downTime=1158075, deviceId=0, source=0x1002 }
+03-26 14:18:17.702   887   936 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:17.703  3483  3483 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:17.706   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:17.839  3491  3491 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:17.847  3491  3491 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:17.847  3491  3491 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:17.848  3491  3491 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:21.330  3075  3097 E Surface : getSlotFromBufferLocked: unknown buffer: 0x733f1bb120
+03-26 14:18:24.353   887   950 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:24.353  3530  3530 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:24.357   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:24.491  3536  3536 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:24.501  3536  3536 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:24.501  3536  3536 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:24.501  3536  3536 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:25.077  3576  3576 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:25.086  3576  3576 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:25.086  3576  3576 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:25.086  3576  3576 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:25.089  3576  3576 I Input   : injectMotionEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=903.0, y[0]=154.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1165839, downTime=1165839, deviceId=0, source=0x1002 }
+03-26 14:18:25.090  3576  3576 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=903.0, y[0]=154.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1165839, downTime=1165839, deviceId=0, source=0x1002 }
+03-26 14:18:25.102  3576  3576 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=903.0, y[0]=154.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1165852, downTime=1165852, deviceId=0, source=0x1002 }
+03-26 14:18:25.121  3576  3576 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=903.0, y[0]=154.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1165870, downTime=1165870, deviceId=0, source=0x1002 }
+03-26 14:18:25.138  3576  3576 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=903.0, y[0]=154.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1165887, downTime=1165887, deviceId=0, source=0x1002 }
+03-26 14:18:25.155  3576  3576 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=903.0, y[0]=154.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1165905, downTime=1165905, deviceId=0, source=0x1002 }
+03-26 14:18:25.173  3576  3576 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=903.0, y[0]=154.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1165922, downTime=1165922, deviceId=0, source=0x1002 }
+03-26 14:18:25.190  3576  3576 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=903.0, y[0]=154.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1165940, downTime=1165940, deviceId=0, source=0x1002 }
+03-26 14:18:25.206  3576  3576 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=903.0, y[0]=154.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1165956, downTime=1165956, deviceId=0, source=0x1002 }
+03-26 14:18:25.224  3576  3576 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=903.0, y[0]=154.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1165974, downTime=1165974, deviceId=0, source=0x1002 }
+03-26 14:18:25.241  3576  3576 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=903.0, y[0]=154.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1165991, downTime=1165991, deviceId=0, source=0x1002 }
+03-26 14:18:25.259  3576  3576 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=903.0, y[0]=154.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1166008, downTime=1166008, deviceId=0, source=0x1002 }
+03-26 14:18:25.280  3576  3576 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=903.0, y[0]=154.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1166029, downTime=1166029, deviceId=0, source=0x1002 }
+03-26 14:18:25.299  3576  3576 I Input   : injectMotionEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=903.0, y[0]=154.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1166048, downTime=1166048, deviceId=0, source=0x1002 }
+03-26 14:18:25.410  3075  3097 E Surface : getSlotFromBufferLocked: unknown buffer: 0x733f1bb440
+03-26 14:18:26.655   887   936 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:26.655  3605  3605 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:26.660   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:26.792  3611  3611 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:26.801  3611  3611 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:26.801  3611  3611 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:26.801  3611  3611 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:27.312   887   936 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:27.312  3637  3637 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:27.314   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:27.446  3643  3643 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:27.454  3643  3643 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:27.454  3643  3643 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:27.455  3643  3643 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:34.226   887   936 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:34.227  3683  3683 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:34.230   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:34.369  3689  3689 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:34.378  3689  3689 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:34.378  3689  3689 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:34.378  3689  3689 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:34.943  3727  3727 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:34.952  3727  3727 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:34.952  3727  3727 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:34.953  3727  3727 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:34.956  3727  3727 I Input   : injectMotionEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1251.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1175705, downTime=1175705, deviceId=0, source=0x1002 }
+03-26 14:18:34.956  3727  3727 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1251.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1175705, downTime=1175705, deviceId=0, source=0x1002 }
+03-26 14:18:34.965  3727  3727 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1251.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1175715, downTime=1175715, deviceId=0, source=0x1002 }
+03-26 14:18:34.983  3727  3727 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1251.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1175732, downTime=1175732, deviceId=0, source=0x1002 }
+03-26 14:18:35.002  3727  3727 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1251.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1175752, downTime=1175752, deviceId=0, source=0x1002 }
+03-26 14:18:35.020  3727  3727 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1251.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1175770, downTime=1175770, deviceId=0, source=0x1002 }
+03-26 14:18:35.039  3727  3727 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1251.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1175788, downTime=1175788, deviceId=0, source=0x1002 }
+03-26 14:18:35.060  3727  3727 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1251.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1175809, downTime=1175809, deviceId=0, source=0x1002 }
+03-26 14:18:35.080  3727  3727 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1251.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1175830, downTime=1175830, deviceId=0, source=0x1002 }
+03-26 14:18:35.099  3727  3727 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1251.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1175849, downTime=1175849, deviceId=0, source=0x1002 }
+03-26 14:18:35.119  3727  3727 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1251.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1175869, downTime=1175869, deviceId=0, source=0x1002 }
+03-26 14:18:35.138  3727  3727 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1251.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1175888, downTime=1175888, deviceId=0, source=0x1002 }
+03-26 14:18:35.157  3727  3727 I Input   : injectMotionEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1251.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1175906, downTime=1175906, deviceId=0, source=0x1002 }
+03-26 14:18:36.496   887   936 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:36.496  3751  3751 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:36.500   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:36.635  3757  3757 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:36.644  3757  3757 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:36.644  3757  3757 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:36.644  3757  3757 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:37.135   887   936 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:37.136  3785  3785 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:37.139   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:37.271  3791  3791 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:37.281  3791  3791 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:37.281  3791  3791 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:37.281  3791  3791 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:42.911   887   936 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:42.911  3827  3827 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:42.916   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:43.050  3833  3833 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:43.059  3833  3833 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:43.059  3833  3833 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:43.059  3833  3833 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:43.614  3874  3874 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:43.624  3874  3874 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:43.624  3874  3874 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:43.624  3874  3874 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:43.627  3874  3874 I Input   : injectMotionEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1184377, downTime=1184377, deviceId=0, source=0x1002 }
+03-26 14:18:43.628  3874  3874 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1184377, downTime=1184377, deviceId=0, source=0x1002 }
+03-26 14:18:43.640  3874  3874 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1184390, downTime=1184390, deviceId=0, source=0x1002 }
+03-26 14:18:43.659  3874  3874 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1184409, downTime=1184409, deviceId=0, source=0x1002 }
+03-26 14:18:43.682  3874  3874 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1184431, downTime=1184431, deviceId=0, source=0x1002 }
+03-26 14:18:43.700  3874  3874 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1184450, downTime=1184450, deviceId=0, source=0x1002 }
+03-26 14:18:43.717  3874  3874 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1184467, downTime=1184467, deviceId=0, source=0x1002 }
+03-26 14:18:43.737  3874  3874 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1184487, downTime=1184487, deviceId=0, source=0x1002 }
+03-26 14:18:43.756  3874  3874 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1184506, downTime=1184506, deviceId=0, source=0x1002 }
+03-26 14:18:43.779  3874  3874 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1184529, downTime=1184529, deviceId=0, source=0x1002 }
+03-26 14:18:43.795  3874  3874 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1184545, downTime=1184545, deviceId=0, source=0x1002 }
+03-26 14:18:43.816  3874  3874 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1184566, downTime=1184566, deviceId=0, source=0x1002 }
+03-26 14:18:43.837  3874  3874 I Input   : injectMotionEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1184587, downTime=1184587, deviceId=0, source=0x1002 }
+03-26 14:18:45.220   887   950 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:45.220  3900  3900 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:45.224   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:45.359  3905  3905 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:45.367  3905  3905 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:45.367  3905  3905 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:45.368  3905  3905 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:45.851   887   950 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:45.851  3933  3933 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:45.855   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:45.892  3075  3097 E Surface : getSlotFromBufferLocked: unknown buffer: 0x733f1bc2a0
+03-26 14:18:45.993  3939  3939 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:46.002  3939  3939 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:46.002  3939  3939 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:46.002  3939  3939 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:52.044   887   936 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:52.044  3977  3977 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:52.051   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:52.184  3983  3983 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:52.193  3983  3983 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:52.193  3983  3983 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:52.193  3983  3983 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:52.753  4021  4021 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:52.762  4021  4021 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:52.762  4021  4021 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:52.763  4021  4021 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:52.766  4021  4021 I Input   : injectMotionEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1193515, downTime=1193515, deviceId=0, source=0x1002 }
+03-26 14:18:52.766  4021  4021 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1193515, downTime=1193515, deviceId=0, source=0x1002 }
+03-26 14:18:52.773  4021  4021 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1193523, downTime=1193523, deviceId=0, source=0x1002 }
+03-26 14:18:52.792  4021  4021 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1193542, downTime=1193542, deviceId=0, source=0x1002 }
+03-26 14:18:52.810  4021  4021 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1193560, downTime=1193560, deviceId=0, source=0x1002 }
+03-26 14:18:52.830  4021  4021 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1193580, downTime=1193580, deviceId=0, source=0x1002 }
+03-26 14:18:52.847  4021  4021 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1193597, downTime=1193597, deviceId=0, source=0x1002 }
+03-26 14:18:52.864  4021  4021 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1193613, downTime=1193613, deviceId=0, source=0x1002 }
+03-26 14:18:52.883  4021  4021 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1193633, downTime=1193633, deviceId=0, source=0x1002 }
+03-26 14:18:52.901  4021  4021 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1193651, downTime=1193651, deviceId=0, source=0x1002 }
+03-26 14:18:52.919  4021  4021 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1193669, downTime=1193669, deviceId=0, source=0x1002 }
+03-26 14:18:52.934  4021  4021 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1193683, downTime=1193683, deviceId=0, source=0x1002 }
+03-26 14:18:52.950  4021  4021 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1193700, downTime=1193700, deviceId=0, source=0x1002 }
+03-26 14:18:52.975  4021  4021 I Input   : injectMotionEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=932.0, y[0]=1389.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1193725, downTime=1193725, deviceId=0, source=0x1002 }
+03-26 14:18:54.327   887   992 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:54.327  4045  4045 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:54.332   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:54.468  4051  4051 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:54.476  4051  4051 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:54.476  4051  4051 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:54.476  4051  4051 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:18:54.920   887  1293 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:18:54.921  4079  4079 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:54.924   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:18:54.980  3075  3097 E Surface : getSlotFromBufferLocked: unknown buffer: 0x733f1bc2a0
+03-26 14:18:55.066  4085  4085 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:18:55.075  4085  4085 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:18:55.075  4085  4085 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:18:55.075  4085  4085 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:19:01.149   887  1293 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:19:01.149  4125  4125 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:19:01.153   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:19:01.291  4131  4131 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:19:01.299  4131  4131 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:19:01.299  4131  4131 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:19:01.300  4131  4131 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:19:01.876  4169  4169 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:19:01.885  4169  4169 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:19:01.885  4169  4169 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:19:01.886  4169  4169 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:19:01.889  4169  4169 I Input   : injectMotionEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1202638, downTime=1202638, deviceId=0, source=0x1002 }
+03-26 14:19:01.889  4169  4169 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1202638, downTime=1202638, deviceId=0, source=0x1002 }
+03-26 14:19:01.909  4169  4169 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1202658, downTime=1202658, deviceId=0, source=0x1002 }
+03-26 14:19:01.926  4169  4169 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1202676, downTime=1202676, deviceId=0, source=0x1002 }
+03-26 14:19:01.946  4169  4169 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1202695, downTime=1202695, deviceId=0, source=0x1002 }
+03-26 14:19:01.962  4169  4169 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1202711, downTime=1202711, deviceId=0, source=0x1002 }
+03-26 14:19:01.983  4169  4169 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1202732, downTime=1202732, deviceId=0, source=0x1002 }
+03-26 14:19:02.001  4169  4169 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1202750, downTime=1202750, deviceId=0, source=0x1002 }
+03-26 14:19:02.019  4169  4169 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1202768, downTime=1202768, deviceId=0, source=0x1002 }
+03-26 14:19:02.038  4169  4169 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1202788, downTime=1202788, deviceId=0, source=0x1002 }
+03-26 14:19:02.058  4169  4169 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1202807, downTime=1202807, deviceId=0, source=0x1002 }
+03-26 14:19:02.079  4169  4169 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1202828, downTime=1202828, deviceId=0, source=0x1002 }
+03-26 14:19:02.097  4169  4169 I Input   : injectMotionEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1202846, downTime=1202846, deviceId=0, source=0x1002 }
+03-26 14:19:02.424  4181  4181 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:19:02.433  4181  4181 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:19:02.433  4181  4181 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:19:02.433  4181  4181 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:19:03.822   887   992 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:19:03.822  4202  4202 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:19:03.827   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:19:03.962  4208  4208 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:19:03.971  4208  4208 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:19:03.971  4208  4208 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:19:03.972  4208  4208 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:19:04.437   887   992 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:19:04.437  4236  4236 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:19:04.441   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:19:04.577  4242  4242 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:19:04.585  4242  4242 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:19:04.585  4242  4242 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:19:04.586  4242  4242 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:19:06.454  1449  1500 I UsageStatsService: User[0] Flushing usage stats to disk
+03-26 14:19:10.570   887   936 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:19:10.571  4280  4280 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:19:10.575   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:19:10.708  4286  4286 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:19:10.716  4286  4286 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:19:10.716  4286  4286 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:19:10.716  4286  4286 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:19:11.292  4324  4324 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:19:11.301  4324  4324 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:19:11.301  4324  4324 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:19:11.301  4324  4324 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:19:11.304  4324  4324 I Input   : injectMotionEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1212054, downTime=1212054, deviceId=0, source=0x1002 }
+03-26 14:19:11.305  4324  4324 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1212054, downTime=1212054, deviceId=0, source=0x1002 }
+03-26 14:19:11.328  4324  4324 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1212078, downTime=1212078, deviceId=0, source=0x1002 }
+03-26 14:19:11.347  4324  4324 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1212096, downTime=1212096, deviceId=0, source=0x1002 }
+03-26 14:19:11.365  4324  4324 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1212115, downTime=1212115, deviceId=0, source=0x1002 }
+03-26 14:19:11.389  4324  4324 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1212139, downTime=1212139, deviceId=0, source=0x1002 }
+03-26 14:19:11.409  4324  4324 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1212158, downTime=1212158, deviceId=0, source=0x1002 }
+03-26 14:19:11.430  4324  4324 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1212179, downTime=1212179, deviceId=0, source=0x1002 }
+03-26 14:19:11.451  4324  4324 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1212200, downTime=1212200, deviceId=0, source=0x1002 }
+03-26 14:19:11.469  4324  4324 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1212219, downTime=1212219, deviceId=0, source=0x1002 }
+03-26 14:19:11.489  4324  4324 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1212238, downTime=1212238, deviceId=0, source=0x1002 }
+03-26 14:19:11.509  4324  4324 I Input   : injectMotionEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=540.0, y[0]=874.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=1212259, downTime=1212259, deviceId=0, source=0x1002 }
+03-26 14:19:11.821  4338  4338 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:19:11.830  4338  4338 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:19:11.830  4338  4338 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:19:11.830  4338  4338 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:19:11.835  3075  3097 E Surface : getSlotFromBufferLocked: unknown buffer: 0x733f1bbee0
+03-26 14:19:13.212   887   936 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:19:13.212  4362  4362 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:19:13.215   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:19:13.348  4368  4368 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:19:13.356  4368  4368 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:19:13.356  4368  4368 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:19:13.356  4368  4368 I Radio-JNI: register_android_hardware_Radio DONE
+03-26 14:19:13.832   887   936 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+03-26 14:19:13.832  4396  4396 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:19:13.836   887   887 E EGL_emulation: tid 887: eglCreateSyncKHR(1881): error 0x3004 (EGL_BAD_ATTRIBUTE)
+03-26 14:19:13.971  4402  4402 E cutils-trace: Error opening trace file: No such file or directory (2)
+03-26 14:19:13.979  4402  4402 E memtrack: Couldn't load memtrack module (No such file or directory)
+03-26 14:19:13.979  4402  4402 E android.os.Debug: failed to load memtrack module: -2
+03-26 14:19:13.979  4402  4402 I Radio-JNI: register_android_hardware_Radio DONE

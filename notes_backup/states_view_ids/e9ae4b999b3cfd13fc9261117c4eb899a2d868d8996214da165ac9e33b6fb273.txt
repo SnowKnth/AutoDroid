@@ -1,0 +1,1 @@
+[['Search', 8], ['Open note', 9], ['Create a new note', 10], ['More options', 11], ['General note', 15], ['Sas', 16], ['Insert text here', 25]]

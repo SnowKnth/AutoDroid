@@ -1,0 +1,50 @@
+{
+  "tag": "2024-03-26_141824",
+  "event": {
+    "event_type": "click",
+    "log_lines": null,
+    "prompt": null,
+    "view": {
+      "checkable": false,
+      "selected": false,
+      "scrollable": false,
+      "long_clickable": true,
+      "resource_id": "com.simplemobiletools.notes.pro:id/new_note",
+      "visible": true,
+      "enabled": true,
+      "clickable": true,
+      "checked": false,
+      "is_password": false,
+      "content_description": "Create a new note",
+      "focused": false,
+      "class": "android.widget.Button",
+      "children": [],
+      "child_count": 0,
+      "package": "com.simplemobiletools.notes.pro",
+      "text": null,
+      "bounds": [
+        [
+          837,
+          88
+        ],
+        [
+          969,
+          220
+        ]
+      ],
+      "editable": false,
+      "focusable": true,
+      "parent": 7,
+      "temp_id": 10,
+      "size": "132*132",
+      "signature": "[class]android.widget.Button[resource_id]com.simplemobiletools.notes.pro:id/new_note[text][enabled,,]",
+      "view_str": "60189bc3d1e8d6269ff95f5987612081",
+      "content_free_signature": "[class]android.widget.Button[resource_id]com.simplemobiletools.notes.pro:id/new_note"
+    },
+    "x": null,
+    "y": null
+  },
+  "start_state": "e9ae4b999b3cfd13fc9261117c4eb899a2d868d8996214da165ac9e33b6fb273",
+  "stop_state": "3279b0a335a853162279a266bfc5dea62d8d15e841a8a5373548b76df9bc19c5",
+  "event_str": "TouchEvent(state=e9ae4b999b3cfd13fc9261117c4eb899a2d868d8996214da165ac9e33b6fb273, view=60189bc3d1e8d6269ff95f5987612081(MainActivity/Button-))"
+}

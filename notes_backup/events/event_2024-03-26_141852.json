@@ -1,0 +1,50 @@
+{
+  "tag": "2024-03-26_141852",
+  "event": {
+    "event_type": "click",
+    "log_lines": null,
+    "prompt": null,
+    "view": {
+      "checkable": false,
+      "selected": false,
+      "scrollable": false,
+      "long_clickable": false,
+      "resource_id": "android:id/button1",
+      "visible": true,
+      "enabled": true,
+      "clickable": true,
+      "checked": false,
+      "is_password": false,
+      "content_description": null,
+      "focused": false,
+      "class": "android.widget.Button",
+      "children": [],
+      "child_count": 0,
+      "package": "com.simplemobiletools.notes.pro",
+      "text": "OK",
+      "bounds": [
+        [
+          844,
+          1323
+        ],
+        [
+          1020,
+          1455
+        ]
+      ],
+      "editable": false,
+      "focusable": true,
+      "parent": 19,
+      "temp_id": 21,
+      "size": "176*132",
+      "signature": "[class]android.widget.Button[resource_id]android:id/button1[text]OK[enabled,,]",
+      "view_str": "ffe876d3a3b963935ed27d413f91c887",
+      "content_free_signature": "[class]android.widget.Button[resource_id]android:id/button1"
+    },
+    "x": null,
+    "y": null
+  },
+  "start_state": "3151392a92dc001931363b48a5db26ad5e927ecb8dd2ea597edf7110138efcc4",
+  "stop_state": "3151392a92dc001931363b48a5db26ad5e927ecb8dd2ea597edf7110138efcc4",
+  "event_str": "TouchEvent(state=3151392a92dc001931363b48a5db26ad5e927ecb8dd2ea597edf7110138efcc4, view=ffe876d3a3b963935ed27d413f91c887(MainActivity/Button-OK))"
+}
