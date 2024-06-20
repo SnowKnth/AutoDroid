@@ -894,7 +894,7 @@ class SpawnEvent(InputEvent):
             "operations": {
                 "droid_master_operation": [
                     {
-                        "event_type": "click",
+                        "event_type": "touch",
                         "target_view": "droid_master_view"
                     }
                 ]

@@ -684,7 +684,7 @@ class DeviceState(object):
         return default
     
     def _extract_all_children(self, id):
-        """Finf all children of view id (not including itself), return list of ids."""
+        """Find all children of view id (not including itself), return list of ids."""
         successors = []
         #successors_of_view is dict containing element like 14:[15, 63, 111], 15\63\111 also have their chidren
         successors_of_view = nx.dfs_successors(self.view_graph, source=id, depth_limit=100)
