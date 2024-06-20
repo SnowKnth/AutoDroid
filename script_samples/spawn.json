@@ -60,14 +60,12 @@
                 "target_view": "frm_about"
             },
             {
-                "event_type": "click",
+                "event_type": "touch",
                 "target_view": "frm_map"
             }
         ]
     },
     "main": {
-        "home_state": [
-            "home_spawn_operation"
-        ]
+        "home_state": ["home_spawn_operation"]
     }
 }

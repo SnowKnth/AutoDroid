@@ -3,19 +3,20 @@ import json
 import re
 import logging
 import random
-import yaml
 from abc import abstractmethod
-from .input_script import ViewSelector
-from .input_script import StateSelector
-from .utg import UTG
+import yaml
+import copy
+import requests
+import ast
 from .input_event import *
+from .utg import UTG
+import time
+from .input_event import ScrollEvent
 # from memory.memory_builder import Memory
 import tools
-import copy
 import pdb
 import os
-import time
-# from query_lmql import prompt_llm_with_history
+from query_lmql import prompt_llm_with_history
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 # Max number of restarts
@@ -77,16 +78,11 @@ class InputPolicy(object):
         start producing events
         :param input_manager: instance of InputManager
         """
-        start_time = time.time()
         self.action_count = 0
- #       view_selected_match = 0
-        # while input_manager.enabled and self.action_count < input_manager.event_count:
- #       action_max_count = 30
-        time_limit = 3000
-        while input_manager.enabled and (time.time() - start_time < time_limit) and self.action_count < input_manager.event_count:
-        # while input_manager.enabled and self.action_count < action_max_count:
+        start_time = 0
+        while input_manager.enabled and self.action_count < input_manager.event_count:
             try:
-                # # make sure the first event is go to HOME screen    
+                # # make sure the first event is go to HOME screen
                 # # the second event is to start the app
                 # if self.action_count == 0 and self.master is None:
                 #     event = KeyEvent(name="HOME")
@@ -759,7 +755,7 @@ class ManualPolicy(UtgBasedInputPolicy):
 
 class TaskPolicy(UtgBasedInputPolicy):
 
-    def __init__(self, device, app, random_input, task, use_memory=True, debug_mode=False):
+    def __init__(self, device, app, random_input, task, use_memory=False, debug_mode=False):
         super(TaskPolicy, self).__init__(device, app, random_input)
         self.logger = logging.getLogger(self.__class__.__name__)
         self.task = task
@@ -1118,7 +1114,7 @@ class TaskPolicy(UtgBasedInputPolicy):
         task_prompt = 'Task: ' + self.task
         history_prompt = 'Previous UI actions: \n' + '\n'.join(history_with_thought)
         full_state_prompt = 'Current UI state: \n' + state_prompt
-        request_prompt = "\nYour answer should always use the following format: { \"Steps\": \"...<steps usually involved to complete the above task on a smartphone>\", \"Analyses\": \"...<Analyses of the relations between the task, and relations between the previous UI actions and current UI state>\", \"Finished\": \"Yes/No\", \"Next step\": \"None or a <high level description of the next step>\", \"id\": \"an integer or -1 (if the task has been completed by previous UI actions)\", \"action\": \"tap or input\", \"input_text\": \"N/A or ...<input text>\" } \n\n**Note that the id is the id number of the UI element to interact with. If you think the task has been completed by previous UI actions, the id should be -1. If 'Finished' is 'Yes', then the 'description' of 'Next step' is 'None', otherwise it is a high level description of the next step. If the 'action' is 'tap', the 'input_text' is N/A, otherwise it is the '<input text>'. Please do not output any content other than the JSON format. **"
+        request_prompt = '''Your answer should always use the following format:1. Completing this task on a smartphone usually involves these steps: <?>.\n2. Analyses of the relations between the task and the previous UI actions and current UI state: <?>.\n3. Based on the previous actions, is the task already finished? <Y/N>. The next step should be <?/None>.\n4. Can the task be proceeded with the current UI state? <Y/N>. Fill in the blanks about the next one interaction: - id=<id number> - action=<tap/input> - input text=<text or N/A>'''
         prompt = introduction + '\n' + task_prompt + '\n' + history_prompt + '\n' + full_state_prompt + '\n' + request_prompt
         return prompt
     
