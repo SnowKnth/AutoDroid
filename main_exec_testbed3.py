@@ -13,8 +13,6 @@ from tools import (
 
 
 sys.path.insert(0, os.environ.get("AGENTENV_PATH"))
-
-####????????? not sure whether from is right,  because 'AGENTENV_PATH' is set so environment can be found?
 from environment import AgentEnv
 
 # config
