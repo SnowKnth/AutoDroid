@@ -763,8 +763,8 @@ def query_gpt(prompt):
         # "gpt-3.5-turbo" points to "gpt-3.5-turbo-0125"
         # model="gpt-4-0125-preview",
         # model="gpt-4o-2024-05-13",
-        model="gpt-4o",
-        # model="gpt-3.5-turbo",
+        # model="gpt-4o",
+        model="gpt-3.5-turbo",
         temperature=0,
         seed=0x1110,
         timeout=60,

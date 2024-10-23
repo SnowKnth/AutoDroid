@@ -11,10 +11,8 @@ from tools import (
     parse_views,
 )
 
-
+####because 'AGENTENV_PATH' is set so environment can be found
 sys.path.insert(0, os.environ.get("AGENTENV_PATH"))
-
-####????????? not sure whether from is right,  because 'AGENTENV_PATH' is set so environment can be found?
 from environment import AgentEnv
 
 # config
@@ -34,13 +32,13 @@ first_n_episodes=int(os.environ.get("FIRST_N_EPISODES", 10))
 
 
 class AndroidController(AgentEnv):
-    def __init__(self, avd_name, emulator_controller_args, local_output_path, max_steps=30,instruction_fp="./llamatouch_task_metadata.tsv"):
+    def __init__(self, avd_name, emulator_controller_args, local_output_path, max_steps=30,instruction_fp="../dataset/llamatouch_task_metadata.tsv"):
         super().__init__(
             avd_name=avd_name,
             emulator_controller_args=emulator_controller_args,
             local_output_path=local_output_path,
             max_steps=max_steps,
-            instruction_fp=instruction_fp,
+            instruction_fp=os.path.abspath(instruction_fp),
         )
         self.width, self.height = None, None
 
@@ -128,11 +126,11 @@ def run_on_agentenv():
             
             # setup task environment if needed
             print(f"setting up task {task_description}...")
-            ac.setup_task(task_description)
+            ac.setup_task(task_description) # some tasks need to setup preparation before execution
             
             # go to the dropdown s
             print(f"swipe up the screen")
-            ac.device.swipe(500, 1500, 500, 500)
+            ac.device.swipe(500, 1500, 500, 500) #upstairs, x then y
             
             time.sleep(2)
 
