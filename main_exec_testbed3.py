@@ -31,7 +31,7 @@ first_n_episodes=int(os.environ.get("FIRST_N_EPISODES", 10))
 #     f.write(response.content)
 
 
-class AndroidController(AgentEnv):
+class AndroidController(AgentEnv): # AndroidController is a subclass of AgentEnv, and I think they should be integreted as one
     def __init__(self, avd_name, emulator_controller_args, local_output_path, max_steps=30,instruction_fp="../dataset/llamatouch_task_metadata.tsv"):
         super().__init__(
             avd_name=avd_name,
@@ -112,10 +112,10 @@ def run_on_agentenv():
         instruction_fp=TASK_METADATA_PATH,
     )
 
-    # setup AgentEnv
+    # setup AgentEnv: load emulator, connect to emulator, back to home.
     ac.set_up()
     
-    for _ in range(first_n_episodes):
+    for _ in range(first_n_episodes): # iterate through the first n episodes
         try:
             # get instruction from AgentEnv
             task_description = ac.get_instruction()
@@ -137,10 +137,10 @@ def run_on_agentenv():
             action_history = [f"- start from the home screen"]
             thought_history = [f"my goal is to finish the task {task_description}"]
 
-            while not ac.episode_done():
+            while not ac.episode_done(): # iterate through current episode
                 # get view_hierarchy_json from AgentEnv
-                raw_views = ac.get_state()["view_hierarchy_json"]
-                views = parse_views(raw_views)
+                raw_views = ac.get_state()["view_hierarchy_json"] # State includes more than "view_hierarchy_json"; save view hierarchy, screenshot, top activity name and agent action in local
+                views = parse_views(raw_views) #when raw_views is None, return []; else return raw_views (list)
 
                 s = time.time()
                 # get autodroid agent action
@@ -195,7 +195,7 @@ def run_on_agentenv():
             
             # save the last environment state of an episode
             ac.get_state()
-            # reset the environment for next task
+            # reset the environment for next task, reload_snapshot and reconnect using u2d
             ac.reset_env()
 
         except Exception as e:
@@ -209,7 +209,7 @@ def run_on_agentenv():
             ac.reset_env()
             continue
     
-    # Execution finished, close AgentEnv
+    # Execution finished, close AgentEnv：disconnect u2d and close emulator using subprocess.Popen(cmd)
     ac.tear_down()
 
 

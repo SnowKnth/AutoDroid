@@ -27,7 +27,7 @@
         ],
         "skip_operation": [
             {
-                "event_type": "touch",
+                "event_type": "click",
                 "target_view": "skip_welcome_button"
             }
         ]

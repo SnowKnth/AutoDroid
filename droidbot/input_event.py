@@ -236,7 +236,7 @@ class EventLog(object):
                 return True
         return False
 
-    def start(self):
+    def start(self, send_event=True):
         """
         start sending event
         """
@@ -245,7 +245,8 @@ class EventLog(object):
         self.event_str = self.event.get_event_str(self.from_state)
         logging.getLogger('Log2File').info("Action: %s" % self.event_str)
         print("Action: %s" % self.event_str)
-        self.device.send_event(self.event)
+        if send_event:
+            self.device.send_event(self.event)
         if self.is_start_event():
             time.sleep(5)
 

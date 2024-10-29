@@ -60,7 +60,7 @@
                 "target_view": "frm_about"
             },
             {
-                "event_type": "touch",
+                "event_type": "click",
                 "target_view": "frm_map"
             }
         ]
