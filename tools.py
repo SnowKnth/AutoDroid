@@ -1,6 +1,7 @@
 import hashlib
 import os
 import re
+import json
 
 import networkx as nx
 from openai import OpenAI
@@ -128,7 +129,7 @@ def get_item_properties_from_id(ui_state_desc, view_id):
             return get_view_without_id(view_desc)
     return ACTION_MISSED
 
-
+# useless now
 def get_thought(answer):
     start_index = answer.find("Thought:") + len(
         "Thought:"
@@ -202,7 +203,7 @@ def make_prompt(
     )
     return prompt
 
-
+# Extract action view id, action type and input text if exists from response of LLM
 def extract_action(answer):
     llm_id = "N/A"
     llm_action = "tap"
@@ -707,7 +708,7 @@ def get_action_from_views_actions(
     """
     state_prompt, candidate_actions, _, _ = get_described_actions(views=views)
     state_str = hash_string(get_described_actions(views, remove_time_and_ip=True)[0])
-    prompt = make_prompt(
+    prompt = make_prompt( # Generate prompt str
         task_description=task_description,
         state_prompt=state_prompt,
         action_history=action_history,
@@ -727,14 +728,17 @@ def get_action_from_views_actions(
 
     response = query_gpt(prompt)
 
-    # print(f"response: {response}")
+    # post process for extracting next action; by wxd If idx==-1(finished or impossible), selected_action can't return "Task_completed"
     idx, action_type, input_text = extract_action(response)
 
     # print(f"candidate actions: {candidate_actions}")
 
     idx = int(idx)
-    selected_action = candidate_actions[idx]
-
+    if idx != -1:
+        selected_action = candidate_actions[idx] # by wxd, need modifying here !!!
+    else:
+        selected_action = FINISHED
+    # Such as: "<button text='Settings'>Settings</button>"
     selected_view_description = get_item_properties_from_id(
         ui_state_desc=state_prompt, view_id=idx
     )
@@ -748,6 +752,84 @@ def get_action_from_views_actions(
         prompt,
         response,
     )
+    
+def get_extracted_steps(function:str):
+    """
+    Extract the steps from the function description
+    """
+    steps = []
+    
+    # Define the prompt to ask the LLM to divide the function into substeps
+    prompt = f"Divide the following function into substeps(i.e. tasks), generating both Event and Assertion types:\n\n{function}\n\nPlease format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from 1), 'event_or_assertion'('Event' or 'Assertion'), 'task'(str)."
+    retries = 0
+    max_retries = 10
+    
+    while retries < max_retries:
+    # Query the GPT model to get the substeps
+        response = query_gpt(prompt)        
+        try:
+            steps = json.loads(response)
+            def checkSteps(steps):
+                for i, step in enumerate(steps):
+                    if not isinstance(step, dict):
+                        return False
+                    if "step_number" not in step or "event_or_assertion" not in step or "task" not in step:
+                        return False
+                    if not isinstance(step["step_number"], int) or not isinstance(step["event_or_assertion"], str)  or not isinstance(step["task"], str):
+                        return False
+                    if step["step_number"] != (i+1) or step["event_or_assertion"] not in ('Event', 'Assertion'):
+                        return False
+                return True
+            if checkSteps(steps):           
+                break  # Exit the loop if parsing is successful
+            else: 
+                retries += 1
+                continue
+        except json.JSONDecodeError:
+            print(f"Error: Unable to parse the response from GPT. Retry {retries + 1}/{max_retries}")
+            retries += 1
+    
+    if retries == max_retries:
+        print("Error: Unable to extract steps after maximum retries.")
+        return []
+    
+       # Validate and clean the fields in the steps
+    validated_steps = []
+    for step in steps:
+        validated_step = {
+            "app": "apps/android.apk",
+            "function": function,
+            "step_number": step.get("step_number", -1),
+            "event_or_assertion": step.get("event_or_assertion", ""),
+            "task": step.get("task", ""),
+            "status": 1,
+            "example_email":  "",
+            "example_password": ""
+        }
+        
+        # Perform string validation on the fields
+        for key, value in validated_step.items():
+            if isinstance(value, str):
+                validated_step[key] = value.strip()  # Remove leading/trailing whitespace
+        
+        validated_steps.append(validated_step)
+    validated_step = {
+        "app": "apps/android.apk",
+        "function": function,
+        "step_number": len(steps)+1,
+        "event_or_assertion": "Assertion",
+        "task": f"could you tell me if I have successfully completed the process of {function} function?",
+        "status": -1,
+        "example_email":  "",
+        "example_password": ""
+    }
+    validated_steps.append(validated_step)
+    
+    return validated_steps
+    
+
+    #{'app': 'apps/a13.apk', 'function': 'Search something', 'step_number': 1, 'event_or_assertion': 'Event', 'task': 'Click a view "https://html.duckduckgo.com, url edit text"', 'status': 1, 'example_email': '', 'example_password': ''}
+    #{'app': 'apps/a13.apk', 'function': 'b11', 'step_number': 5, 'event_or_assertion': 'Assertion', 'task': "could you tell me if I have successfully completed the process of visiting the 'Search something' function?", 'status': -1, 'example_email': '', 'example_password': ''}
 
 
 def query_gpt(prompt):

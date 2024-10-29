@@ -1274,3 +1274,559 @@ class TaskPolicy(UtgBasedInputPolicy):
             return 'no_description'  # there is no description of the current state, either it is the leaf node or it was not explored
         # import pdb;pdb.set_trace()
         return self._insert_predictions_into_state_prompt(state_prompt, current_state_item_descriptions)
+
+####because 'AGENTENV_PATH' is set so environment can be found
+sys.path.insert(0, os.environ.get("AGENTENV_PATH"))
+from environment import AndroidController
+
+class StepTaskPolicy(UtgBasedInputPolicy):
+
+    def __init__(self, device, app, random_input, step, extracted_info, api, addiAC: AndroidController):
+        super(TaskPolicy, self).__init__(device, app, random_input)
+        self.logger = logging.getLogger(self.__class__.__name__)
+        self.__nav_target = None
+        self.__nav_num_steps = -1
+        self.step = step 
+        self.task = "start"
+        self.extracted_info = extracted_info # extracted_info[-1]中的status为-1，为额外增添的步骤，用于判断该function是否已完成；其余正常步骤status=1
+        self.attempt_count = 0
+        self.max_attempt_count = 3
+        self.__num_restarts = 0
+        self.__num_steps_outside = 0
+        self.__event_trace = ""
+        self.__missed_states = set()
+        self.__random_explore = random_input
+        self.__action_history = []
+        self.api = api
+        self.addiAC = addiAC
+
+
+    #lccc # ??? 判断finish是否完成的逻辑有问题，目前是生成下一步动作判断是否完成，实际结合动作后的界面信息判断是否完成是否更好？
+    def start(self, input_manager):
+        """
+        start producing events
+        :param input_manager: instance of InputManager
+        """
+        self.action_count = 0
+        #self.step = len(self.extracted_info)
+        max_step = len(self.extracted_info)*4-4
+        while input_manager.enabled and not self.addiAC.episode_done():#input_manager.event_count:
+            try:
+                #lccc 先忽略system enter 和 layout
+                if ("system enter" in self.task.lower()) or ("layout" in self.task.lower()):
+                    finish = -1                        
+                else:
+                    raw_views = self.addiAC.get_state()["view_hierarchy_json"] # State includes more than "view_hierarchy_json"; save view hierarchy, screenshot, top activity name and agent action in local
+                    s = time.time()
+                    finish, event = self.generate_event()#产生事件的程序
+                    condition = "Event"
+
+                #finish -1,0,1分别表示什么???
+                if finish != -1: # 需要执行事件
+                    if self.step > 0: #修正event以外的事件类型，0对应的是task-‘start’ 
+                        if (self.extracted_info[self.step-1]['event_or_assertion'] != 'Event') and (finish == 1): #???这里finish==1表示什么
+                            condition = "in the state" ##### ??? by wxd, how can condition be considered, add_event(...) definition may need to be modified
+                            if "not in the state" in self.task:
+                                condition = "not in the state"
+                        if self.task.split()[0].lower() == "clear":
+                            condition = "Clear" 
+                    input_manager.add_event(event, send_event=True) #execute
+                    if event.event_type == "key":
+                        if event.name == "BACK":
+                            self.addiAC.post_action(
+                                "action_type: PRESS_BACK, touch_point: [-1.0, -1.0], lift_point: [-1.0, -1.0], typed_text: ''"
+                            )
+                    elif event.event_type == "click":
+                        tl, br = event.view["bounds"]
+                        self.addiAC.tap(tl, br)
+                    elif event.event_type == "long_click":
+                        tl, br = event.view["bounds"]
+                        self.addiAC.long_press(tl, br)
+                    elif event.event_type == "swipe":
+                        act = f"action_type: dual_point, touch_point: [{event.start_x}, {event.start_y}], lift_point: [{event.end_x}, {event.end_y}], typed_text: ''"
+                        self.addiAC.post_action(act)
+                    elif event.event_type == "set_text":
+                        self.addiAC.text(event.text)
+                    elif event.event_type == "oracle":
+                        pass                
+                    else:
+                        raise Exception(f"Error action event type: {event.event_type}")
+                    
+                    self.attempt_count += 1
+                    time.sleep(8)
+                if (finish != 0) or (self.attempt_count > self.max_attempt_count): #finish != 0（即 1或-1表示正常完成或跳过）表该条task已完成，或超出最大次数；否则，finish == 0 表示function未完成，继续尝试；
+                    if  self.step < len(self.extracted_info)-1: #是否继续下一条task
+                        self.step += 1
+                        self.task = self.extracted_info[self.step-1]['task']
+                        self.attempt_count = 0
+                    else:
+                        self.addiAC.post_action( "action_type: STATUS_TASK_COMPLETE, touch_point: [-1.0, -1.0], lift_point: [-1.0, -1.0], typed_text: ''")
+                        break
+                
+                print(f'lccc start({self.action_count}): finish [{finish}] / condition[{condition}] / event[{event}] / task[{self.task}] / attempt_count[{self.attempt_count}]')
+
+            except KeyboardInterrupt:
+                break
+            except InputInterruptedException as e:
+                self.logger.warning("stop sending events: %s" % e)
+                break
+            except Exception as e:
+                self.logger.warning("exception during sending events: %s" % e)
+                import traceback
+                traceback.print_exc()
+                continue
+            self.action_count += 1
+        
+
+    def generate_event_based_on_utg(self):
+        """
+        generate an event based on current UTG
+        @return: InputEvent
+        """
+        current_state = self.current_state
+        self.logger.info("Current state: %s" % current_state.state_str)
+        if current_state.state_str in self.__missed_states:
+            self.__missed_states.remove(current_state.state_str)
+
+        if current_state.get_app_activity_depth(self.app) < 0:
+            # If the app is not in the activity stack
+            start_app_intent = self.app.get_start_intent()
+
+            # It seems the app stucks at some state, has been
+            # 1) force stopped (START, STOP)
+            #    just start the app again by increasing self.__num_restarts
+            # 2) started at least once and cannot be started (START)
+            #    pass to let viewclient deal with this case
+            # 3) nothing
+            #    a normal start. clear self.__num_restarts.
+
+            if self.__event_trace.endswith(EVENT_FLAG_START_APP + EVENT_FLAG_STOP_APP) \
+                    or self.__event_trace.endswith(EVENT_FLAG_START_APP):
+                self.__num_restarts += 1
+                self.logger.info("The app had been restarted %d times.", self.__num_restarts)
+            else:
+                self.__num_restarts = 0
+
+            # pass (START) through
+            if not self.__event_trace.endswith(EVENT_FLAG_START_APP):
+                if self.__num_restarts > MAX_NUM_RESTARTS:
+                    # If the app had been restarted too many times, enter random mode
+                    msg = "The app had been restarted too many times. Entering random mode."
+                    self.logger.info(msg)
+                    self.__random_explore = True
+                else:
+                    # Start the app
+                    print("lc---------------------------------------------first")
+                    self.__event_trace += EVENT_FLAG_START_APP
+                    self.logger.info("Trying to start the app...")
+                    self.__action_history = [f'- start the app {self.app.app_name}']
+                    return 1, IntentEvent(intent=start_app_intent)
+
+        elif current_state.get_app_activity_depth(self.app) > 0:
+            # If the app is in activity stack but is not in foreground
+            self.__num_steps_outside += 1
+
+            if self.__num_steps_outside > MAX_NUM_STEPS_OUTSIDE:
+                # If the app has not been in foreground for too long, try to go back
+                if self.__num_steps_outside > MAX_NUM_STEPS_OUTSIDE_KILL:
+                    stop_app_intent = self.app.get_stop_intent()
+                    go_back_event = IntentEvent(stop_app_intent)
+                else:
+                    go_back_event = KeyEvent(name="BACK")
+                self.__event_trace += EVENT_FLAG_NAVIGATE
+                self.logger.info("Going back to the app...")
+                self.__action_history.append('- go back')
+                return 1, go_back_event
+        else:
+            # If the app is in foreground
+            self.__num_steps_outside = 0
+        
+        #lccc status=-1表示使用LLM方法，status=1表示先使用match方法
+        if self.extracted_info[self.step-1]['status'] == -1:
+            finish, action, candidate_actions = self._get_action_with_LLM(current_state, self.__action_history)
+        else: #先尝试match方法，再尝试LLM
+            finish, action, candidate_actions = self._get_action_with_match(current_state, self.__action_history)
+            if action is None:
+                if self.task.split()[0].lower() != "identify":
+                    self.extracted_info[self.step-1]['status'] = -1
+                finish, action, candidate_actions = self._get_action_with_LLM(current_state, self.__action_history)
+
+        if action is not None:
+            desc = current_state.get_action_desc(action)
+            self.__action_history.append(desc)
+            print(f"lccc action: [ {action} ] desc: [ {desc} ] task: [ {self.task}]")
+            return finish, action
+
+        if (finish != -1) and (self.__random_explore):
+            self.logger.info("Trying random event.")
+            action = random.choice(candidate_actions)
+            self.__action_history.append(current_state.get_action_desc(action))
+            return finish, action
+
+        if (finish == -1):
+            return finish, action
+        
+        # If couldn't find a exploration target, stop the app
+        stop_app_intent = self.app.get_stop_intent()
+        self.logger.info("Cannot find an exploration target. Trying to restart app...")
+        self.__action_history.append('- stop the app')
+        self.__event_trace += EVENT_FLAG_STOP_APP
+        return finish, IntentEvent(intent=stop_app_intent)
+
+
+    def _query_llm(self, prompt):
+        client = OpenAI(api_key=os.environ["OPENAI_APIKEY"], base_url=os.environ["OPENAI_BASEURL"])
+        retry = 0
+        completion = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt,
+                }
+            ],
+            # "gpt-3.5-turbo" points to "gpt-3.5-turbo-0125"
+            # model="gpt-4-0125-preview",
+            # model="gpt-4o-2024-05-13",
+            # model="gpt-4o",
+            model="gpt-3.5-turbo",
+            temperature=0,
+            seed=0x1110,
+            timeout=60,
+        )
+        res = completion.choices[0].message.content
+        return res
+    
+    # def _query_llm(self, prompt):
+    #     # messages=[{"role": "user", "content": prompt}]
+    #     response = self.query_gpt(prompt)
+    #     # real_ans = response['choices'][0]['message']['content']
+    #     return real_ans
+          
+    def convert(self, identifier):
+        special_word_dict = {
+            'Sign_in':'sign in',
+            'sign_up':'sign up',
+            'sign_in':'sign in',
+            'signin':'sign in',
+            'Sign_up':'sign up',
+            'signup':'sign up',
+            'Log_In':'log in',
+            'Log_in':'log in',
+            'login':'log in',
+            '%':'percent',
+            '#':'number',
+            'et':'edit text',
+            'edittext':'edit text',
+            'btn':'button',
+            'bt':'button',
+            'tv':'text view',
+            'textview':'text view',
+            'fab':'',
+            '&':'and'
+        }
+        identifier = identifier.replace("\"","").replace("ICST","icst") 
+   
+        for text in identifier.split(" "):
+            if text in special_word_dict:
+                identifier = identifier.replace(text, special_word_dict[text])
+    
+    
+        splitted = re.sub('([A-Z][a-z]+)', r' \1', re.sub('([A-Z]+)', r' \1' , identifier)).split() 
+
+   
+        text_feature_without_camel_case = '' 
+        for revised_text in splitted:
+            if '.com' in revised_text:
+                revised_text = revised_text.split(".com")[0] + ".com" 
+            if 'S.' in revised_text: # for a35
+                revised_text = 'Smith'
+            revised_text = revised_text.lower()
+            if revised_text in special_word_dict:
+                revised_text = special_word_dict[revised_text]
+            text_feature_without_camel_case += revised_text + " "
+    
+        text_feature = text_feature_without_camel_case.replace("_"," ").replace("-", " ").replace("\\b", "").replace("todo", "to do").replace("$", "").replace(".0","").replace("sample.","sample").replace("to,", "to"). replace("do.", "do").strip()
+    
+        for text in text_feature.split(" "):
+            if text in special_word_dict:
+                text_feature = text_feature.replace(text, special_word_dict[text])
+    
+        return text_feature
+
+    # 判断当前action和task是否匹配,event事件采用全匹配，assertion采用子集匹配
+    def if_action(self, now_action):#now_action:Event Object
+        KEY_TouchEvent = "click"
+        KEY_LongTouchEvent = "long_click"
+        KEY_SwipeEvent = "swipe"
+        KEY_ScrollEvent = "scroll"
+        KEY_SetTextEvent = "set_text"
+        print(f'lccc if_action candidate: {now_action}, {type(now_action)}')        
+        #例 Edit a view "log in password" with "research"
+        flag = 1
+        input = ""
+
+        #action = Edit
+        action = self.task.split()[0].lower()
+        print(f'lccc if_action action: {action}')
+        if hasattr(now_action, 'event_type'):
+            event_type = now_action.event_type
+            print(f'lccc if_action action:  event_type: {event_type}')
+
+        if action == "click" or action == "swipe":
+            if event_type != KEY_TouchEvent:
+                return 0, input
+        elif action == "edit":
+            if event_type != KEY_SetTextEvent:
+                return 0, input
+        elif action == "long":
+            if event_type != KEY_LongTouchEvent:
+                return 0, input
+        elif action == "identify":
+            condition = self.task.split("\"")[-1]
+            if "not" in condition:
+                condition = False
+            else:
+                condition = True
+
+        if hasattr(now_action, 'view'):
+            view = now_action.view
+            clickable = view['clickable']
+            editable = view['editable']
+            long_clickable = view['long_clickable']
+            print(f'lccc if_action action:  clickable: {clickable} editable:{editable} long_clickable: {long_clickable}')
+        else:
+            return 0, input
+        
+        candidate_text = ""
+        candidate_id = ""
+        candidate_content_desc = ""
+        str_view = ""
+        if view['text']:
+            candidate_text = view['text']
+            try:
+                number = int(float(candidate_text))
+                if number == float(candidate_text):
+                    candidate_text = str(number)
+            except ValueError:
+                print("Invalid number format")
+            str_view = self.convert(candidate_text)
+        if view['content_description']:
+            candidate_content_desc = view['content_description']
+            if (str_view != ""):
+                str_view += ", "
+            str_view += self.convert(candidate_content_desc)
+        if view['resource_id']:
+            candidate_id = view['resource_id']
+            if (str_view != ""):
+                str_view += ", "
+            candidate_id = candidate_id.split("/")[-1]
+            str_view += self.convert(candidate_id)
+        if str_view == "":
+            return 0, input
+        
+        str_view_task = self.task.split("\"")[1].lower()
+        print(f'lccc if_action task: {str_view_task} item: {str_view}')
+
+        if action != "identify":
+            if (str_view_task != str_view):    #???这里采用严格匹配
+                return 0, input
+        else:
+            if (str_view_task not in str_view):  #???这里采用严格子集匹配而不是语义匹配
+                return 0, input
+        
+        if "with" in self.task:
+            input = self.task.split("with")[1].split("\"")[1]
+        # elif action == "clear":
+        #     input = "0"
+        return flag, input
+    
+    # 使用迁移匹配的方法寻找对应事件    
+    def _get_action_with_match(self, current_state, action_history):
+        finish = 0
+        selected_action = None
+        action = self.task.split()[0].lower()
+        condition = self.task.split("\"")[-1]
+        if action == "identify":
+            view_descs, candidate_actions = current_state.get_described_actions_assertion() #???需要修改
+        else:
+            view_descs, candidate_actions = current_state.get_described_actions() #???需要修改，连接词语义不准确
+        state_desc = '\n'.join(view_descs)
+
+        #system enter / back
+        if "system" in self.task:
+            if "back" in self.task:
+                print(f'lccc _get_action_with_match candidate: system back')
+                return 1, candidate_actions[-1], candidate_actions
+            else:
+                return 1, selected_action, candidate_actions
+        print(f'lccc _get_action_with_match candidate: {len(view_descs)}——{len(candidate_actions)}——{self.task}')
+        
+        for idx in range(0, len(candidate_actions)):
+            desc = state_desc.split("("+str(idx)+")")[0]
+            if idx > 0:
+                desc = desc.split("("+str(idx-1)+")")[1]
+            desc = desc.replace('\n', '')
+            desc += "("+str(idx)+")"
+            print(f'lccc _get_action_with_match candidate: {idx}——{desc}——{self.task}')
+            #if_action判断当前候选action是否匹配
+            flag, text = self.if_action(candidate_actions[idx])
+            if flag == 1: # ??? flag等于1就一定finish=1吗，是否需要看呈现出来的页面
+                finish = 1
+                print(action)
+                selected_action = candidate_actions[idx]
+                if (action == "swipe"):
+                    mid_x = (selected_action.view['bounds'][0][0] + selected_action.view['bounds'][1][0])/2
+                    mid_y = (selected_action.view['bounds'][0][1]+ selected_action.view['bounds'][1][1])/2
+                    fix_x = 1000/2
+                    selected_action = SwipeEvent(start_x=mid_x, start_y=mid_y, start_view=selected_action.view, end_x=mid_x+fix_x, end_y=mid_y)
+                print(type(selected_action), selected_action)
+                
+                if text != "":
+                    selected_action.text = text
+                if action != "identify":
+                    return finish, selected_action, candidate_actions
+                elif "not" in condition: #not in the state
+                    return 0, selected_action, candidate_actions 
+                else:
+                    return finish, selected_action, candidate_actions #in the state
+
+        if (action == "identify") and ("not" in condition):
+            selected_action = candidate_actions[0]
+            selected_action.event_type = "oracle/" + condition
+            selected_action.view['text'] = self.task
+            return 1,  selected_action, candidate_actions
+        
+        return finish, selected_action, candidate_actions
+
+    def remove_duplicate_lines(self, state_prompt, history_prompt):
+        # 将两个文本字符串分割成行的列表
+        state_lines = state_prompt.split('\n')
+        new_state_lines = []
+        # 遍历 state_prompt 中的每一行
+        for line in state_lines:
+            _line = line.split("that")[0].strip()
+            if "can" in line:
+                _line_action = line.split("can")[1].split("(")[0].strip()
+            else:
+                _line_action = ""
+            if ("-" in _line):
+                _line = _line.split("-")[1].strip()
+                _line = _line_action + " " + _line
+            # 如果这一行不在 history_prompt 中，则添加到新列表中                
+            if ((_line not in history_prompt) and ("checked" not in _line)) or ("sign" in _line.lower()) or ("register" in _line.lower()):
+                new_state_lines.append(line)
+            else:
+                print(f'lccc duplicate: {_line}')
+        new_state_prompt = '\n'.join(new_state_lines)
+        return new_state_prompt
+    
+    def _get_after_task(self):
+        desc = ""
+        for i in range(self.step, len(self.extracted_info)-1):
+            desc += f" -task {i+1}: {self.extracted_info[i]['task']}\n" 
+        return desc
+    
+    def _get_action_with_LLM(self, current_state, action_history):
+        
+        app = self.extracted_info[self.step-1]['app'].split("/")[1].split(".")[0] # 'app': 'apps/a13.apk'    ???extracted_info:dict中的status/example_email/example_password是做什么用的
+        func = self.extracted_info[self.step-1]['function'] #func，对应dict中的function似乎有问题，需要修改
+        view_descs, candidate_actions = current_state.get_described_actions()
+
+        if "system back" in self.task: #???返回结果没看懂
+            return 1, candidate_actions[-1], candidate_actions
+        
+        
+
+        # First, determine whether the task has already been completed.
+        task_prompt = f"Based on the actions I have taken so far, I would like to confirm if I have successfully completed the '{self.task}' function testing process. Here is a summary of the actions I have performed:\n" + ';\n '.join(action_history) #后续加app名称、当前界面显示内容（如何基于hierarchy总结相互关系）用于辅助判断是否完成；是否使用全部历史信息还是仅当前步骤的历史信息，对应关系是个难点；self.task是否要包含当前步骤之前的所有步骤来进行综合判断
+        question = f"Please provide a 'yes' or 'no' response to indicate whether, based on these actions, I have completed the testing of the '{self.task}' function successfully? Please provide a response in just 'yes' or 'no', without additional explanations or details."
+        prompt = f'{task_prompt}\n{question}'
+        print("\n-------------------------prompt----------------------------------\n")
+        print(prompt)
+        print("\n-------------------------end prompt----------------------------------\n")
+        response = self._query_llm(prompt)
+        print(f'response: {response}')
+
+        if ("yes" in response.lower()):
+            finish = -1 #???-1表示什么
+            print(f"Seems the task is completed. Press Enter to continue...")
+            return finish, None, candidate_actions
+
+
+        # Second, if not finished, then provide the next action.
+        history_prompt = 'Completed Actions (do not repeat these): \n' + ';\n '.join(action_history)
+        state_prompt = 'Current State with Available UI Views and Actions (with Action ID):\n ' + ';\n '.join(view_descs)
+        state_prompt = self.remove_duplicate_lines(state_prompt, history_prompt)
+        
+        if self.task.split()[0].lower() == "identify":
+            # identify
+            task_prompt = f"I have performed some actions in the current app. Now, I want to {self.task}, but I couldn't find the corresponding component. Therefore, I need to perform new actions to navigate to a new page for inspection. Based on the actions I have already executed, please suggest the action ID that I might perform next.\n"
+            prompt = f'{task_prompt}\n{history_prompt}\n{state_prompt}'
+        else:
+            # event
+            task_prompt = f"I am working on a test case for the '{func}' feature in the '{app}' app. My current task is to {self.task}. I've completed some actions and need to decide the next step that will effectively advance the testing process." #{app}需要改成真实名字，目前类似‘a13’这种，且需要添加对于app的整体介绍
+            question = f"Given these options, which action (identified by the Action ID) should I perform next to effectively continue testing the '{func}' feature? Please do not suggest any actions that I have already completed. Please only return the action's ID"
+            tips = f"Here are a few tips that might help you with your action selection: Please consider that some apps may require login to access main features, but this is not always the case. If considering the login process, please ensure all necessary steps like entering email, password, and then confirming sign-in are included in the recommendation. If you are unsure which action to choose, consider scrolling down to access further features of the app."
+            prompt = f'{task_prompt}\n{state_prompt}\n{history_prompt}\n{question}\n{tips}'
+        print("\n-------------------------prompt----------------------------------\n")
+        print(prompt)
+        print("\n-------------------------end prompt----------------------------------\n")
+        response = self._query_llm(prompt)
+        print(f'response: {response}')
+    
+        if 'action id' in response.lower():
+            response = response.lower().split("action id")[1]    
+        match = re.search(r'\d+', response)
+ 
+        finish = 0
+        # 判断是否已经执行到后面的task了
+        if not match:
+            after_prompt = f"Please review the following list of future tasks and determine if any have already been completed:\n{self._get_after_task()}"
+            question = f"If any tasks have been completed, please reply with the ID of the last task that was completed; if none have been completed, return -1. Note, please provide a response in just one number, without additional explanations or details.\n"
+            prompt = f'{history_prompt}\n{after_prompt}\n{question}'
+            print(prompt)
+            response = self._query_llm(prompt)
+            print(f'response: {response}')
+            if response == "-1":
+                selected_action = candidate_actions[-1]
+                return finish, selected_action, candidate_actions
+            else:
+                finish = -1
+                match = re.search(r'\d+', response)
+                if match:
+                    idx = int(match.group(0))
+                    self.step = idx
+                return finish, None, candidate_actions
+
+        
+        idx = int(match.group(0))
+        print(f"lccc idx: {idx}")
+
+        selected_action = candidate_actions[idx]
+        # 提取action的text
+        if (isinstance(selected_action, SetTextEvent)) and (self.task.split()[0].lower() != "clear"):
+            view_text = current_state.get_view_desc(selected_action.view) #get_view_desc需要修改
+            question = f'I have chosen the action of "{view_text}". So I need to type something into the edit box. What text should I enter? Just return the text need enter and nothing else.'
+            #prompt = f'{task_prompt}\n{state_prompt}\n{question}'
+            prompt = f'{task_prompt}\n{history_prompt}\n{question}'
+            if ("email" in view_text.lower()) and (self.extracted_info[0]['example_email'] != ""):
+                response = "\"" + self.extracted_info[0]['example_email'] + "\""
+            elif ("password" in view_text.lower()) and (self.extracted_info[0]['example_password'] != ""):
+                response = "\"" + self.extracted_info[0]['example_password'] + "\""
+            elif "with" in self.task:
+                response =  self.task.split("with")[1]
+            else:
+                print(prompt)
+                response = self._query_llm(prompt)
+            selected_action.text = response
+            print(f'response: {response}')
+            if "\"" in response:
+                selected_action.text = re.findall(r'"([^"]*)"', response)[-1]
+            print(f'response: {selected_action.text}')
+        print(f"lccc _get_action_with_LLM finish: {finish}; selected_action: {selected_action}")
+        return finish, selected_action, candidate_actions
+        # except:
+        #     import traceback
+        #     traceback.print_exc()
+        #     return None, candidate_actions
+
