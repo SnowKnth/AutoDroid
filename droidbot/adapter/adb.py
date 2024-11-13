@@ -222,7 +222,7 @@ class ADB(Adapter):
         :return: the enabled service names, each service name is in <package_name>/<service_name> format
         """
         r = self.shell("settings get secure enabled_accessibility_services")
-        r = re.sub(r'(?m)^WARNING:.*\n?', '', r)
+        r = re.sub(r'(?m)^WARNING:.*\n?', '', r) #(?m) flag enables multi-line mode, allowing the ^ and $ anchors to match the start and end of each line, respectively.
         return r.strip().split(":") if r.strip() != '' else []
 
     def disable_accessibility_service(self, service_name):
@@ -241,7 +241,7 @@ class ADB(Adapter):
         :param service_name: the service to enable, in <package_name>/<service_name> format
         """
         service_names = self.get_enabled_accessibility_services()
-        if service_name not in service_names:
+        if service_name not in service_names: #'io.github.ylimit.droidbotapp/io.github.privacystreams.accessibility.PSAccessibilityService'
             service_names.append(service_name)
             self.shell("settings put secure enabled_accessibility_services %s" % ":".join(service_names))
         self.shell("settings put secure accessibility_enabled 1")

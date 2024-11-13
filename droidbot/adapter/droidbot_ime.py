@@ -33,7 +33,7 @@ class DroidBotIme(Adapter):
         self.device = device
         self.connected = False
 
-    def set_up(self):
+    def set_up(self): #检查 DroidBot 应用是否已安装，如果未安装则尝试安装。
         device = self.device
         if DROIDBOT_APP_PACKAGE in device.adb.get_installed_apps():
             self.logger.debug("DroidBot app was already installed.")

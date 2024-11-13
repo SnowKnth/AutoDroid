@@ -8,11 +8,13 @@ import sys
 import pkg_resources
 import shutil
 from threading import Timer
+import json
 
 from .device import Device
 from .app import App
 from .env_manager import AppEnvManager
 from .input_manager import InputManager
+from environment import AndroidController
 
 
 class DroidBot(object):
@@ -32,6 +34,8 @@ class DroidBot(object):
                  policy_name=None,
                  random_input=False,
                  script_path=None,
+                 extracted_info=[],
+                 ac = None,
                  event_count=None,
                  event_interval=None,
                  timeout=None,
@@ -75,6 +79,9 @@ class DroidBot(object):
         self.device = None
         self.app = None
         self.task = task
+        self.extracted_info = extracted_info #
+        self.ac = ac #
+        
         self.droidbox = None
         self.env_manager = None
         self.input_manager = None
@@ -105,6 +112,8 @@ class DroidBot(object):
                 device=self.device,
                 app=self.app,
                 task=self.task,
+                extracted_info = extracted_info, #lccc
+                ac = ac, #
                 policy_name=policy_name,
                 random_input=random_input,
                 event_count=event_count,
@@ -177,6 +186,26 @@ class DroidBot(object):
         self.logger.info("DroidBot Stopped")
 
     def stop(self):
+        print("-----------------------------")
+        print(len(self.input_manager.events))
+        events_list = [event.__dict__ for event in self.input_manager.events]
+        app_name = self.extracted_info[0]['app'].split('.')[0].split('/')[1]
+        function_name = self.extracted_info[-1]['function']
+        file_path_ori = self.output_dir + "/result"
+        os.makedirs(file_path_ori, exist_ok=True)
+
+        num = 0
+        while True:
+            file_name = f"{app_name}_{function_name}_{num}.json"
+            file_path = os.path.join(file_path_ori, file_name)
+            if not os.path.exists(file_path):
+                break
+            num = num + 1
+
+
+        with open(file_path, 'w') as file:
+            json.dump(events_list, file, indent=4)
+
         self.enabled = False
         if self.timer and self.timer.is_alive():
             self.timer.cancel()

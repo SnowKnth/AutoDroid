@@ -17,6 +17,7 @@ import tools
 import pdb
 import os
 from query_lmql import prompt_llm_with_history
+from openai import OpenAI
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 # Max number of restarts
@@ -44,6 +45,7 @@ POLICY_REPLAY = "replay"
 POLICY_MANUAL = "manual"
 POLICY_MONKEY = "monkey"
 POLICY_TASK = "task"
+POLICY_STEPTASK = "steptask"
 POLICY_NONE = "none"
 POLICY_MEMORY_GUIDED = "memory_guided"  # implemented in input_policy2
 FINISHED = "task_completed"
@@ -245,6 +247,9 @@ class UtgBasedInputPolicy(InputPolicy):
         if event is None:
             if isinstance(self, TaskPolicy):
                 old_state, event = self.generate_event_based_on_utg(input_manager)
+            elif isinstance(self, StepTaskPolicy):
+                old_state = None
+                finish, event = self.generate_event_based_on_utg(input_manager)
             else:
                 old_state = None
                 event = self.generate_event_based_on_utg(input_manager)
@@ -261,7 +266,10 @@ class UtgBasedInputPolicy(InputPolicy):
 
         self.last_state = self.current_state if old_state is None else old_state
         self.last_event = event
-        return event
+        if isinstance(self, StepTaskPolicy):
+            return finish, event
+        else:
+            return event
 
     def __update_utg(self):
         self.utg.add_transition(self.last_event, self.last_state, self.current_state) #add utg in memory, also export to utg.json ; also export to states(.png and .json)
@@ -1281,8 +1289,8 @@ from environment import AndroidController
 
 class StepTaskPolicy(UtgBasedInputPolicy):
 
-    def __init__(self, device, app, random_input, step, extracted_info, api, addiAC: AndroidController):
-        super(TaskPolicy, self).__init__(device, app, random_input)
+    def __init__(self, device, app, random_input,  extracted_info, api, addiAC: AndroidController, step=0):
+        super(StepTaskPolicy, self).__init__(device, app, random_input)
         self.logger = logging.getLogger(self.__class__.__name__)
         self.__nav_target = None
         self.__nav_num_steps = -1
@@ -1310,6 +1318,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         self.action_count = 0
         #self.step = len(self.extracted_info)
         max_step = len(self.extracted_info)*4-4
+        self.device.key_press('HOME')
         while input_manager.enabled and not self.addiAC.episode_done():#input_manager.event_count:
             try:
                 #lccc 先忽略system enter 和 layout
@@ -1318,7 +1327,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                 else:
                     raw_views = self.addiAC.get_state()["view_hierarchy_json"] # State includes more than "view_hierarchy_json"; save view hierarchy, screenshot, top activity name and agent action in local
                     s = time.time()
-                    finish, event = self.generate_event()#产生事件的程序
+                    finish, event = self.generate_event(input_manager)#产生事件的程序
                     condition = "Event"
 
                 #finish -1,0,1分别表示什么???
@@ -1330,7 +1339,9 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                                 condition = "not in the state"
                         if self.task.split()[0].lower() == "clear":
                             condition = "Clear" 
-                    input_manager.add_event(event, send_event=True) #execute
+                    
+                    input_manager.add_event(event, send_event=True) # execute
+                    
                     if event.event_type == "key":
                         if event.name == "BACK":
                             self.addiAC.post_action(
@@ -1338,7 +1349,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                             )
                     elif event.event_type == "click":
                         tl, br = event.view["bounds"]
-                        self.addiAC.tap(tl, br)
+                        self.addiAC.tap(tl, br) # also save action in file
                     elif event.event_type == "long_click":
                         tl, br = event.view["bounds"]
                         self.addiAC.long_press(tl, br)
@@ -1347,7 +1358,9 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                         self.addiAC.post_action(act)
                     elif event.event_type == "set_text":
                         self.addiAC.text(event.text)
-                    elif event.event_type == "oracle":
+                    elif event.event_type == "intent":
+                        self.addiAC.intent(event.get_intent_str())
+                    elif event.event_type in ("oracle"):
                         pass                
                     else:
                         raise Exception(f"Error action event type: {event.event_type}")
@@ -1378,7 +1391,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
             self.action_count += 1
         
 
-    def generate_event_based_on_utg(self):
+    def generate_event_based_on_utg(self, input_manager):
         """
         generate an event based on current UTG
         @return: InputEvent
@@ -1649,7 +1662,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         if action == "identify":
             view_descs, candidate_actions = current_state.get_described_actions_assertion() #???需要修改
         else:
-            view_descs, candidate_actions = current_state.get_described_actions() #???需要修改，连接词语义不准确
+            view_descs, candidate_actions, _, _ = current_state.get_described_actions() #???需要修改，连接词语义不准确
         state_desc = '\n'.join(view_descs)
 
         #system enter / back
@@ -1730,7 +1743,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         
         app = self.extracted_info[self.step-1]['app'].split("/")[1].split(".")[0] # 'app': 'apps/a13.apk'    ???extracted_info:dict中的status/example_email/example_password是做什么用的
         func = self.extracted_info[self.step-1]['function'] #func，对应dict中的function似乎有问题，需要修改
-        view_descs, candidate_actions = current_state.get_described_actions()
+        view_descs, candidate_actions, _, _ = current_state.get_described_actions()
 
         if "system back" in self.task: #???返回结果没看懂
             return 1, candidate_actions[-1], candidate_actions

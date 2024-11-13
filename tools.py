@@ -753,9 +753,9 @@ def get_action_from_views_actions(
         response,
     )
     
-def get_extracted_steps(function:str):
+def get_extracted_steps(function:str, app_short:str):
     """
-    Extract the steps from the function description
+    Extract the substeps from the function description
     """
     steps = []
     
@@ -797,12 +797,12 @@ def get_extracted_steps(function:str):
     validated_steps = []
     for step in steps:
         validated_step = {
-            "app": "apps/android.apk",
+            "app": f"llamatouch_apps/{app_short}.apk",
             "function": function,
             "step_number": step.get("step_number", -1),
             "event_or_assertion": step.get("event_or_assertion", ""),
             "task": step.get("task", ""),
-            "status": 1,
+            "status": -1,
             "example_email":  "",
             "example_password": ""
         }
@@ -814,7 +814,7 @@ def get_extracted_steps(function:str):
         
         validated_steps.append(validated_step)
     validated_step = {
-        "app": "apps/android.apk",
+        "app": f"llamatouch_apps/{app_short}.apk",
         "function": function,
         "step_number": len(steps)+1,
         "event_or_assertion": "Assertion",

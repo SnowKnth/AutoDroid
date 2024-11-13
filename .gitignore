@@ -64,8 +64,10 @@ documents
 temp
 venv
 apks/
+llamatouch_apps/
 output/
 debug.py
 .env
 exec_output/
+outtmp/
 predicted_actions/
