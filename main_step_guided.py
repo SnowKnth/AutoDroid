@@ -19,7 +19,7 @@ from tools import (
 
 ####because 'AGENTENV_PATH' is set so environment can be found
 sys.path.insert(0, os.environ.get("AGENTENV_PATH"))
-from environment import AndroidController
+from environment import AndroidController, PrepareApps
 
 # config
 AVD_NAME = "pixel_6a_api31"
@@ -28,7 +28,7 @@ TASK_METADATA_PATH = "../dataset/llamatouch_task_metadata.tsv"
 emulator_controller_args = {
         "snapshot" : "default_boot",
         "port" : "5554",        # If port is occupied, please switch to 5556, 5558... and so forth
-        "no-window" : "false",  # Change this to "true" to run the emulator without GUI.
+        "no-window" : "true",  # Change this to "true" to run the emulator without GUI.
     }
 first_n_episodes=int(os.environ.get("FIRST_N_EPISODES", 10))
 
@@ -37,7 +37,7 @@ first_n_episodes=int(os.environ.get("FIRST_N_EPISODES", 10))
 #     f.write(response.content)
 
 
-def parse_args(extracted_info):
+def parse_args(extracted_info, ac):
     """
     parse command line input
     generate options including host name, port number
@@ -54,10 +54,13 @@ def parse_args(extracted_info):
                         help="directory of output", default="lc")
     parser.add_argument("-task", action="store", dest="task",
                         help="the task to execute, in natural language", default=extracted_info[0]['task'])
-    parser.add_argument("-step", action="store", dest="step",
-                        help="whether generation is required for this task", default=0)
+    # parser.add_argument("-step", action="store", dest="step",
+                        # help="whether generation is required for this task", default=0)
     parser.add_argument("-extracted_info", action="store", dest="extracted_info",
                         help="The extracted information of test case steps", default=extracted_info)
+    
+    parser.add_argument("-ac", action="store", dest="ac",
+                        help="Android Controller", default=ac)
 
     #lccc-2
 
@@ -88,8 +91,8 @@ def parse_args(extracted_info):
     # print options
     return options
 
-def explore(extracted_info):
-    opts = parse_args(extracted_info)
+def explore(extracted_info, ac):
+    opts = parse_args(extracted_info, ac)
 
     if not os.path.exists(opts.apk_path):
         print("APK does not exist.")########Stuck here
@@ -100,12 +103,13 @@ def explore(extracted_info):
         app_path=opts.apk_path,
         device_serial=opts.device_serial,
         task=opts.task,
-        step=opts.step,
+        # step=opts.step,
         extracted_info=opts.extracted_info,
+        ac = opts.ac,
         is_emulator=opts.is_emulator,
         output_dir=opts.output_dir,
         env_policy=env_manager.POLICY_NONE,
-        policy_name=input_manager.POLICY_TASK,
+        policy_name=input_manager.POLICY_STEPTASK,
         script_path=opts.script_path,
         event_interval=opts.interval,
         timeout=opts.timeout,
@@ -117,6 +121,11 @@ def explore(extracted_info):
         enable_accessibility_hard=opts.enable_accessibility_hard,
         ignore_ad=opts.ignore_ad)
     droidbot.start()
+    
+def pre_download_APK():
+    device_serial = f"emulator-{emulator_controller_args['port']}"  # 设备序列号
+    app = PrepareApps(device_serial)
+    app.pull_installed_apps('llamatouch_apps', TASK_METADATA_PATH)
 
 
 def run_on_agentenv():  
@@ -135,24 +144,27 @@ def run_on_agentenv():
     for _ in range(first_n_episodes): # iterate through the first n episodes
         try:
             # get instruction from AgentEnv
-            task_description = ac.get_instruction()
-            if task_description is None:
+            task_description, gr_path, app_short, episode = ac.get_instruction()
+            if task_description is None: 
                 break
+            if app_short not in ["Settings"]:
+                continue
 
             print(f"Current instruction: {task_description}")
             
             # setup task environment if needed
             print(f"setting up task {task_description}...")
-            ac.setup_task(task_description) # some tasks need to setup preparation before execution
+            # ac.setup_task(task_description) # some tasks need to setup preparation before execution
             
             # go to the dropdown s
             print(f"swipe up the screen")
-            ac.device.swipe(500, 1500, 500, 500) #upstairs, x then y
+            # ac.device.swipe(500, 1500, 500, 500) #upstairs, x then y
             
             time.sleep(2)
-
-            subTasks = get_extracted_steps(task_description)
-            explore(subTasks)
+            
+            # 从dataset/llamatouch_dataset_0521数据集中提取apk，优先从end_no.activity中提取包名，其次从end_no.vh中提取，对apk进行检验；adb shell pm list packages；adb shell pm path <package_name>； adb pull /data/app/com.example.myapp-1/base.apk /path/to/save/base.apk； 然后初始化APK
+            subTasks = get_extracted_steps(task_description, app_short)
+            explore(subTasks, ac)
  
             # save the last environment state of an episode
             ac.get_state()
@@ -180,3 +192,4 @@ if __name__ == "__main__":
     end_time = datetime.now()
     elapsed_time = end_time - start_time
     print(f"Execution time: {elapsed_time}")
+    # pre_download_APK()

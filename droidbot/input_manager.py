@@ -6,11 +6,11 @@ import time
 from .input_event import EventLog
 from .input_policy import UtgBasedInputPolicy, UtgNaiveSearchPolicy, UtgGreedySearchPolicy, \
                          UtgReplayPolicy, \
-                         ManualPolicy, TaskPolicy, \
+                         ManualPolicy, TaskPolicy, StepTaskPolicy, \
                          POLICY_NAIVE_DFS, POLICY_GREEDY_DFS, \
                          POLICY_NAIVE_BFS, POLICY_GREEDY_BFS, \
                          POLICY_REPLAY, POLICY_MEMORY_GUIDED, \
-                         POLICY_MANUAL, POLICY_MONKEY, POLICY_NONE, POLICY_TASK
+                         POLICY_MANUAL, POLICY_MONKEY, POLICY_NONE, POLICY_TASK, POLICY_STEPTASK
 
 DEFAULT_POLICY = POLICY_GREEDY_DFS
 DEFAULT_EVENT_INTERVAL = 1
@@ -27,7 +27,7 @@ class InputManager(object):
     This class manages all events to send during app running
     """
 
-    def __init__(self, device, app, task, policy_name, random_input,
+    def __init__(self, device, app, task, extracted_info, ac, policy_name, random_input,
                  event_count, event_interval,output_dir,
                  script_path=None, profiling_method=None, master=None,
                  replay_output=None, use_memory=True):
@@ -44,6 +44,7 @@ class InputManager(object):
         self.device = device
         self.app = app
         self.task = task
+       
         self.policy_name = policy_name
         self.random_input = random_input
         self.events = []
@@ -54,6 +55,10 @@ class InputManager(object):
         self.replay_output = replay_output
         self.output_dir = output_dir
         self.use_memory = use_memory
+        
+        self.extracted_info = extracted_info #lccc
+        self.ac = ac
+        self.api = 'sk-lNSaW2EZ2kkc0Bw1Db9645248e98434693410e0656F93c2d'
 
         self.monkey = None
 
@@ -84,6 +89,9 @@ class InputManager(object):
             input_policy = ManualPolicy(device, app)
         elif self.policy_name == POLICY_TASK:
             input_policy = TaskPolicy(device, app, self.random_input, task=self.task, use_memory=self.use_memory)
+        elif self.policy_name == POLICY_STEPTASK:
+            #lccc
+            input_policy = StepTaskPolicy(device, app, self.random_input, extracted_info=self.extracted_info, addiAC=self.ac, api=self.api)
         else:
             self.logger.warning("No valid input policy specified. Using policy \"none\".")
             input_policy = None

@@ -860,6 +860,9 @@ class IntentEvent(InputEvent):
 
     def get_event_str(self, state):
         return "%s(intent='%s')" % (self.__class__.__name__, self.intent)
+    
+    def get_intent_str(self):
+        return self.intent
 
 
 class SpawnEvent(InputEvent):

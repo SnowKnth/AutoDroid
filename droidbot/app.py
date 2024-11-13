@@ -2,7 +2,10 @@ import logging
 import os
 import hashlib
 from .intent import Intent
+import subprocess
 
+# 设置全局日志级别为 WARNING
+logging.basicConfig(level=logging.WARNING)
 
 class App(object):
     """
@@ -17,6 +20,7 @@ class App(object):
         """
         assert app_path is not None
         self.logger = logging.getLogger(self.__class__.__name__)
+        self.logger.setLevel(logging.WARNING)
 
         self.app_path = app_path
 
@@ -27,7 +31,7 @@ class App(object):
 
         # from androguard.core.bytecodes.apk import APK
         from androguard.core.apk import APK
-        self.apk = APK(self.app_path)
+        self.apk = APK(self.app_path, skip_analysis=False)
         self.package_name = self.apk.get_package()
         self.app_name = self.apk.get_app_name()
         self.main_activity = self.apk.get_main_activity()
@@ -117,3 +121,5 @@ class App(object):
             sha1.update(data)
             sha256.update(data)
         return [md5.hexdigest(), sha1.hexdigest(), sha256.hexdigest()]
+    
+

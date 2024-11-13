@@ -22,7 +22,7 @@ TASK_METADATA_PATH = "../dataset/llamatouch_task_metadata.tsv"
 emulator_controller_args = {
         "snapshot" : "default_boot",
         "port" : "5554",        # If port is occupied, please switch to 5556, 5558... and so forth
-        "no-window" : "false",  # Change this to "true" to run the emulator without GUI.
+        "no-window" : "true",  # Change this to "true" to run the emulator without GUI.
     }
 first_n_episodes=int(os.environ.get("FIRST_N_EPISODES", 10))
 
@@ -118,7 +118,7 @@ def run_on_agentenv():
     for _ in range(first_n_episodes): # iterate through the first n episodes
         try:
             # get instruction from AgentEnv
-            task_description = ac.get_instruction()
+            task_description,_,_,_ = ac.get_instruction()
             if task_description is None:
                 break
 
