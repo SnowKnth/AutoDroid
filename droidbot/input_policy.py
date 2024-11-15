@@ -218,7 +218,8 @@ class UtgBasedInputPolicy(InputPolicy):
             time.sleep(5)
             return KeyEvent(name="BACK")
 
-        self.__update_utg()#update utg in memory, also export to utg.json ; output states(.png and .json) here
+        if self.last_event is not None:#对应finish==-1(跳过)的情况
+            self.__update_utg()#update utg in memory, also export to utg.json ; output states(.png and .json) here
 
         # update last view trees for humanoid
         if self.device.humanoid is not None:
@@ -253,8 +254,8 @@ class UtgBasedInputPolicy(InputPolicy):
             else:
                 old_state = None
                 event = self.generate_event_based_on_utg(input_manager)
-            import time
-            time.sleep(3)
+            # import time
+            # time.sleep(3)
         else:
             old_state = None
         
@@ -1321,16 +1322,22 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         self.device.key_press('HOME')
         while input_manager.enabled and not self.addiAC.episode_done():#input_manager.event_count:
             try:
-                #lccc 先忽略system enter 和 layout
-                if ("system enter" in self.task.lower()) or ("layout" in self.task.lower()):
-                    finish = -1                        
-                else:
-                    raw_views = self.addiAC.get_state()["view_hierarchy_json"] # State includes more than "view_hierarchy_json"; save view hierarchy, screenshot, top activity name and agent action in local
-                    s = time.time()
-                    finish, event = self.generate_event(input_manager)#产生事件的程序
+                if self.action_count == 0 and self.master is None:
+                    event = KillAppEvent(app=self.app)
                     condition = "Event"
+                    finish = 0
+                else:
+                    #lccc 先忽略system enter 和 layout
+                    if ("system enter" in self.task.lower()) or ("layout" in self.task.lower()):
+                        finish = -1                        
+                    else:
+                        #考虑self.last_event is None的情况？？？？？
+                        raw_views = self.addiAC.get_state()["view_hierarchy_json"] # State includes more than "view_hierarchy_json"; save view hierarchy, screenshot, top activity name and agent action in local
+                        s = time.time()
+                        finish, event = self.generate_event(input_manager)#产生事件的程序
+                        condition = "Event"
 
-                #finish -1,0,1分别表示什么???
+                #finish -1,0,1分别表示什么???：0表示不进入下个subtask
                 if finish != -1: # 需要执行事件
                     if self.step > 0: #修正event以外的事件类型，0对应的是task-‘start’ 
                         if (self.extracted_info[self.step-1]['event_or_assertion'] != 'Event') and (finish == 1): #???这里finish==1表示什么
@@ -1360,6 +1367,11 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                         self.addiAC.text(event.text)
                     elif event.event_type == "intent":
                         self.addiAC.intent(event.get_intent_str())
+                    elif event.event_type == "kill_app":
+                        kill_intent = event.get_intent_str()
+                        if kill_intent is not None:
+                            self.addiAC.intent(event.get_intent_str())
+                        self.addiAC._backtohome()
                     elif event.event_type in ("oracle"):
                         pass                
                     else:
@@ -1368,7 +1380,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                     self.attempt_count += 1
                     time.sleep(8)
                 if (finish != 0) or (self.attempt_count > self.max_attempt_count): #finish != 0（即 1或-1表示正常完成或跳过）表该条task已完成，或超出最大次数；否则，finish == 0 表示function未完成，继续尝试；
-                    if  self.step < len(self.extracted_info)-1: #是否继续下一条task
+                    if  self.step < len(self.extracted_info): #是否继续下一条task
                         self.step += 1
                         self.task = self.extracted_info[self.step-1]['task']
                         self.attempt_count = 0
@@ -1741,47 +1753,47 @@ class StepTaskPolicy(UtgBasedInputPolicy):
     
     def _get_action_with_LLM(self, current_state, action_history):
         
-        app = self.extracted_info[self.step-1]['app'].split("/")[1].split(".")[0] # 'app': 'apps/a13.apk'    ???extracted_info:dict中的status/example_email/example_password是做什么用的
-        func = self.extracted_info[self.step-1]['function'] #func，对应dict中的function似乎有问题，需要修改
+        app = self.extracted_info[self.step-1]['app'].split("/")[1].split(".")[0] # 'app': 'apps/a13.apk'    ???extracted_info:dict中的example_email/example_password是做什么用的
+        func = self.extracted_info[self.step-1]['function'] #function分成多条task, 最后一条task用于验证整个function是否完成
         view_descs, candidate_actions, _, _ = current_state.get_described_actions()
 
-        if "system back" in self.task: #???返回结果没看懂
+        if "system back" in self.task: 
             return 1, candidate_actions[-1], candidate_actions
         
+        history_prompt = 'Completed Actions (do not repeat these): \n\'\'\'' + ';\n '.join(action_history) + "'''"
+        state_prompt = 'Current State with Available UI Views and Actions (with Action ID):\n \'\'\'' + (view_descs) + "'''"
+        state_prompt = self.remove_duplicate_lines(state_prompt, history_prompt) #这里要删除什么？？？没看懂
         
 
-        # First, determine whether the task has already been completed.
-        task_prompt = f"Based on the actions I have taken so far, I would like to confirm if I have successfully completed the '{self.task}' function testing process. Here is a summary of the actions I have performed:\n" + ';\n '.join(action_history) #后续加app名称、当前界面显示内容（如何基于hierarchy总结相互关系）用于辅助判断是否完成；是否使用全部历史信息还是仅当前步骤的历史信息，对应关系是个难点；self.task是否要包含当前步骤之前的所有步骤来进行综合判断
+        # First, determine whether the task has already been completed. ？？？这个和提示动作的prompt考虑合并？？？
+        task_prompt = f"Based on the actions I have taken and current state reached so far, I would like to confirm if I have successfully completed the '{self.task}' function testing process. Here is a summary of the actions I have performed:\n'''" + ';\n '.join(action_history)+".'''" #后续加app名称、当前界面显示内容（如何基于hierarchy总结相互关系）用于辅助判断是否完成；是否使用全部历史信息还是仅当前步骤的历史信息，对应关系是个难点，目前使用的是全部历史信息，self.task是否要包含当前步骤之前的所有步骤来进行综合判断; zyk没有加当前状态信息
         question = f"Please provide a 'yes' or 'no' response to indicate whether, based on these actions, I have completed the testing of the '{self.task}' function successfully? Please provide a response in just 'yes' or 'no', without additional explanations or details."
-        prompt = f'{task_prompt}\n{question}'
-        print("\n-------------------------prompt----------------------------------\n")
+        prompt = f'{task_prompt}\n{state_prompt}\n{question}' #zyk的版本里没有state_prompt
+        print("\n-------------------------prompt asking whether subtask has been completed----------------------------------\n")
         print(prompt)
         print("\n-------------------------end prompt----------------------------------\n")
         response = self._query_llm(prompt)
         print(f'response: {response}')
 
         if ("yes" in response.lower()):
-            finish = -1 #???-1表示什么
+            finish = -1 #-1表示完成跳过，不需要执行操作
             print(f"Seems the task is completed. Press Enter to continue...")
             return finish, None, candidate_actions
 
 
         # Second, if not finished, then provide the next action.
-        history_prompt = 'Completed Actions (do not repeat these): \n' + ';\n '.join(action_history)
-        state_prompt = 'Current State with Available UI Views and Actions (with Action ID):\n ' + ';\n '.join(view_descs)
-        state_prompt = self.remove_duplicate_lines(state_prompt, history_prompt)
         
         if self.task.split()[0].lower() == "identify":
             # identify
-            task_prompt = f"I have performed some actions in the current app. Now, I want to {self.task}, but I couldn't find the corresponding component. Therefore, I need to perform new actions to navigate to a new page for inspection. Based on the actions I have already executed, please suggest the action ID that I might perform next.\n"
+            task_prompt = f"I have performed some actions and reached the current state in the current app. Now, I want to {self.task}, but I couldn't find the corresponding component. Therefore, I need to perform new actions to navigate to a new page for inspection. Based on the actions I have already executed, please suggest the action ID that I might perform next. Answer includes (action id: %d+) if next action can be found in the current state.\n"
             prompt = f'{task_prompt}\n{history_prompt}\n{state_prompt}'
         else:
             # event
-            task_prompt = f"I am working on a test case for the '{func}' feature in the '{app}' app. My current task is to {self.task}. I've completed some actions and need to decide the next step that will effectively advance the testing process." #{app}需要改成真实名字，目前类似‘a13’这种，且需要添加对于app的整体介绍
-            question = f"Given these options, which action (identified by the Action ID) should I perform next to effectively continue testing the '{func}' feature? Please do not suggest any actions that I have already completed. Please only return the action's ID"
+            task_prompt = f"I am working on a test case for the '{func}' feature in the '{app}' app. My current task is to {self.task}. I've completed some actions and reached the current state, and I need to decide the next step that will effectively advance the testing process." #{app}需要改成真实名字，目前类似‘a13’这种，且需要添加对于app的整体介绍
+            question = f"Given these options, which action (identified by the Action ID) should I perform next to effectively continue testing the '{func}' feature? Please do not suggest any actions that I have already completed. Please only return the action's ID. Answer includes (action id: %d+) if next action can be found in the current state."
             tips = f"Here are a few tips that might help you with your action selection: Please consider that some apps may require login to access main features, but this is not always the case. If considering the login process, please ensure all necessary steps like entering email, password, and then confirming sign-in are included in the recommendation. If you are unsure which action to choose, consider scrolling down to access further features of the app."
-            prompt = f'{task_prompt}\n{state_prompt}\n{history_prompt}\n{question}\n{tips}'
-        print("\n-------------------------prompt----------------------------------\n")
+            prompt = f'{task_prompt}\n{history_prompt}\n{state_prompt}\n{question}\n{tips}'
+        print("\n-------------------------prompt asking for next step----------------------------------\n")
         print(prompt)
         print("\n-------------------------end prompt----------------------------------\n")
         response = self._query_llm(prompt)
@@ -1796,15 +1808,17 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         if not match:
             after_prompt = f"Please review the following list of future tasks and determine if any have already been completed:\n{self._get_after_task()}"
             question = f"If any tasks have been completed, please reply with the ID of the last task that was completed; if none have been completed, return -1. Note, please provide a response in just one number, without additional explanations or details.\n"
-            prompt = f'{history_prompt}\n{after_prompt}\n{question}'
+            prompt = f'{history_prompt}\n{state_prompt}\n{after_prompt}\n{question}' #zyk的版本里没有state_prompt
+            print("\n-------------------------prompt asking whether any future subtask has been done ----------------------------------\n")
             print(prompt)
+            print("\n-------------------------end prompt----------------------------------\n")
             response = self._query_llm(prompt)
             print(f'response: {response}')
             if response == "-1":
-                selected_action = candidate_actions[-1]
+                selected_action = candidate_actions[-1] # back
                 return finish, selected_action, candidate_actions
             else:
-                finish = -1
+                finish = -1 # ???这里， self.step = idx已经设定了，后面finish=-1的话会不会再向前多挪一个
                 match = re.search(r'\d+', response)
                 if match:
                     idx = int(match.group(0))
@@ -1821,7 +1835,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
             view_text = current_state.get_view_desc(selected_action.view) #get_view_desc需要修改
             question = f'I have chosen the action of "{view_text}". So I need to type something into the edit box. What text should I enter? Just return the text need enter and nothing else.'
             #prompt = f'{task_prompt}\n{state_prompt}\n{question}'
-            prompt = f'{task_prompt}\n{history_prompt}\n{question}'
+            prompt = f'{task_prompt}\n{history_prompt}\n{state_prompt}\n{question}' # zyk版本里没有state_prompt
             if ("email" in view_text.lower()) and (self.extracted_info[0]['example_email'] != ""):
                 response = "\"" + self.extracted_info[0]['example_email'] + "\""
             elif ("password" in view_text.lower()) and (self.extracted_info[0]['example_password'] != ""):
@@ -1829,14 +1843,16 @@ class StepTaskPolicy(UtgBasedInputPolicy):
             elif "with" in self.task:
                 response =  self.task.split("with")[1]
             else:
+                print("\n-------------------------prompt asking for text input in  SetTextEvent----------------------------------\n")
                 print(prompt)
                 response = self._query_llm(prompt)
+                print("\n-------------------------end prompt----------------------------------\n")
             selected_action.text = response
             print(f'response: {response}')
             if "\"" in response:
                 selected_action.text = re.findall(r'"([^"]*)"', response)[-1]
             print(f'response: {selected_action.text}')
-        print(f"lccc _get_action_with_LLM finish: {finish}; selected_action: {selected_action}")
+        print(f"lccc _get_action_with_LLM finish: {finish}; selected_action: {selected_action}\n")
         return finish, selected_action, candidate_actions
         # except:
         #     import traceback
