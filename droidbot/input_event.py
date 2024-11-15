@@ -387,6 +387,9 @@ class KillAppEvent(InputEvent):
 
     def get_event_str(self, state):
         return "%s()" % self.__class__.__name__
+    
+    def get_intent_str(self):
+        return self.stop_intent
 
 
 class KeyEvent(InputEvent):
