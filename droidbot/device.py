@@ -4,6 +4,7 @@ import re
 import subprocess
 import sys
 import time
+from typing import List
 
 from .adapter.adb import ADB
 from .adapter.droidbot_app import DroidBotAppConn
@@ -267,7 +268,7 @@ class Device(object):
         if "height" in display_info:
             height = display_info["height"]
         elif not refresh:
-            height = self.get_width(refresh=True)
+            height = self.get_height(refresh=True) # 原来是 height = self.get_width(refresh=True)
         else:
             self.logger.warning("get_height: height not in display_info")
         return height
@@ -825,7 +826,7 @@ class Device(object):
             import traceback
             traceback.print_exc()
         self.logger.debug("finish getting current device state...")
-        self.last_know_state = current_state
+        self.last_know_state = current_state############ by wxd
         if not current_state:
             self.logger.warning("Failed to get current state!")
         return current_state
@@ -914,91 +915,92 @@ class Device(object):
             print("[CONNECTION] %s is reconnected." % self.minicap.__class__.__name__)
         self.pause_sending_event = False
 
-# class AgentEnvDevice(Device):
+class AgentEnvDevice():
     
-#     def __init__(self, device_serial=None, is_emulator=False, output_dir=None, cv_mode=False, grant_perm=False, telnet_auth_token=None, enable_accessibility_hard=False, humanoid=None, ignore_ad=False):
-#         super().__init__(device_serial, is_emulator, output_dir, cv_mode, grant_perm, telnet_auth_token, enable_accessibility_hard, humanoid, ignore_ad)
+    def __init__(self, device=None, is_emulator=False, output_dir=None, cv_mode=False, grant_perm=False, telnet_auth_token=None, enable_accessibility_hard=False, humanoid=None, ignore_ad=False):
+        # super().__init__(device_serial, is_emulator, output_dir, cv_mode, grant_perm, telnet_auth_token, enable_accessibility_hard, humanoid, ignore_ad)
+        # self.serial = device_serial
+        self.width, self.height = None, None
+    
+    def connect(self) -> None:
+        """
+        Connect to the device. Set up the DroidBot app and Minicap.
+        """
+        super().connect()
+
+    def disconnect(self) -> None:
+        """
+        Disconnect from the device.
+        """
+        super().disconnect()
+
+    def get_viewhierachy(self) -> None:
+        viewhierachy = self.u2d.dump_hierarchy(compressed=False, pretty=False, max_depth=50)
+        return viewhierachy
+    
+    def get_screenshot(self) -> None:
+        screenshot = self.u2d.screenshot()
+        return screenshot
+    
+    def get_screen_size(self) -> tuple[int, int]:
+        if self.width is None or self.height is None:
+            self.connect()
+            self.width, self.height = self.u2d.window_size()
+            self.disconnect()
+        return self.width, self.height
+    
+    def get_top_activity_name(self) -> str:
+        pass
+        # package_actvt = 
+        # return current['activity']
+    
+    def get_installed_apps(self) -> List[str]:
+        self.connect()
+        apps = self.u2d.app_list() 
+        self.disconnect()
+        return apps   
+
+    def click(self, x: int, y: int):
+        try:
+            self.view_touch(x,y)
+            return 0
+        except Exception:
+            return -1
         
-    
-#     def connect(self) -> None:
-#         """
-#         Connect to the device. Set up the DroidBot app and Minicap.
-#         """
-#         super().connect()
+    def swipe(self, x1: int, y1: int, x2: int, y2: int, duration=0.5):        
+        try:
+            self.view_drag((x1, y1), (x2, y2), duration*1000)
+            return 0
+        except Exception:
+            return -1
 
-#     def disconnect(self) -> None:
-#         """
-#         Disconnect from the device.
-#         """
-#         super().disconnect()
-
-#     def get_viewhierachy(self) -> None:
-#         viewhierachy = self.u2d.dump_hierarchy(compressed=False, pretty=False, max_depth=50)
-#         return viewhierachy
+    def input_text(self, text: str):
+        try:
+            self.view_set_text(text)
+            return 0
+        except Exception:
+            return -1
     
-#     def get_screenshot(self) -> None:
-#         screenshot = self.u2d.screenshot()
-#         return screenshot
+    def enter(self):
+        try:
+            self.key_press(66)
+            return 0
+        except Exception:
+            return -1
     
-#     def get_screen_size(self) -> tuple[int, int]:
-#         if self.width is None or self.height is None:
-#             self.connect()
-#             self.width, self.height = self.u2d.window_size()
-#             self.disconnect()
-#         return self.width, self.height
+    def home(self):
+        try:
+            self.key_press("HOME")
+            return 0
+        except Exception:
+            return -1
     
-#     def get_top_activity_name(self) -> str:
-#         self.connect()
-#         current = self.u2d.app_current()
-#         self.disconnect()
-#         return current['activity']
-    
-#     def get_installed_apps(self) -> List[str]:
-#         self.connect()
-#         apps = self.u2d.app_list() 
-#         self.disconnect()
-#         return apps   
-
-#     def click(self, x: int, y: int):
-#         self.connect()
-#         status = self.u2d.click(x, y)
-#         self.disconnect()
-#         return status
-        
-#     def swipe(self, x1: int, y1: int, x2: int, y2: int, duration=0.5):
-#         self.connect()
-#         status = self.u2d.swipe(x1, y1, x2, y2, duration)
-#         self.disconnect()
-#         # self.u2d = None
-#         # time.sleep(1)
-#         return status
-
-#     def input_text(self, text: str):
-#         encoded = text
-#         self.connect()
-#         status = self.u2d.send_keys(encoded)
-#         self.disconnect()
-#         return status
-    
-#     def enter(self):
-#         self.connect()
-#         status = self.u2d.press("enter")
-#         self.disconnect()
-#         return status
-    
-#     def home(self):
-#         self.connect()
-#         status = self.u2d.press("home")
-#         self.disconnect()
-#         # self.u2d = None
-#         # time.sleep(1)
-#         return status
-    
-#     def back(self):
-#         self.connect()
-#         status = self.u2d.press("back")
-#         self.disconnect()
-#         return status
+    def back(self):
+        try:
+            self.key_press("BACK")
+            return 0
+        except Exception:
+            return -1
     
 
 

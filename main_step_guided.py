@@ -6,7 +6,7 @@ from droidbot.droidbot import DroidBot
 from droidbot import input_manager
 from droidbot import env_manager
 from datetime import datetime
-from tools import get_extracted_steps
+from tools import get_extracted_steps, get_reference_steps
 
 import requests
 
@@ -147,23 +147,28 @@ def run_on_agentenv():
             task_description, gr_path, app_short, episode = ac.get_instruction()
             if task_description is None: 
                 break
-            if app_short not in ["Settings"]:
-                continue
+            # if app_short not in ["Settings"]:
+            #     continue
 
             print(f"Current instruction: {task_description}")
             
             # setup task environment if needed
-            print(f"setting up task {task_description}...")
-            # ac.setup_task(task_description) # some tasks need to setup preparation before execution
+            # print(f"setting up task {task_description}...")
+
             
             # go to the dropdown s
-            print(f"swipe up the screen")
+            # print(f"swipe up the screen")
             # ac.device.swipe(500, 1500, 500, 500) #upstairs, x then y
             
-            time.sleep(2)
+            # time.sleep(2)
             
             # 从dataset/llamatouch_dataset_0521数据集中提取apk，优先从end_no.activity中提取包名，其次从end_no.vh中提取，对apk进行检验；adb shell pm list packages；adb shell pm path <package_name>； adb pull /data/app/com.example.myapp-1/base.apk /path/to/save/base.apk； 然后初始化APK
-            subTasks = get_extracted_steps(task_description, app_short)
+            # subTasks = get_extracted_steps(task_description, app_short)
+            if  (not 'webshopping' in gr_path):
+                continue
+            ac.setup_task(task_description) # some tasks need to setup preparation before execution
+            ac.device.disconnect()
+            subTasks = get_reference_steps(task_description, app_short, 3)
             explore(subTasks, ac)
  
             # save the last environment state of an episode

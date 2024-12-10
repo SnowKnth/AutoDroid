@@ -15,6 +15,8 @@ from droidbot.input_event import (
     UIEvent,
 )
 
+from sentence_embedding import get_top_k_similar_episodes
+
 ACTION_MISSED = None
 FINISHED = "task_completed"
 
@@ -753,6 +755,100 @@ def get_action_from_views_actions(
         response,
     )
     
+def extract_between_brackets(s):
+    # 找到第一个 '[' 的位置
+    start_index = s.find('[')
+    # 找到第一个 ']' 的位置
+    end_index = s.find(']')
+    
+    # 如果找到了 '[' 和 ']'，并且 ']' 在 '[' 之后
+    if start_index != -1 and end_index != -1 and end_index > start_index:
+        # 提取 '[' 和 ']' 之间的子字符串
+        return s[start_index:end_index+1]
+    else:
+        # 如果没有找到 '[' 和 ']'，或者 ']' 在 '[' 之前，返回空字符串
+        return ""
+    
+def get_reference_steps(function:str, app_short:str, top_k:int):
+    '''Get top k similar episodes from the database and generate a comprehensive one'''
+    task_prompt = f"Generate a comprehensive step-by-step guide containing multi-substeps(i.e. tasks) for the function: {function} in the app: {app_short}. Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from 1), 'event_or_assertion'('Event' or 'Assertion'), 'task'(str). Below are the reference steps of similar functions. Please refer to them to generate the comprehensive steps. Eliminate duplicated, confusing and irrelevant steps.\n"
+    reference_prompt = ""
+    top_k = get_top_k_similar_episodes(function, top_k)
+    for i, (episode_id, goal, steps, similarity) in enumerate(top_k):
+        reference_prompt += f"Reference {i + 1}: \nFunction: {goal}\nSimilarity: {similarity}\nSteps:{steps}\n"
+    prompt = task_prompt + reference_prompt
+    print(prompt)
+    retries = 0
+    max_retries = 10
+    
+    while retries < max_retries:
+    # Query the GPT model to get the substeps
+        response = query_gpt(prompt)
+        response = extract_between_brackets(response)
+        if response == "":
+            retries += 1
+            continue    
+        print("------------------------"+response)
+        try:
+            steps = json.loads(response)
+            def checkSteps(steps):
+                for i, step in enumerate(steps):
+                    if not isinstance(step, dict):
+                        return False
+                    if "step_number" not in step or "event_or_assertion" not in step or "task" not in step:
+                        return False
+                    if not isinstance(step["step_number"], int) or not isinstance(step["event_or_assertion"], str)  or not isinstance(step["task"], str):
+                        return False
+                    if step["step_number"] != (i+1) or step["event_or_assertion"] not in ('Event', 'Assertion'):
+                        return False
+                return True
+            if checkSteps(steps):           
+                break  # Exit the loop if parsing is successful
+            else: 
+                retries += 1
+                continue
+        except json.JSONDecodeError:
+            print(f"Error: Unable to parse the response from GPT. Retry {retries + 1}/{max_retries}")
+            retries += 1
+    
+    if retries == max_retries:
+        print("Error: Unable to extract steps after maximum retries.")
+        return []
+    
+       # Validate and clean the fields in the steps
+    validated_steps = []
+    for step in steps:
+        validated_step = {
+            "app": f"llamatouch_apps/{app_short}.apk",
+            "function": function,
+            "step_number": step.get("step_number", -1),
+            "event_or_assertion": step.get("event_or_assertion", ""),
+            "task": step.get("task", ""),
+            "status": -1,
+            "example_email":  "",
+            "example_password": ""
+        }
+        
+        # Perform string validation on the fields
+        for key, value in validated_step.items():
+            if isinstance(value, str):
+                validated_step[key] = value.strip()  # Remove leading/trailing whitespace
+        
+        validated_steps.append(validated_step)
+    validated_step = {
+        "app": f"llamatouch_apps/{app_short}.apk",
+        "function": function,
+        "step_number": len(steps)+1,
+        "event_or_assertion": "Assertion",
+        "task": f"could you tell me if I have successfully completed the process of {function} function?",
+        "status": -1,
+        "example_email":  "",
+        "example_password": ""
+    }
+    validated_steps.append(validated_step)
+    
+    return validated_steps    
+    
 def get_extracted_steps(function:str, app_short:str):
     """
     Extract the substeps from the function description
@@ -853,3 +949,7 @@ def query_gpt(prompt):
     )
     res = completion.choices[0].message.content
     return res
+
+# Run the main process
+if __name__ == "__main__":
+    get_reference_steps('Clear the cart on target.com. Add logitech g pro to the cart on target.com', 'target' , 2)

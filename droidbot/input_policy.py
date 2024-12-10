@@ -8,6 +8,8 @@ import yaml
 import copy
 import requests
 import ast
+import ipdb
+
 from .input_event import *
 from .utg import UTG
 import time
@@ -1333,11 +1335,59 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                     else:
                         #考虑self.last_event is None的情况？？？？？
                         raw_views = self.addiAC.get_state()["view_hierarchy_json"] # State includes more than "view_hierarchy_json"; save view hierarchy, screenshot, top activity name and agent action in local
+                        self.addiAC.device.disconnect()
                         s = time.time()
+                        
                         finish, event = self.generate_event(input_manager)#产生事件的程序
                         condition = "Event"
+                
+                # vh1 = self.device.droidbot_app.get_views_tree()
+                # vh2 = self.addiAC.device.get_viewhierachy()
+                # snapshot_path1 = self.device.take_screenshot()  
+                # snapshot_image_data2 = self.addiAC.device.get_screenshot()              
+                # def read_image_from_path(image_path):
+                #     # 从路径中读取图片
+                #     with open(image_path, 'rb') as f:
+                #         image_data = f.read()
+                #     return image_data
+                # def compare_images(image_data1, image_data2):
+                #     # 比较两张图片的数据是否相同
+                #     return image_data1 == image_data2
+                # snapshot_image_data1 = read_image_from_path(snapshot_path1)
+                # width1 = self.device.get_width()
+                # height1 = self.device.get_height()
+                # width2,height2 = self.addiAC.device.get_screen_size()
+                # get_top_activity_name2 = self.addiAC.device.get_top_activity_name()
+                # get_top_activity_name1 = self.device.get_top_activity_name()
+                # get_installed_apps1 = self.device.adb.get_installed_apps()
+                # get_installed_apps2 = self.addiAC.device.get_installed_apps()
+                # ipdb.set_trace()
+                # if compare_images(snapshot_image_data2, snapshot_image_data1):
+                #     print("Images are equivalent.\n")
+                # else:
+                #     print("Images are not equivalent.\n")
+                
+                # if (vh1!=vh2):
+                #     print("vh1 != vh2\n")
+                # else:
+                #     print("vh1 == vh2\n")
 
-                #finish -1,0,1分别表示什么???：0表示不进入下个subtask
+                # if (width1!=width2 or height1 != height2):
+                #     print("width or height != width1:{width1} width2:{width2}  height1:{height1}  height2:{height2}\n")
+                # else:
+                #     print("width or height == \n")
+
+                # if (get_top_activity_name1!=get_top_activity_name2):
+                #     print(f"get_top_activity_name1 {get_top_activity_name1} != {get_top_activity_name2}\n")
+                # else:
+                #     print("get_top_activity_name1 == \n")
+
+                # if (get_installed_apps1!=get_installed_apps2):
+                #     print(f"get_installed_apps1 {get_installed_apps1} != {get_installed_apps2}\n")
+                # else:
+                #     print("get_installed_apps1 == \n")
+                
+                #finish -1,0,1分别表示什么：0表示不进入下个subtask；1表示当前subtask经执行后完成；-1表示当前subtask 经generate_event判断已完成且不需要执行
                 if finish != -1: # 需要执行事件
                     if self.step > 0: #修正event以外的事件类型，0对应的是task-‘start’ 
                         if (self.extracted_info[self.step-1]['event_or_assertion'] != 'Event') and (finish == 1): #???这里finish==1表示什么
@@ -1364,6 +1414,8 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                         act = f"action_type: dual_point, touch_point: [{event.start_x}, {event.start_y}], lift_point: [{event.end_x}, {event.end_y}], typed_text: ''"
                         self.addiAC.post_action(act)
                     elif event.event_type == "set_text":
+                        tl, br = event.view["bounds"]
+                        self.addiAC.tap(tl, br)
                         self.addiAC.text(event.text)
                     elif event.event_type == "intent":
                         self.addiAC.intent(event.get_intent_str())
@@ -1371,7 +1423,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                         kill_intent = event.get_intent_str()
                         if kill_intent is not None:
                             self.addiAC.intent(event.get_intent_str())
-                        self.addiAC._backtohome()
+                        # self.addiAC._backtohome()
                     elif event.event_type in ("oracle"):
                         pass                
                     else:
@@ -1791,7 +1843,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
             # event
             task_prompt = f"I am working on a test case for the '{func}' feature in the '{app}' app. My current task is to {self.task}. I've completed some actions and reached the current state, and I need to decide the next step that will effectively advance the testing process." #{app}需要改成真实名字，目前类似‘a13’这种，且需要添加对于app的整体介绍
             question = f"Given these options, which action (identified by the Action ID) should I perform next to effectively continue testing the '{func}' feature? Please do not suggest any actions that I have already completed. Please only return the action's ID. Answer includes (action id: %d+) if next action can be found in the current state."
-            tips = f"Here are a few tips that might help you with your action selection: Please consider that some apps may require login to access main features, but this is not always the case. If considering the login process, please ensure all necessary steps like entering email, password, and then confirming sign-in are included in the recommendation. If you are unsure which action to choose, consider scrolling down to access further features of the app."
+            tips = f"Here are a few tips that might help you with your action selection: Please consider that some apps may require login to access main features, but this is not always the case. If considering the login process, please ensure all necessary steps like entering email, password, and then confirming sign-in are included in the recommendation. If you are unsure which action to choose, consider scrolling down to access further features of the app." #去掉关于login的
             prompt = f'{task_prompt}\n{history_prompt}\n{state_prompt}\n{question}\n{tips}'
         print("\n-------------------------prompt asking for next step----------------------------------\n")
         print(prompt)
@@ -1814,11 +1866,11 @@ class StepTaskPolicy(UtgBasedInputPolicy):
             print("\n-------------------------end prompt----------------------------------\n")
             response = self._query_llm(prompt)
             print(f'response: {response}')
-            if response == "-1":
+            if response == "-1": #???这里self.step要不要回退呢，目前没有回退；有可能是self.step-1 步造成的错误呢！！！回退机制的设计
                 selected_action = candidate_actions[-1] # back
                 return finish, selected_action, candidate_actions
             else:
-                finish = -1 # ???这里， self.step = idx已经设定了，后面finish=-1的话会不会再向前多挪一个
+                finish = -1 # ???这里， self.step = idx已经设定了，后面finish=-1会再向前多挪一个 (这样直接跳转到已完成subtask的下一个subtask)
                 match = re.search(r'\d+', response)
                 if match:
                     idx = int(match.group(0))

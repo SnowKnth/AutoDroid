@@ -246,6 +246,20 @@ class DroidBotAppConn(Adapter):
         self.__view_tree_to_list(view_tree, view_list)
         self.last_acc_event['view_list'] = view_list
         return view_list
+    
+    def get_views_tree(self):
+        get_views_times = 0
+        while not self.last_acc_event:
+            self.logger.warning("last_acc_event is None, waiting")
+            get_views_times += 1
+            if get_views_times > MAX_NUM_GET_VIEWS:
+                self.logger.warning("cannot get non-None last_acc_event")
+                return None
+            time.sleep(GET_VIEW_WAIT_TIME)
+
+        import copy
+        view_tree = copy.deepcopy(self.last_acc_event['root_node'])
+        return view_tree
 
 
 if __name__ == "__main__":

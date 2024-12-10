@@ -356,8 +356,8 @@ class ADB(Adapter):
 
     def type(self, text):
         if isinstance(text, str):
-            escaped = text.replace("%s", "\\%s")
-            encoded = escaped.replace(" ", "%s")
+            escaped = text.replace("%s", "\\%s") #######by wxd??
+            encoded = escaped.replace(" ", "%s")  #######by wxd?
         else:
             encoded = str(text)
         # TODO find out which characters can be dangerous, and handle non-English characters
