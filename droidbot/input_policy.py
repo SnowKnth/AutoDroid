@@ -1818,7 +1818,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         
 
         # First, determine whether the task has already been completed. ？？？这个和提示动作的prompt考虑合并？？？
-        task_prompt = f"Based on the actions I have taken and current state reached so far, I would like to confirm if I have successfully completed the '{self.task}' function testing process. Here is a summary of the actions I have performed:\n'''" + ';\n '.join(action_history)+".'''" #后续加app名称、当前界面显示内容（如何基于hierarchy总结相互关系）用于辅助判断是否完成；是否使用全部历史信息还是仅当前步骤的历史信息，对应关系是个难点，目前使用的是全部历史信息，self.task是否要包含当前步骤之前的所有步骤来进行综合判断; zyk没有加当前状态信息
+        task_prompt = f"I am working on a test case for the '{func}' feature in the '{app}' app.  My current task is to {self.task}. Based on the actions I have taken and current state reached so far, I would like to confirm if I have successfully completed the current '{self.task}' task. Here is a summary of the actions I have performed:\n'''" + ';\n '.join(action_history)+".'''" #后续加app名称、当前界面显示内容（如何基于hierarchy总结相互关系）用于辅助判断是否完成；是否使用全部历史信息还是仅当前步骤的历史信息，对应关系是个难点，目前使用的是全部历史信息，self.task是否要包含当前步骤之前的所有步骤来进行综合判断; zyk没有加当前状态信息
         question = f"Please provide a 'yes' or 'no' response to indicate whether, based on these actions, I have completed the testing of the '{self.task}' function successfully? Please provide a response in just 'yes' or 'no', without additional explanations or details."
         prompt = f'{task_prompt}\n{state_prompt}\n{question}' #zyk的版本里没有state_prompt
         print("\n-------------------------prompt asking whether subtask has been completed----------------------------------\n")
@@ -1841,9 +1841,9 @@ class StepTaskPolicy(UtgBasedInputPolicy):
             prompt = f'{task_prompt}\n{history_prompt}\n{state_prompt}'
         else:
             # event
-            task_prompt = f"I am working on a test case for the '{func}' feature in the '{app}' app. My current task is to {self.task}. I've completed some actions and reached the current state, and I need to decide the next step that will effectively advance the testing process." #{app}需要改成真实名字，目前类似‘a13’这种，且需要添加对于app的整体介绍
+            task_prompt = f"I am working on a test case for the '{func}' feature in the '{app}' app. I've completed some actions and reached the current state. My current task is to {self.task}, and I need to decide the next step that will effectively advance the testing process." #{app}需要改成真实名字，目前类似‘a13’这种，且需要添加对于app的整体介绍
             question = f"Given these options, which action (identified by the Action ID) should I perform next to effectively continue testing the '{func}' feature? Please do not suggest any actions that I have already completed. Please only return the action's ID. Answer includes (action id: %d+) if next action can be found in the current state."
-            tips = f"Here are a few tips that might help you with your action selection: Please consider that some apps may require login to access main features, but this is not always the case. If considering the login process, please ensure all necessary steps like entering email, password, and then confirming sign-in are included in the recommendation. If you are unsure which action to choose, consider scrolling down to access further features of the app." #去掉关于login的
+            tips = f"Here are a few tips that might help you with your action selection: Please consider that some apps may require login to access main features, but this is not always the case. If considering the login process, please ensure all necessary steps like entering email, password, and then confirming sign-in are included in the recommendation. If you are unsure which action to choose, consider scrolling down to access further features of the app." #去掉关于login的;这里没有把生成的步骤全部列出来是为了在生成的过程中保持一定的自适应性，因为最初合成的步骤不一定和当前用例完全匹配
             prompt = f'{task_prompt}\n{history_prompt}\n{state_prompt}\n{question}\n{tips}'
         print("\n-------------------------prompt asking for next step----------------------------------\n")
         print(prompt)
@@ -1882,10 +1882,14 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         print(f"lccc idx: {idx}")
 
         selected_action = candidate_actions[idx]
+        next_step_ask = ""
+        if self.step <= len(self.extracted_info)-1:
+            next_step = self.extracted_info[self.step]['task']
+            next_step_ask = f'If "{next_step}" contains keyboard operation of "press enter", set "press_enter" as "True" and set "goto_next_step" as "True". '
         # 提取action的text
         if (isinstance(selected_action, SetTextEvent)) and (self.task.split()[0].lower() != "clear"):
             view_text = current_state.get_view_desc(selected_action.view) #get_view_desc需要修改
-            question = f'I have chosen the action of "{view_text}". So I need to type something into the edit box. What text should I enter? Just return the text need enter and nothing else.'
+            question = f'I have chosen the action of "{view_text}". So I need to type something into the edit box. Just put the text that need enter into "text_need_enter". {next_step_ask} If "{self.task}" contains keyboard operation of "press enter", set "press_enter" as "True". In other conditions, set "press_enter" and "goto_next_step"  as "False". Answer using json object format including following keys: "text_need_enter"(str), "press_enter"(True or False) and "goto_next_step"(True or False).'
             #prompt = f'{task_prompt}\n{state_prompt}\n{question}'
             prompt = f'{task_prompt}\n{history_prompt}\n{state_prompt}\n{question}' # zyk版本里没有state_prompt
             if ("email" in view_text.lower()) and (self.extracted_info[0]['example_email'] != ""):
@@ -1896,14 +1900,62 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                 response =  self.task.split("with")[1]
             else:
                 print("\n-------------------------prompt asking for text input in  SetTextEvent----------------------------------\n")
-                print(prompt)
-                response = self._query_llm(prompt)
+                
+                retries = 0
+                max_retries = 10
+                constraints = {
+                    "text_need_enter": {
+                        "type": str
+                    }, 
+                    "press_enter": {
+                        "type": bool,
+                        "value_constraints": lambda value: value in (True, False)                           
+                    }, 
+                    "goto_next_step": {
+                        "type": bool,
+                        "value_constraints": lambda value: value in (True, False)  
+                    }
+                }
+                step = None
+                while retries < max_retries:
+                # Query the GPT model to get the substeps
+                    print("------------------------"+prompt)
+                    print("------------------------"+response)
+                    response = self._query_llm(prompt)
+                    response = tools.extract_between_plus_brackets(response)
+                    if response == "":
+                        retries += 1
+                        continue    
+                    try:
+                        step = json.loads(response)
+                        if tools.checkSteps(step, constraints):           
+                            break  # Exit the loop if parsing is successful
+                        else: 
+                            retries += 1
+                            continue
+                    except json.JSONDecodeError:
+                        print(f"Error: Unable to parse the response from GPT. Retry {retries + 1}/{max_retries}")
+                        retries += 1
+                
+                if retries == max_retries:
+                    print("Error: Unable to extract steps after maximum retries.")
+                    return 0, None, candidate_actions
                 print("\n-------------------------end prompt----------------------------------\n")
-            selected_action.text = response
-            print(f'response: {response}')
-            if "\"" in response:
-                selected_action.text = re.findall(r'"([^"]*)"', response)[-1]
-            print(f'response: {selected_action.text}')
+                selected_action.text = step["text_need_enter"]
+                if step["press_enter"] : # 如果按了enter键认为已完成； 假如这个假设不正确，那么应该在函数开头判断是完成的时候再向后self.step += 1（可能需要修改）
+                    finish = 1
+                    if step["goto_next_step"]:
+                        self.step += 1
+                    # 使用 SetTextEvent 的属性快速生成 SetTextEnterEvent
+                    selected_action = SetTextEnterEvent(
+                        x=selected_action.x,
+                        y=selected_action.y,
+                        view=selected_action.view,
+                        text=selected_action.text
+                    )
+                elif step["goto_next_step"]:
+                    print("Error: In SetTextEvent, goto_next_step is true but press_enter is false. Please check the response.")
+                    return 0, None, candidate_actions
         print(f"lccc _get_action_with_LLM finish: {finish}; selected_action: {selected_action}\n")
         return finish, selected_action, candidate_actions
         # except:

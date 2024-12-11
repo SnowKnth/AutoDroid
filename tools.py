@@ -769,6 +769,96 @@ def extract_between_brackets(s):
         # 如果没有找到 '[' 和 ']'，或者 ']' 在 '[' 之前，返回空字符串
         return ""
     
+def extract_between_plus_brackets(s):
+    # 找到第一个 '[' 的位置
+    start_index = s.find('{')
+    # 找到第一个 ']' 的位置
+    end_index = s.find('}')
+    
+    # 如果找到了 '[' 和 ']'，并且 ']' 在 '[' 之后
+    if start_index != -1 and end_index != -1 and end_index > start_index:
+        # 提取 '[' 和 ']' 之间的子字符串
+        return s[start_index:end_index+1]
+    else:
+        # 如果没有找到 '[' 和 ']'，或者 ']' 在 '[' 之前，返回空字符串
+        return ""
+    
+def checkSteps(steps, constraints):
+    """
+    验证 steps 列表中的每个字典是否符合约束条件。
+
+    :param steps: 一个包含字典的列表，每个字典表示一个步骤。
+    :param constraints: 一个字典，包含字段的名称、类型和值的约束。
+    :return: 如果所有步骤都符合约束条件，返回 True；否则返回 False。
+    
+    # 定义约束条件 for checkSteps in get_reference_steps
+constraints = {
+    "step_number": {
+        "type": int,
+        "value_constraints": lambda value, index: value == index + 1
+    },
+    "event_or_assertion": {
+        "type": str,
+        "value_constraints": lambda value, index: value in ('Event', 'Assertion')
+    },
+    "task": {
+        "type": str,
+        "value_constraints": lambda value, index: True  # 无特殊约束
+    }
+}
+    """
+    # 遍历 steps 中的每个 step
+    for i, step in enumerate(steps):
+        # 检查 step 是否是字典
+        if not isinstance(step, dict):
+            return False
+        
+        # 检查每个字段是否存在，并且类型和值是否符合约束
+        for field, field_constraints in constraints.items():
+            # 检查字段是否存在
+            if field not in step:
+                return False
+            
+            # 检查字段类型是否符合约束
+            if not isinstance(step[field], field_constraints["type"]):
+                return False
+            
+            # 检查字段值是否符合约束
+            if "value_constraints" in field_constraints:
+                if not field_constraints["value_constraints"](step[field], i):
+                    return False
+    
+    return True
+
+def checkStep(step, constraints):
+    """
+    验证 step字典是否符合约束条件。
+
+    :param step: 输入字典
+    :param constraints: 一个字典，包含字段的名称、类型和值的约束。
+    :return: 如果所有步骤都符合约束条件，返回 True；否则返回 False。
+    """
+        # 检查 step 是否是字典
+    if not isinstance(step, dict):
+        return False
+    
+    # 检查每个字段是否存在，并且类型和值是否符合约束
+    for field, field_constraints in constraints.items():
+        # 检查字段是否存在
+        if field not in step:
+            return False
+        
+        # 检查字段类型是否符合约束
+        if not isinstance(step[field], field_constraints["type"]):
+            return False
+        
+        # 检查字段值是否符合约束
+        if "value_constraints" in field_constraints:
+            if not field_constraints["value_constraints"](step[field]):
+                return False
+    
+    return True
+    
 def get_reference_steps(function:str, app_short:str, top_k:int):
     '''Get top k similar episodes from the database and generate a comprehensive one'''
     task_prompt = f"Generate a comprehensive step-by-step guide containing multi-substeps(i.e. tasks) for the function: {function} in the app: {app_short}. Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from 1), 'event_or_assertion'('Event' or 'Assertion'), 'task'(str). Below are the reference steps of similar functions. Please refer to them to generate the comprehensive steps. Eliminate duplicated, confusing and irrelevant steps.\n"
