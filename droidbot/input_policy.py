@@ -1310,8 +1310,9 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         self.__action_history = []
         self.api = api
         self.addiAC = addiAC
+        self.conversation = ""
 
-
+    # 同时触发多个事件保存状态的情况处理
     #lccc # ??? 判断finish是否完成的逻辑有问题，目前是生成下一步动作判断是否完成，实际结合动作后的界面信息判断是否完成是否更好？
     def start(self, input_manager):
         """
@@ -1334,7 +1335,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                         finish = -1                        
                     else:
                         #考虑self.last_event is None的情况？？？？？
-                        raw_views = self.addiAC.get_state()["view_hierarchy_json"] # State includes more than "view_hierarchy_json"; save view hierarchy, screenshot, top activity name and agent action in local
+                        raw_views = self.addiAC.get_state() # State includes more than "view_hierarchy_json"; save view hierarchy, screenshot, top activity name and agent action in local
                         self.addiAC.device.disconnect()
                         s = time.time()
                         
@@ -1416,7 +1417,20 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                     elif event.event_type == "set_text":
                         tl, br = event.view["bounds"]
                         self.addiAC.tap(tl, br)
+                        raw_views = self.addiAC.get_state() # State includes more than "view_hierarchy_json"; save view hierarchy, screenshot, top activity name and agent action in local
+                        self.addiAC.device.disconnect()
                         self.addiAC.text(event.text)
+                    elif event.event_type == "set_text_and_enter":
+                        tl, br = event.view["bounds"]
+                        self.addiAC.tap(tl, br)
+                        raw_views = self.addiAC.get_state() # State includes more than "view_hierarchy_json"; save view hierarchy, screenshot, top activity name and agent action in local
+                        self.addiAC.device.disconnect()
+                        self.addiAC.text(event.text)
+                        raw_views = self.addiAC.get_state() # State includes more than "view_hierarchy_json"; save view hierarchy, screenshot, top activity name and agent action in local
+                        self.addiAC.device.disconnect()
+                        self.addiAC.post_action(
+                                "action_type: PRESS_ENTER, touch_point: [-1.0, -1.0], lift_point: [-1.0, -1.0], typed_text: ''"
+                            )
                     elif event.event_type == "intent":
                         self.addiAC.intent(event.get_intent_str())
                     elif event.event_type == "kill_app":
@@ -1428,6 +1442,10 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                         pass                
                     else:
                         raise Exception(f"Error action event type: {event.event_type}")
+                    if not (self.action_count == 0 and event.event_type == "kill_app" ):
+                        self.addiAC.save_chat(self.conversation)
+                        self.conversation = ""
+                        
                     
                     self.attempt_count += 1
                     time.sleep(8)
@@ -1435,6 +1453,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                     if  self.step < len(self.extracted_info): #是否继续下一条task
                         self.step += 1
                         self.task = self.extracted_info[self.step-1]['task']
+                        self.conversation = ""
                         self.attempt_count = 0
                     else:
                         self.addiAC.post_action( "action_type: STATUS_TASK_COMPLETE, touch_point: [-1.0, -1.0], lift_point: [-1.0, -1.0], typed_text: ''")
@@ -1496,7 +1515,11 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                     print("lc---------------------------------------------first")
                     self.__event_trace += EVENT_FLAG_START_APP
                     self.logger.info("Trying to start the app...")
-                    self.__action_history = [f'- start the app {self.app.app_name}']
+                    if self.app.app_name is not None:
+                        self.__action_history = [f'- start the app {self.app.app_name}']
+                    else:
+                        appName = (self.extracted_info[0]['app'].split("/"))[1].split(".")[0]
+                        self.__action_history = [f'- start the app {appName}']
                     return 1, IntentEvent(intent=start_app_intent)
 
         elif current_state.get_app_activity_depth(self.app) > 0:
@@ -1530,7 +1553,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
 
         if action is not None:
             desc = current_state.get_action_desc(action)
-            self.__action_history.append(desc)
+            self.__action_history.append(desc) # - TapOn: <input>Search or type web address</input>.'''; by wxd 实际上是个SetTextEnterEvent, 生成的描述有问题
             print(f"lccc action: [ {action} ] desc: [ {desc} ] task: [ {self.task}]")
             return finish, action
 
@@ -1802,7 +1825,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         for i in range(self.step, len(self.extracted_info)-1):
             desc += f" -task {i+1}: {self.extracted_info[i]['task']}\n" 
         return desc
-    
+    #back的处理，back时已执行子步骤是否要回退；广告的识别和插入处理；动态加载页面的处理;
     def _get_action_with_LLM(self, current_state, action_history):
         
         app = self.extracted_info[self.step-1]['app'].split("/")[1].split(".")[0] # 'app': 'apps/a13.apk'    ???extracted_info:dict中的example_email/example_password是做什么用的
@@ -1826,6 +1849,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         print("\n-------------------------end prompt----------------------------------\n")
         response = self._query_llm(prompt)
         print(f'response: {response}')
+        self.conversation += f"    Prompt:\n{prompt}\n" + f"    Response:\n{response}\n"
 
         if ("yes" in response.lower()):
             finish = -1 #-1表示完成跳过，不需要执行操作
@@ -1850,7 +1874,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         print("\n-------------------------end prompt----------------------------------\n")
         response = self._query_llm(prompt)
         print(f'response: {response}')
-    
+        self.conversation += f"    Prompt:\n{prompt}\n" + f"    Response:\n{response}\n"
         if 'action id' in response.lower():
             response = response.lower().split("action id")[1]    
         match = re.search(r'\d+', response)
@@ -1866,6 +1890,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
             print("\n-------------------------end prompt----------------------------------\n")
             response = self._query_llm(prompt)
             print(f'response: {response}')
+            self.conversation += f"    Prompt:\n{prompt}\n" + f"    Response:\n{response}\n"
             if response == "-1": #???这里self.step要不要回退呢，目前没有回退；有可能是self.step-1 步造成的错误呢！！！回退机制的设计
                 selected_action = candidate_actions[-1] # back
                 return finish, selected_action, candidate_actions
@@ -1919,16 +1944,17 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                 step = None
                 while retries < max_retries:
                 # Query the GPT model to get the substeps
+
+                    response = self._query_llm(prompt)
                     print("------------------------"+prompt)
                     print("------------------------"+response)
-                    response = self._query_llm(prompt)
                     response = tools.extract_between_plus_brackets(response)
                     if response == "":
                         retries += 1
                         continue    
                     try:
                         step = json.loads(response)
-                        if tools.checkSteps(step, constraints):           
+                        if tools.checkStep(step, constraints):           
                             break  # Exit the loop if parsing is successful
                         else: 
                             retries += 1
@@ -1936,13 +1962,14 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                     except json.JSONDecodeError:
                         print(f"Error: Unable to parse the response from GPT. Retry {retries + 1}/{max_retries}")
                         retries += 1
-                
+                self.conversation += f"    Prompt:\n{prompt}\n" + f"    Response:\n{response}\n"
                 if retries == max_retries:
                     print("Error: Unable to extract steps after maximum retries.")
+                    self.conversation += "Error: Unable to extract steps after maximum retries.\n"
                     return 0, None, candidate_actions
                 print("\n-------------------------end prompt----------------------------------\n")
                 selected_action.text = step["text_need_enter"]
-                if step["press_enter"] : # 如果按了enter键认为已完成； 假如这个假设不正确，那么应该在函数开头判断是完成的时候再向后self.step += 1（可能需要修改）
+                if step["press_enter"] : # press_enter=True的话认为当前子task会完成； 假如这个假设不正确，那么应该在函数开头判断是完成的时候再向后self.step += 1（可能需要修改）
                     finish = 1
                     if step["goto_next_step"]:
                         self.step += 1

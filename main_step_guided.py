@@ -37,7 +37,7 @@ first_n_episodes=int(os.environ.get("FIRST_N_EPISODES", 10))
 #     f.write(response.content)
 
 
-def parse_args(extracted_info, ac):
+def parse_args(extracted_info, ac, episode):
     """
     parse command line input
     generate options including host name, port number
@@ -51,7 +51,7 @@ def parse_args(extracted_info, ac):
     parser.add_argument("-a", action="store", dest="apk_path",
                         help="The file path to target APK", default=extracted_info[0]['app'])
     parser.add_argument("-o", action="store", dest="output_dir", required=True,
-                        help="directory of output", default="lc")
+                        help="directory of output", default="drb_output/"+str(episode))
     parser.add_argument("-task", action="store", dest="task",
                         help="the task to execute, in natural language", default=extracted_info[0]['task'])
     # parser.add_argument("-step", action="store", dest="step",
@@ -91,8 +91,8 @@ def parse_args(extracted_info, ac):
     # print options
     return options
 
-def explore(extracted_info, ac):
-    opts = parse_args(extracted_info, ac)
+def explore(extracted_info, ac, episode):
+    opts = parse_args(extracted_info, ac, episode)
 
     if not os.path.exists(opts.apk_path):
         print("APK does not exist.")########Stuck here
@@ -169,7 +169,7 @@ def run_on_agentenv():
             ac.setup_task(task_description) # some tasks need to setup preparation before execution
             ac.device.disconnect()
             subTasks = get_reference_steps(task_description, app_short, 3)
-            explore(subTasks, ac)
+            explore(subTasks, ac, episode)
  
             # save the last environment state of an episode
             ac.get_state()

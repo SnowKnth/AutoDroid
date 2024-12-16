@@ -8,10 +8,10 @@ using_sentence_transformer = True
 # model =  SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 if using_sentence_transformer:
     from sentence_transformers import SentenceTransformer
-    model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2').to('cuda:7')
+    model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2').to('cuda:0')
 else:   
     from InstructorEmbedding import INSTRUCTOR
-    model = INSTRUCTOR('hkunlp/instructor-xl').to('cuda:7')
+    model = INSTRUCTOR('hkunlp/instructor-xl').to('cuda:0')
     
 # Function to generate hash
 def generate_hash(episode_id):
@@ -137,7 +137,7 @@ def get_top_k_similar_episodes(task, k=5):
 
 # Run the main process
 if __name__ == "__main__":
-    # directory_path =  'dataset/caption_json'
-    # dst_file = 'dataset/episode_embedding.json'
-    # main_generate_sentence_embedding(directory_path, dst_file)
+    directory_path =  'dataset/caption_json'
+    dst_file = 'dataset/episode_embedding.json'
+    main_generate_sentence_embedding(directory_path, dst_file)
     get_top_k_similar_episodes('Clear the cart on taobao.com. Add logitech g pro to the cart',10)
