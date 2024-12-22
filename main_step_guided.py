@@ -50,7 +50,7 @@ def parse_args(extracted_info, ac, episode):
     #lccc-1
     parser.add_argument("-a", action="store", dest="apk_path",
                         help="The file path to target APK", default=extracted_info[0]['app'])
-    parser.add_argument("-o", action="store", dest="output_dir", required=True,
+    parser.add_argument("-o", action="store", dest="output_dir", 
                         help="directory of output", default="drb_output/"+str(episode))
     parser.add_argument("-task", action="store", dest="task",
                         help="the task to execute, in natural language", default=extracted_info[0]['task'])
@@ -168,11 +168,13 @@ def run_on_agentenv():
                 continue
             ac.setup_task(task_description) # some tasks need to setup preparation before execution
             ac.device.disconnect()
-            subTasks = get_reference_steps(task_description, app_short, 3)
+            similarTasks, subTasks = get_reference_steps(task_description, app_short, 3)
+            ac.save_intructions(similarTasks, subTasks)
+            
             explore(subTasks, ac, episode)
  
             # save the last environment state of an episode
-            ac.get_state()
+            # ac.get_state() #这里需要吗
             # reset the environment for next task, reload_snapshot and reconnect using u2d
             ac.reset_env()
 

@@ -735,7 +735,9 @@ class SetTextEvent(UIEvent):
         x, y = UIEvent.get_xy(x=self.x, y=self.y, view=self.view)
         touch_event = TouchEvent(x=x, y=y)
         touch_event.send(device)
+        time.sleep(3)
         device.view_set_text(self.text)
+        time.sleep(3)
         return True
 
     def get_event_str(self, state):
@@ -751,6 +753,7 @@ class SetTextEvent(UIEvent):
     def get_views(self):
         return [self.view] if self.view else []
 
+# by wxd; maybe i should divide such operation into 3 meta-actions: TouchEvent, view_set_text, and key_press("Enter"), and i should observe the effects to judge whether every meta-action is performed correct
 class SetTextEnterEvent(UIEvent):
     """
     input text to target UI
@@ -774,8 +777,11 @@ class SetTextEnterEvent(UIEvent):
         x, y = UIEvent.get_xy(x=self.x, y=self.y, view=self.view)
         touch_event = TouchEvent(x=x, y=y)
         touch_event.send(device)
+        time.sleep(3)
         device.view_set_text(self.text)
+        time.sleep(3)
         device.key_press(66)
+        time.sleep(8)
         return True
 
     def get_event_str(self, state):

@@ -69,6 +69,9 @@ output/
 debug.py
 .env
 exec_output/
+exec_output_old/
+drb_output/
+drb_output_old/
 outtmp/
 predicted_actions/
 dataset/

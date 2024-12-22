@@ -861,7 +861,7 @@ def checkStep(step, constraints):
     
 def get_reference_steps(function:str, app_short:str, top_k:int):
     '''Get top k similar episodes from the database and generate a comprehensive one'''
-    task_prompt = f"Generate a comprehensive step-by-step guide containing multi-substeps(i.e. tasks) for the function: {function} in the app: {app_short}. Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from 1), 'event_or_assertion'('Event' or 'Assertion'), 'task'(str). Below are the reference steps of similar functions. Please refer to them to generate the comprehensive steps. Eliminate duplicated, confusing and irrelevant steps.\n"
+    task_prompt = f"Generate a comprehensive step-by-step guide containing multi-substeps(i.e. tasks) for the function: {function} in the app: {app_short}. Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from 1), 'event_or_assertion'(str, 'Event' or 'Assertion'), 'task'(str). Below are the reference steps of similar functions. Please refer to them to generate the comprehensive steps. Eliminate duplicated, confusing and irrelevant steps.\n"
     reference_prompt = ""
     top_k = get_top_k_similar_episodes(function, top_k)
     for i, (episode_id, goal, steps, similarity) in enumerate(top_k):
@@ -930,14 +930,14 @@ def get_reference_steps(function:str, app_short:str, top_k:int):
         "function": function,
         "step_number": len(steps)+1,
         "event_or_assertion": "Assertion",
-        "task": f"could you tell me if I have successfully completed the process of {function} function?",
+        "task": f"Verify that I have finished testing the wole function '{function}' ?",
         "status": -1,
         "example_email":  "",
         "example_password": ""
     }
     validated_steps.append(validated_step)
     
-    return validated_steps    
+    return prompt, validated_steps    
     
 def get_extracted_steps(function:str, app_short:str):
     """

@@ -5,7 +5,7 @@ import pdb
 
 import tools
 from .utils import md5
-from .input_event import TouchEvent, LongTouchEvent, ScrollEvent, SetTextEvent, KeyEvent, UIEvent
+from .input_event import TouchEvent, LongTouchEvent, ScrollEvent, SetTextEvent, SetTextEnterEvent, KeyEvent, UIEvent
 import hashlib
 from treelib import Tree
 import networkx as nx
@@ -1018,7 +1018,10 @@ class DeviceState(object):
     def get_action_desc(self, action):
         desc = action.event_type
         if isinstance(action, KeyEvent):
-            view_desc = "<button class='ImageButton'>go back</button>"
+            if (action.name is not None):
+                view_desc = f"<button class='ImageButton'>{action.name}</button>"
+            else:
+                view_desc = "<button class='ImageButton'>go back</button>"
             desc = '- TapOn: ' + view_desc
             # desc = view_desc + '.click();'
             # desc = f'- go {action.name.lower()}'
@@ -1032,6 +1035,10 @@ class DeviceState(object):
                 # action_name = f'enter "{action.text}" into'
                 # desc = view_desc + f'.settext{action.text}'
                 desc = '- TapOn: ' + view_desc  + ' InputText: ' + action.text
+            elif isinstance(action, SetTextEnterEvent):
+                # action_name = f'enter "{action.text}" into'
+                # desc = view_desc + f'.settext{action.text}'
+                desc = '- TapOn: ' + view_desc  + ' InputText: ' + action.text  + 'and then press enter'     
             elif isinstance(action, ScrollEvent):
                 # action_name = f'scroll {action.direction.lower()}'
                 # desc = view_desc + f'.scroll{action.direction.lower()}'
