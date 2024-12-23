@@ -858,10 +858,39 @@ def checkStep(step, constraints):
                 return False
     
     return True
+
+def get_json_dict_response(prompt:str, max_retries:int, constraints:dict = None):
+    step = None
+    retries = 0
+    response = ""
+    while retries < max_retries:
+    # Query the GPT model to get the substeps
+        response = query_gpt(prompt)
+        print("------------------------"+prompt)
+        print("------------------------"+response)
+        response_json = extract_between_plus_brackets(response)
+        if response_json == "":
+            retries += 1
+            continue    
+        try:
+            step = json.loads(response_json)
+            if checkStep(step, constraints):           
+                break  # Exit the loop if parsing is successful
+            else: 
+                retries += 1
+                continue
+        except json.JSONDecodeError:
+            print(f"Error: Unable to parse the response from GPT. Retry {retries + 1}/{max_retries}")
+            retries += 1
+    return response, step, retries
     
 def get_reference_steps(function:str, app_short:str, top_k:int):
     '''Get top k similar episodes from the database and generate a comprehensive one'''
-    task_prompt = f"Generate a comprehensive step-by-step guide containing multi-substeps(i.e. tasks) for the function: {function} in the app: {app_short}. Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from 1), 'event_or_assertion'(str, 'Event' or 'Assertion'), 'task'(str). Below are the reference steps of similar functions. Please refer to them to generate the comprehensive steps. Eliminate duplicated, confusing and irrelevant steps.\n"
+    full_assert_prompt = "For assertion, choose from the following templates: 'Verify that the <element> is <state>', 'Verify that the <element> exists', 'Verify that the <element> is visible', 'Verify that the <element> is not visible', 'Verify that the <element> is enabled', 'Verify that the <element> is not enabled', 'Verify that the <element> is selected', 'Verify that the <element> is not selected', 'Verify that the <element> has the text <text>', 'Verify that the <element> has the partial text <text>', 'Verify that the <element> has the attribute <attribute> with the value <value>', 'Verify that the <element> does not have the attribute <attribute>'"
+    simple_assert_prompt = "For assertion, choose from the following templates:  'Verify that the <element with description> exists in the current state and return the element', 'Verify that the <element with description> does not exist in the current state', 'Verify that the <element with description> is <state>'\n"
+    #  'Verify that the <element with description> is visible in the current state', 'Verify that the <element with description> is not visible in the current state', 'Verify that the <element with description> is enabled in the current state', 'Verify that the <element with description> is not enabled in the current state', 'Verify that the <element with description> is selected in the current state', 'Verify that the <element with description> is not selected in the current state', 'Verify that the <element with description> has the text <text>', 'Verify that the <element with description> has the partial text <text>', 'Verify that the <element with description> has the attribute <attribute> with the value <value>', 'Verify that the <element with description> does not have the attribute <attribute>'"
+    task_prompt = f"Generate a comprehensive step-by-step guide containing multi-substeps(i.e. tasks) for the function: {function} in the app: {app_short}. If the substep is an event, please use the 'Event' type; if the substep is an assertion, please use the 'Assertion' type. \n{simple_assert_prompt} Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from 1), 'event_or_assertion'(str, 'Event' or 'Assertion'), 'task'(str). Below are the reference steps of similar functions. Please refer to them to generate the comprehensive steps. Eliminate duplicated, confusing and irrelevant steps.\n"
+    
     reference_prompt = ""
     top_k = get_top_k_similar_episodes(function, top_k)
     for i, (episode_id, goal, steps, similarity) in enumerate(top_k):

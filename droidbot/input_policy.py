@@ -1846,6 +1846,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         
         app = self.extracted_info[self.step-1]['app'].split("/")[1].split(".")[0] # 'app': 'apps/a13.apk'    ???extracted_info:dict中的example_email/example_password是做什么用的
         func = self.extracted_info[self.step-1]['function'] #function分成多条task, 最后一条task用于验证整个function是否完成
+        event_or_assertion = self.extracted_info[self.step-1]['event_or_assertion']
         view_descs, candidate_actions, _, _ = current_state.get_described_actions()
 
         if "system back" in self.task: 
@@ -1858,26 +1859,99 @@ class StepTaskPolicy(UtgBasedInputPolicy):
 
         # First, determine whether the task has already been completed. ？？？这个和提示动作的prompt考虑合并？？？
         task_prompt = f"I am working on a functional test case containing multi-tasks for the '{func}' feature in the '{app}' app.  My current task is to {self.task}. Based on the actions I have taken and current state reached so far, I would like to confirm if I have successfully completed the current '{self.task}' task. Here is a summary of the actions I have performed:\n'''" + ';\n '.join(action_history)+".'''" #后续加app名称、当前界面显示内容（如何基于hierarchy总结相互关系）用于辅助判断是否完成；是否使用全部历史信息还是仅当前步骤的历史信息，对应关系是个难点，目前使用的是全部历史信息，self.task是否要包含当前步骤之前的所有步骤来进行综合判断; zyk没有加当前状态信息
-        question = f"Please provide a 'yes' or 'no' response to indicate whether, based on these actions, I have completed '{self.task}'  successfully? Please provide a response in just 'yes' or 'no', without additional explanations or details."
-        prompt = f'{task_prompt}\n{state_prompt}\n{question}' #zyk的版本里没有state_prompt
+        question = f"Please provide a 'yes' or 'no' response to indicate whether, based on these actions, I have completed '{self.task}' successfully? Please provide a response in just 'yes' or 'no', without additional explanations or details."
+        identify_prompt = ""
+        if event_or_assertion == "Assertion" and "not" not in self.task and self.step != len(self.extracted_info):
+            identify_prompt = "If your answer is yes, please find the corresponding element. Please think step by step in analysis and only return the element action's ID. Please format the response as a JSON object with the following keys: 'analysis'(str), 'action_id'(int). If element action can be found in the current state, choose the action id as action_id; if no proper element action can be found in the current state, set action_id as -1.\n"
+        if event_or_assertion == "Assertion" and "not" in self.task and self.step != len(self.extracted_info):
+            identify_prompt = f"If your answer is no, please find the element in the state contradictory to '{self.task}' . Please think step by step in analysis and only return the element action's ID. Please format the response as a JSON object with the following keys: 'analysis'(str), 'action_id'(int). If element action can be found in the current state, choose the action id as action_id; if no proper element action can be found in the current state, set action_id as -1.\n"
+        prompt = f'{task_prompt}\n{state_prompt}\n{question}{identify_prompt}' #zyk的版本里没有state_prompt
         print("\n-------------------------prompt asking whether subtask has been completed----------------------------------\n")
         print(prompt)
         print("\n-------------------------end prompt----------------------------------\n")
-        response = self._query_llm(prompt)
-        print(f'response: {response}')
+        retries = 0
+        max_retries = 10
+        constraints = {
+            "analysis": {
+                "type": str
+            }, 
+            "action_id": {
+                "type": int,
+                "value_constraints": lambda value: value >= -1                           
+            }, 
+        }
+        step = None
+        response, step, retries = tools.get_json_dict_response(prompt, max_retries, constraints)
         self.conversation += f"    Prompt:\n{prompt}\n" + f"    Response:\n{response}\n"
+        action_id = step['action_id']
 
-        if ("yes" in response.lower()):
+        if ("yes" in response.lower().split('{')[0] and (event_or_assertion != "Assertion" or self.step == len(self.extracted_info))):
             finish = -1 #-1表示完成跳过，不需要执行操作
             print(f"Seems the task is completed. Press Enter to continue...")
             return finish, None, candidate_actions
-
+        elif "yes" in response.lower().split('{')[0] and event_or_assertion == "Assertion" and self.step != len(self.extracted_info):
+            if "not" not in self.task:
+                if action_id != -1:
+                    finish = 1
+                    selected_action = candidate_actions[action_id]
+                    selected_action = OracleEvent(
+                        x=selected_action.x,
+                        y=selected_action.y,
+                        view=selected_action.view,
+                        text=selected_action.text,
+                        condition = self.task,
+                        assert_accept = True
+                    )
+                    return finish, selected_action, candidate_actions
+                elif self.attempt_count == 2: # 需要找到但是没找到且找了3次应该记录Assertion无效，这里对应2 (Assertion是否要找3次？)
+                    finish = 1
+                    selected_action = OracleEvent(
+                        condition = self.task,
+                        assert_accept = False
+                    )
+                    return finish, selected_action, candidate_actions
+                else: # 继续寻找直到找到或满3次
+                    pass
+            else: # not in the state, 不需要找
+                finish = 1
+                selected_action = OracleEvent(
+                        condition = self.task,
+                        assert_accept = True
+                    )
+                return finish, selected_action, candidate_actions
+        elif  event_or_assertion == "Assertion" and self.step != len(self.extracted_info): #回答是no的情况
+            if "not" not in self.task:# 回答是no的情况的子情况，需要找到但是没找到且找了3次应该记录Assertion无效，这里对应2 (Assertion是否要找3次？)
+                if self.attempt_count == 2: 
+                    finish = 1
+                    selected_action = OracleEvent(
+                        condition = self.task,
+                        assert_accept = False
+                    )
+                    return finish, selected_action, candidate_actions
+            else: # not in the state
+                if action_id != -1:#不需要存在但是却存在了，认为assertion失效
+                    finish = 1
+                    selected_action = OracleEvent(
+                        condition = self.task,
+                        assert_accept = False
+                    )
+                    return finish, selected_action, candidate_actions
+                else: #针对not 回答是 no，但是action_id == -1造成矛盾, 
+                    pass#需要补充
+                    
+                
+                
+        
+        
+        
+                    
+                
 
         # Second, if not finished, then provide the next action.
         
         if self.task.split()[0].lower() == "identify": #对于Assertion的处理
             # identify
-            task_prompt = f"I have performed some actions and reached the current state in the current app. Now, I want to {self.task}, but I couldn't find the corresponding component. Therefore, I need to perform new actions to navigate to a new page for inspection. Based on the actions I have already executed, please suggest the action ID that I might perform next. Answer includes (action id: %d+) if next action can be found in the current state.\n"
+            task_prompt = f"I have performed some actions and reached the current state in the current app. Now, I want to {self.task}, but I couldn't find the corresponding element. Therefore, I need to perform new actions to navigate to a new page for inspection. Based on the actions I have already executed, please suggest the action ID that I might perform next. Please think step by step in analysis and only return the action's ID. Please format the response as a JSON object with the following keys: 'analysis'(str), 'action_id'(int). If next action can be found in the current state, choose the action id as action_id; if no proper action can be found in the current state, set action_id as -1.\n"
             prompt = f'{task_prompt}\n{history_prompt}\n{state_prompt}'
         else:
             # event
@@ -1900,26 +1974,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
             }, 
         }
         step = None
-        while retries < max_retries:
-        # Query the GPT model to get the substeps
-
-            response = self._query_llm(prompt)
-            print("------------------------"+prompt)
-            print("------------------------"+response)
-            response = tools.extract_between_plus_brackets(response)
-            if response == "":
-                retries += 1
-                continue    
-            try:
-                step = json.loads(response)
-                if tools.checkStep(step, constraints):           
-                    break  # Exit the loop if parsing is successful
-                else: 
-                    retries += 1
-                    continue
-            except json.JSONDecodeError:
-                print(f"Error: Unable to parse the response from GPT. Retry {retries + 1}/{max_retries}")
-                retries += 1
+        response, step, retries = tools.get_json_dict_response(prompt, max_retries, constraints)
         self.conversation += f"    Prompt:\n{prompt}\n" + f"    Response:\n{response}\n"
         if retries == max_retries:
             print("Error: Unable to extract next action after maximum retries. Return no action")
@@ -1928,7 +1983,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         match = step['action_id']
  
         finish = 0
-        # 判断是否已经执行到后面的task了
+        # 判断是否已经执行到后面的task了，这个要列出全部吗？列出前n个？
         if match == -1 and self.step <= len(self.extracted_info)-1:
             after_prompt = f"Please review the following list of future tasks and determine if any have already been completed:\n{self._get_after_task()}"
             question = f"If any tasks have been completed, please reply with the ID of the last task that was completed; if none have been completed, return -1. Note, please provide a response in just one number, without additional explanations or details.\n"
@@ -1990,26 +2045,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                     }
                 }
                 step = None
-                while retries < max_retries:
-                # Query the GPT model to get the substeps
-
-                    response = self._query_llm(prompt)
-                    print("------------------------"+prompt)
-                    print("------------------------"+response)
-                    response = tools.extract_between_plus_brackets(response)
-                    if response == "":
-                        retries += 1
-                        continue    
-                    try:
-                        step = json.loads(response)
-                        if tools.checkStep(step, constraints):           
-                            break  # Exit the loop if parsing is successful
-                        else: 
-                            retries += 1
-                            continue
-                    except json.JSONDecodeError:
-                        print(f"Error: Unable to parse the response from GPT. Retry {retries + 1}/{max_retries}")
-                        retries += 1
+                response, step, retries = tools.get_json_dict_response(prompt, max_retries, constraints)
                 self.conversation += f"    Prompt:\n{prompt}\n" + f"    Response:\n{response}\n"
                 if retries == max_retries:
                     print("Error: Unable to extract text_need_enter after maximum retries.")

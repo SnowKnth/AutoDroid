@@ -805,15 +805,16 @@ class OracleEvent(UIEvent):
     an event describing oracles
     """
 
-    def __init__(self, x=None, y=None, view=None, event_dict=None,condition=None, sleep_t=0, assert_text=None):
+    def __init__(self, x=None, y=None, view=None, event_dict=None,condition=None, sleep_t=0, assert_text=None, assert_accept: bool = None):
         super().__init__()
         self.event_type = KEY_OracleEvent
         self.x = x
         self.y = y
-        self.view = view
-        self.condition = condition
-        self.sleep_t = sleep_t
-        self.assert_text = assert_text
+        self.view = view # target element; can't be None, can be: str descr of a view, or an instance of a view
+        self.condition = condition # in the state; not in the state
+        self.sleep_t = sleep_t # wait for executing
+        self.assert_text = assert_text # used for element.text == assert_text
+        self.assert_accept = assert_accept
         if event_dict is not None:
             self.__dict__.update(event_dict)
 
