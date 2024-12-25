@@ -11,7 +11,8 @@ from .intent import Intent
 POSSIBLE_KEYS = [
     "BACK",
     "MENU",
-    "HOME"
+    "HOME",
+    "ENTER"
 ]
 
 # Unused currently, but should be useful.
@@ -828,10 +829,13 @@ class OracleEvent(UIEvent):
         pass
 
     def get_event_str(self, state):
-        if self.view is not None:
-            return f"{self.__class__.__name__}({UIEvent.view_str(state, self.view)})"
-        elif self.x is not None and self.y is not None:
-            return "%s(state=%s, x=%s, y=%s)" % (self.__class__.__name__, state.state_str, self.x, self.y)
+        if self.condition is not None:
+            if self.view is not None:
+                return f"Oracle, {self.__class__.__name__}({UIEvent.view_str(state, self.view)}), condiation:{self.condition}, accept:{self.assert_accept}"
+            elif self.x is not None and self.y is not None:
+                return "Oracle, %s(state=%s, x=%s, y=%s)" % (self.__class__.__name__, state.state_str, self.x, self.y) + f" condition:{self.condition}, accept:{self.assert_accept}"
+            else:
+                return f"Oracle, condition:{self.condition}, accept:{self.assert_accept}"
         else:
             msg = "Invalid %s!" % self.__class__.__name__
             raise InvalidEventException(msg)

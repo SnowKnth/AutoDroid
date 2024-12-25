@@ -5,7 +5,7 @@ import pdb
 
 import tools
 from .utils import md5
-from .input_event import TouchEvent, LongTouchEvent, ScrollEvent, SetTextEvent, SetTextEnterEvent, KeyEvent, UIEvent
+from .input_event import TouchEvent, LongTouchEvent, ScrollEvent, SetTextEvent, SetTextEnterEvent, KeyEvent, UIEvent, OracleEvent
 import hashlib
 from treelib import Tree
 import networkx as nx
@@ -931,8 +931,11 @@ class DeviceState(object):
                 important_view_ids.append([content_description + view_text,view_id])
 
                 available_actions.append(TouchEvent(view=view))
-        view_descs.append(f"<button id={len(view_descs)}>go back</button>")
-        available_actions.append(KeyEvent(name='BACK'))
+        view_descs.append(f"<button id={len(view_descs)}> press enter key: only choose when the current task contains press enter operation</button>")
+        view_descs.append(f"<button id={len(view_descs)}>go back</button>") # len(view_descs) 在添加press enter后已经+1
+        available_actions.append(KeyEvent(name='ENTER'))
+        available_actions.append(KeyEvent(name='BACK')) # put at last, some func call it by index -1
+        
         # state_desc = 'The current state has the following UI elements: \n' #views and corresponding actions, with action id in parentheses:\n '
         state_desc = prefix #'Given a screen, an instruction, predict the id of the UI element to perform the insturction. The screen has the following UI elements: \n'
         # state_desc = 'You can perform actions on a contacts app, the current state of which has the following UI views and corresponding actions, with action id in parentheses:\n'
@@ -1026,7 +1029,8 @@ class DeviceState(object):
             # desc = view_desc + '.click();'
             # desc = f'- go {action.name.lower()}'
         if isinstance(action, UIEvent):
-            view_desc = self.get_view_desc(action.view)
+            if action.view is not None: 
+                view_desc = self.get_view_desc(action.view)
             # action_name = action.event_type
             if isinstance(action, LongTouchEvent):
                 # desc = view_desc + '.longclick();'
@@ -1043,6 +1047,11 @@ class DeviceState(object):
                 # action_name = f'scroll {action.direction.lower()}'
                 # desc = view_desc + f'.scroll{action.direction.lower()}'
                 desc = f'- Scroll{action.direction.lower()}: ' + view_desc
+            elif isinstance(action, OracleEvent):
+                if action.assert_accept:
+                    desc = action.condition
+                else:
+                    desc = ""
             else:
                 # desc = view_desc + '.click()'
                 desc = '- TapOn: ' + view_desc

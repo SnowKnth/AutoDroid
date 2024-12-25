@@ -1387,6 +1387,8 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                 #     print(f"get_installed_apps1 {get_installed_apps1} != {get_installed_apps2}\n")
                 # else:
                 #     print("get_installed_apps1 == \n")
+
+                get_top_activity_name = self.device.get_top_activity_name()
                 
                 #finish -1,0,1分别表示什么：0表示不进入下个subtask；1表示当前subtask经执行后完成；-1表示当前subtask 经generate_event判断已完成且不需要执行
                 if finish != -1: # 需要执行事件
@@ -1411,6 +1413,10 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                         if event.name == "BACK":
                             self.addiAC.post_action(
                                 "action_type: PRESS_BACK, touch_point: [-1.0, -1.0], lift_point: [-1.0, -1.0], typed_text: ''"
+                            )
+                        elif event.name == "ENTER":
+                            self.addiAC.post_action(
+                                "action_type: PRESS_ENTER, touch_point: [-1.0, -1.0], lift_point: [-1.0, -1.0], typed_text: ''"
                             )
                     elif event.event_type == "click":
                         tl, br = event.view["bounds"]
@@ -1450,7 +1456,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                             self.addiAC.intent(event.get_intent_str())
                         # self.addiAC._backtohome()
                     elif event.event_type in ("oracle"):
-                        pass                
+                        self.addiAC.intent(event.get_event_str(self.current_state))           
                     else:
                         raise Exception(f"Error action event type: {event.event_type}")
 
@@ -1568,7 +1574,8 @@ class StepTaskPolicy(UtgBasedInputPolicy):
 
         if action is not None:
             desc = current_state.get_action_desc(action)
-            self.__action_history.append(desc) # - TapOn: <input>Search or type web address</input>.'''; by wxd 实际上是个SetTextEnterEvent, 生成的描述有问题
+            if desc != "":
+                self.__action_history.append(desc) # - TapOn: <input>Search or type web address</input>.'''; by wxd 实际上是个SetTextEnterEvent, 生成的描述有问题
             print(f"lccc action: [ {action} ] desc: [ {desc} ] task: [ {self.task}]")
             return finish, action
 
@@ -1848,48 +1855,63 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         func = self.extracted_info[self.step-1]['function'] #function分成多条task, 最后一条task用于验证整个function是否完成
         event_or_assertion = self.extracted_info[self.step-1]['event_or_assertion']
         view_descs, candidate_actions, _, _ = current_state.get_described_actions()
+        activity = self.device.get_top_activity_name()
 
         if "system back" in self.task: 
             return 1, candidate_actions[-1], candidate_actions
         
         history_prompt = 'Completed Actions (do not repeat these): \n\'\'\'' + ';\n '.join(action_history) + "'''"
-        state_prompt = 'Current State with Available UI Views and Actions (with Action ID):\n \'\'\'' + (view_descs) + "'''"
+        state_prompt = f'Current activity for the current state is {activity}. \nCurrent State with Available UI Views and Actions (with Action ID):\n \'\'\'' + (view_descs) + "'''"
         state_prompt = self.remove_duplicate_lines(state_prompt, history_prompt) #这里要删除什么？？？没看懂
         
 
         # First, determine whether the task has already been completed. ？？？这个和提示动作的prompt考虑合并？？？
         task_prompt = f"I am working on a functional test case containing multi-tasks for the '{func}' feature in the '{app}' app.  My current task is to {self.task}. Based on the actions I have taken and current state reached so far, I would like to confirm if I have successfully completed the current '{self.task}' task. Here is a summary of the actions I have performed:\n'''" + ';\n '.join(action_history)+".'''" #后续加app名称、当前界面显示内容（如何基于hierarchy总结相互关系）用于辅助判断是否完成；是否使用全部历史信息还是仅当前步骤的历史信息，对应关系是个难点，目前使用的是全部历史信息，self.task是否要包含当前步骤之前的所有步骤来进行综合判断; zyk没有加当前状态信息
-        question = f"Please provide a 'yes' or 'no' response to indicate whether, based on these actions, I have completed '{self.task}' successfully? Please provide a response in just 'yes' or 'no', without additional explanations or details."
+        question = f"Please provide a 'yes' or 'no' answer to indicate whether, based on performed actions and current state, I have completed '{self.task}' successfully? Please provide an answer in 'yes' or 'no'  with brief analysis for this answer. Please format the response as a JSON object with the following keys: 'answer_yes_or_no'(str, 'yes'or'no') 'analysis'(str)" 
         identify_prompt = ""
         if event_or_assertion == "Assertion" and "not" not in self.task and self.step != len(self.extracted_info):
-            identify_prompt = "If your answer is yes, please find the corresponding element. Please think step by step in analysis and only return the element action's ID. Please format the response as a JSON object with the following keys: 'analysis'(str), 'action_id'(int). If element action can be found in the current state, choose the action id as action_id; if no proper element action can be found in the current state, set action_id as -1.\n"
+            identify_prompt = "If your answer is yes, please find the corresponding element. Please think step by step in additional analysis for finding element and only return the element action's ID. Please supplement the JSON response object with the following key: 'action_id'(int). If element action can be found in the current state, choose the action id as action_id; if no proper element action can be found in the current state, set action_id as -1.\n"
         if event_or_assertion == "Assertion" and "not" in self.task and self.step != len(self.extracted_info):
-            identify_prompt = f"If your answer is no, please find the element in the state contradictory to '{self.task}' . Please think step by step in analysis and only return the element action's ID. Please format the response as a JSON object with the following keys: 'analysis'(str), 'action_id'(int). If element action can be found in the current state, choose the action id as action_id; if no proper element action can be found in the current state, set action_id as -1.\n"
+            identify_prompt = f"If your answer is no, please find the element in the state contradictory to '{self.task}' . Please think step by step in analysis for finding element and only return the element action's ID. Please supplement the JSON response object with the following key: 'action_id'(int). If element action can be found in the current state, choose the action id as action_id; if no proper element action can be found in the current state, set action_id as -1.\n"
         prompt = f'{task_prompt}\n{state_prompt}\n{question}{identify_prompt}' #zyk的版本里没有state_prompt
         print("\n-------------------------prompt asking whether subtask has been completed----------------------------------\n")
-        print(prompt)
-        print("\n-------------------------end prompt----------------------------------\n")
+        
+        
         retries = 0
         max_retries = 10
         constraints = {
+            "answer_yes_or_no":{
+                "required": True,
+                "type":str,
+                "value_constraints": lambda value: value in ("yes", "no")
+            },
             "analysis": {
+                "required": True,
                 "type": str
             }, 
             "action_id": {
+                "required": False,
                 "type": int,
                 "value_constraints": lambda value: value >= -1                           
             }, 
         }
         step = None
+        # if (identify_prompt != ""):           
         response, step, retries = tools.get_json_dict_response(prompt, max_retries, constraints)
+        # else:
+        #     print("-----------------------\n"+prompt)
+        #     response = tools.query_gpt(prompt)
+        #     print("-----------------------\n"+response)
+        print("\n-------------------------end prompt----------------------------------\n")
         self.conversation += f"    Prompt:\n{prompt}\n" + f"    Response:\n{response}\n"
-        action_id = step['action_id']
+        if "action_id" in step:
+            action_id = step['action_id']
 
-        if ("yes" in response.lower().split('{')[0] and (event_or_assertion != "Assertion" or self.step == len(self.extracted_info))):
+        if (step["answer_yes_or_no"] == "yes" and (event_or_assertion != "Assertion" or self.step == len(self.extracted_info))):
             finish = -1 #-1表示完成跳过，不需要执行操作
             print(f"Seems the task is completed. Press Enter to continue...")
             return finish, None, candidate_actions
-        elif "yes" in response.lower().split('{')[0] and event_or_assertion == "Assertion" and self.step != len(self.extracted_info):
+        elif step["answer_yes_or_no"] == "yes" and event_or_assertion == "Assertion" and self.step != len(self.extracted_info):
             if "not" not in self.task:
                 if action_id != -1:
                     finish = 1
@@ -1898,7 +1920,6 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                         x=selected_action.x,
                         y=selected_action.y,
                         view=selected_action.view,
-                        text=selected_action.text,
                         condition = self.task,
                         assert_accept = True
                     )
@@ -1929,52 +1950,47 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                     )
                     return finish, selected_action, candidate_actions
             else: # not in the state
-                if action_id != -1:#不需要存在但是却存在了，认为assertion失效
-                    finish = 1
-                    selected_action = OracleEvent(
-                        condition = self.task,
-                        assert_accept = False
-                    )
-                    return finish, selected_action, candidate_actions
-                else: #针对not 回答是 no，但是action_id == -1造成矛盾, 
-                    pass#需要补充
+                # if action_id != -1:#不需要存在但是却存在了，认为assertion失效；if action_id == -1:针对not 回答是 no，认为需要存在,但是action_id == -1对应不存在造成矛盾，认为assertion失效
+                finish = 1
+                selected_action = OracleEvent(
+                    condition = self.task,
+                    assert_accept = False
+                )
+                return finish, selected_action, candidate_actions
+
                     
-                
-                
-        
-        
-        
-                    
-                
+                  
 
         # Second, if not finished, then provide the next action.
         
         if self.task.split()[0].lower() == "identify": #对于Assertion的处理
             # identify
-            task_prompt = f"I have performed some actions and reached the current state in the current app. Now, I want to {self.task}, but I couldn't find the corresponding element. Therefore, I need to perform new actions to navigate to a new page for inspection. Based on the actions I have already executed, please suggest the action ID that I might perform next. Please think step by step in analysis and only return the action's ID. Please format the response as a JSON object with the following keys: 'analysis'(str), 'action_id'(int). If next action can be found in the current state, choose the action id as action_id; if no proper action can be found in the current state, set action_id as -1.\n"
+            task_prompt = f"I have performed some actions and reached the current state in the current app. Now, I want to '{self.task}', but I couldn't find the corresponding element. Therefore, I need to perform new actions to navigate to a new page for inspection. Based on the actions I have already executed, please suggest the action ID that I might perform next. Please think step by step in analysis and only return the action's ID. Please format the response as a JSON object with the following keys: 'analysis'(str), 'action_id'(int). If next action can be found in the current state, choose the action id as action_id; if no proper action can be found in the current state, set action_id as -1.\n"
             prompt = f'{task_prompt}\n{history_prompt}\n{state_prompt}'
         else:
             # event
-            task_prompt = f"I am working on a functional test case containing multi-tasks for the '{func}' feature in the '{app}' app. I've completed some actions and reached the current state. My current task is to {self.task}, and I need to decide the next step that will effectively advance the testing process." #{app}需要改成真实名字，目前类似‘a13’这种，且需要添加对于app的整体介绍
-            question = f"Given these options, which action (identified by the Action ID) should I perform next to effectively continue testing the '{func}' feature? Please do not suggest any actions that I have already completed. Please think step by step in analysis and only return the action's ID. Please format the response as a JSON object with the following keys: 'analysis'(str), 'action_id'(int). If next action can be found in the current state, choose the action id as action_id; if no proper action can be found in the current state, set action_id as -1.\n "
+            task_prompt = f"I am working on a functional test case containing multi-tasks for the '{func}' feature in the '{app}' app. I've completed some actions and reached the current state. My current task is to '{self.task}', and I need to decide the next step that will effectively advance the testing process." #{app}需要改成真实名字，目前类似‘a13’这种，且需要添加对于app的整体介绍
+            question = f"Given these options, which action (identified by the Action ID) should I perform next to effectively continue current task  '{self.task}'? Please do not suggest any actions that I have already completed. Please think step by step in analysis and only return the action's ID. Please format the response as a JSON object with the following keys: 'analysis'(str), 'action_id'(int). If next action can be found in the current state, choose the action id as action_id; if no proper action can be found in the current state, set action_id as -1.\n "
             tips = f"Here are a few tips that might help you with your action selection: Please consider that some apps may require login to access main features, but this is not always the case. If considering the login process, please ensure all necessary steps like entering email, password, and then confirming sign-in are included in the recommendation. If you are unsure which action to choose, consider scrolling down to access further features of the app." #去掉关于login的;这里没有把生成的步骤全部列出来是为了在生成的过程中保持一定的自适应性，因为最初合成的步骤不一定和当前用例完全匹配; scroll down目前的处理不奏效
             prompt = f'{task_prompt}\n{history_prompt}\n{state_prompt}\n{question}\n{tips}'
         print("\n-------------------------prompt asking for next step----------------------------------\n")
-        print(prompt)
-        print("\n-------------------------end prompt----------------------------------\n")
+        
         retries = 0
         max_retries = 10
         constraints = {
             "analysis": {
+                "required": True,
                 "type": str
             }, 
             "action_id": {
+                "required": True,
                 "type": int,
                 "value_constraints": lambda value: value >= -1                           
             }, 
         }
         step = None
         response, step, retries = tools.get_json_dict_response(prompt, max_retries, constraints)
+        print("\n-------------------------end prompt----------------------------------\n")
         self.conversation += f"    Prompt:\n{prompt}\n" + f"    Response:\n{response}\n"
         if retries == max_retries:
             print("Error: Unable to extract next action after maximum retries. Return no action")
@@ -1985,14 +2001,17 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         finish = 0
         # 判断是否已经执行到后面的task了，这个要列出全部吗？列出前n个？
         if match == -1 and self.step <= len(self.extracted_info)-1:
-            after_prompt = f"Please review the following list of future tasks and determine if any have already been completed:\n{self._get_after_task()}"
+            after_prompt = f"I am working on a functional test case containing multi-tasks for the '{func}' feature in the '{app}' app. I've completed some actions and reached the current state. Please review the following list of future tasks and determine if any have already been completed:\n{self._get_after_task()}"
             question = f"If any tasks have been completed, please reply with the ID of the last task that was completed; if none have been completed, return -1. Note, please provide a response in just one number, without additional explanations or details.\n"
             prompt = f'{history_prompt}\n{state_prompt}\n{after_prompt}\n{question}' #zyk的版本里没有state_prompt
             print("\n-------------------------prompt asking whether any future subtask has been done ----------------------------------\n")
+            print("-------------------------\n")
             print(prompt)
-            print("\n-------------------------end prompt----------------------------------\n")
+            
             response = self._query_llm(prompt)
-            print(f'response: {response}')
+            print("-------------------------\n")
+            print(f'{response}')
+            print("\n-------------------------end prompt----------------------------------\n")
             self.conversation += f"    Prompt:\n{prompt}\n" + f"    Response:\n{response}\n"
             if response == "-1": #???这里self.step要不要回退呢，目前没有回退；有可能是self.step-1 步造成的错误呢！！！回退机制的设计!!!
                 selected_action = candidate_actions[-1] # back, -1 denotes the end one
@@ -2033,13 +2052,16 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                 max_retries = 10
                 constraints = {
                     "text_need_enter": {
+                        "required": True,
                         "type": str
                     }, 
                     "press_enter": {
+                        "required": True,
                         "type": bool,
                         "value_constraints": lambda value: value in (True, False)                           
                     }, 
                     "goto_next_step": {
+                        "required": True,
                         "type": bool,
                         "value_constraints": lambda value: value in (True, False)  
                     }

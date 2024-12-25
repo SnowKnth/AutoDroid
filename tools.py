@@ -817,7 +817,10 @@ constraints = {
         for field, field_constraints in constraints.items():
             # 检查字段是否存在
             if field not in step:
-                return False
+                if field_constraints["required"]:
+                    return False
+                else:
+                    continue
             
             # 检查字段类型是否符合约束
             if not isinstance(step[field], field_constraints["type"]):
@@ -846,8 +849,11 @@ def checkStep(step, constraints):
     for field, field_constraints in constraints.items():
         # 检查字段是否存在
         if field not in step:
-            return False
-        
+            if field_constraints["required"]:
+                return False
+            else:
+                continue
+               
         # 检查字段类型是否符合约束
         if not isinstance(step[field], field_constraints["type"]):
             return False
@@ -866,8 +872,8 @@ def get_json_dict_response(prompt:str, max_retries:int, constraints:dict = None)
     while retries < max_retries:
     # Query the GPT model to get the substeps
         response = query_gpt(prompt)
-        print("------------------------"+prompt)
-        print("------------------------"+response)
+        print("------------------------\n"+prompt)
+        print("------------------------\n"+response)
         response_json = extract_between_plus_brackets(response)
         if response_json == "":
             retries += 1
@@ -887,9 +893,9 @@ def get_json_dict_response(prompt:str, max_retries:int, constraints:dict = None)
 def get_reference_steps(function:str, app_short:str, top_k:int):
     '''Get top k similar episodes from the database and generate a comprehensive one'''
     full_assert_prompt = "For assertion, choose from the following templates: 'Verify that the <element> is <state>', 'Verify that the <element> exists', 'Verify that the <element> is visible', 'Verify that the <element> is not visible', 'Verify that the <element> is enabled', 'Verify that the <element> is not enabled', 'Verify that the <element> is selected', 'Verify that the <element> is not selected', 'Verify that the <element> has the text <text>', 'Verify that the <element> has the partial text <text>', 'Verify that the <element> has the attribute <attribute> with the value <value>', 'Verify that the <element> does not have the attribute <attribute>'"
-    simple_assert_prompt = "For assertion, choose from the following templates:  'Verify that the <element with description> exists in the current state and return the element', 'Verify that the <element with description> does not exist in the current state', 'Verify that the <element with description> is <state>'\n"
+    simple_assert_prompt = "For assertion, choose from the following templates:  'Verify that the <element with description> exists in the current state', 'Verify that the <element with description> does not exist in the current state', 'Verify that the <element with description> is <state>'\n"
     #  'Verify that the <element with description> is visible in the current state', 'Verify that the <element with description> is not visible in the current state', 'Verify that the <element with description> is enabled in the current state', 'Verify that the <element with description> is not enabled in the current state', 'Verify that the <element with description> is selected in the current state', 'Verify that the <element with description> is not selected in the current state', 'Verify that the <element with description> has the text <text>', 'Verify that the <element with description> has the partial text <text>', 'Verify that the <element with description> has the attribute <attribute> with the value <value>', 'Verify that the <element with description> does not have the attribute <attribute>'"
-    task_prompt = f"Generate a comprehensive step-by-step guide containing multi-substeps(i.e. tasks) for the function: {function} in the app: {app_short}. If the substep is an event, please use the 'Event' type; if the substep is an assertion, please use the 'Assertion' type. \n{simple_assert_prompt} Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from 1), 'event_or_assertion'(str, 'Event' or 'Assertion'), 'task'(str). Below are the reference steps of similar functions. Please refer to them to generate the comprehensive steps. Eliminate duplicated, confusing and irrelevant steps.\n"
+    task_prompt = f"Generate a comprehensive step-by-step guide containing multi-substeps(i.e. tasks) for the function: {function} in the app: {app_short}. If the substep is an event, please use the 'Event' type; if the substep is an assertion, please use the 'Assertion' type. \n{simple_assert_prompt} Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from 1), 'event_or_assertion'(str, 'Event' or 'Assertion'), 'task'(str). Below are the reference steps of similar functions. Please refer to them to generate the comprehensive steps. Eliminate 'Press Home' step; eliminate duplicated, confusing and irrelevant steps.\n"
     
     reference_prompt = ""
     top_k = get_top_k_similar_episodes(function, top_k)
@@ -959,7 +965,7 @@ def get_reference_steps(function:str, app_short:str, top_k:int):
         "function": function,
         "step_number": len(steps)+1,
         "event_or_assertion": "Assertion",
-        "task": f"Verify that I have finished testing the wole function '{function}' ?",
+        "task": f"Verify that I have finished testing the wole function '{function}'",
         "status": -1,
         "example_email":  "",
         "example_password": ""

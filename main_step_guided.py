@@ -140,7 +140,7 @@ def run_on_agentenv():
 
     # setup AgentEnv: load emulator, connect to emulator, back to home.
     ac.set_up()
-    
+    ws = 0
     for _ in range(first_n_episodes): # iterate through the first n episodes
         try:
             # get instruction from AgentEnv
@@ -164,8 +164,14 @@ def run_on_agentenv():
             
             # 从dataset/llamatouch_dataset_0521数据集中提取apk，优先从end_no.activity中提取包名，其次从end_no.vh中提取，对apk进行检验；adb shell pm list packages；adb shell pm path <package_name>； adb pull /data/app/com.example.myapp-1/base.apk /path/to/save/base.apk； 然后初始化APK
             # subTasks = get_extracted_steps(task_description, app_short)
+            
             if  (not 'webshopping' in gr_path):
                 continue
+            else:
+                ws += 1
+                if ws <= 0:   # 跳过开头的k个任务  ws <= k           
+                    continue
+
             ac.setup_task(task_description) # some tasks need to setup preparation before execution
             ac.device.disconnect()
             similarTasks, subTasks = get_reference_steps(task_description, app_short, 3)
