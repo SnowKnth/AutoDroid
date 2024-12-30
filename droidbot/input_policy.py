@@ -1602,6 +1602,10 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         completion = client.chat.completions.create(
             messages=[
                 {
+                    "role": "system", "content": "You are a test expert in testing app functions"
+                    
+                    },
+                {
                     "role": "user",
                     "content": prompt,
                 }
@@ -1610,10 +1614,12 @@ class StepTaskPolicy(UtgBasedInputPolicy):
             # model="gpt-4-0125-preview",
             # model="gpt-4o-2024-05-13",
             # model="gpt-4o",
-            model="gpt-3.5-turbo",
+            model="deepseek-chat",
+            # model="gpt-3.5-turbo",
             temperature=0,
             seed=0x1110,
             timeout=60,
+            stream=False
         )
         res = completion.choices[0].message.content
         return res

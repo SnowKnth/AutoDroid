@@ -8,10 +8,10 @@ using_sentence_transformer = True
 # model =  SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 if using_sentence_transformer:
     from sentence_transformers import SentenceTransformer
-    model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2').to('cuda:0')
+    model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2').to('cuda:6')
 else:   
     from InstructorEmbedding import INSTRUCTOR
-    model = INSTRUCTOR('hkunlp/instructor-xl').to('cuda:0')
+    model = INSTRUCTOR('hkunlp/instructor-xl').to('cuda:6')
     
 # Function to generate hash
 def generate_hash(episode_id):
@@ -23,9 +23,16 @@ def generate_embeddings(episode_list):
     # model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
     
     embeddings = {}
+    visited_episode_ids = set()  # Use a set to store visited episode IDs, inner implementation used hash
+
     for index, episode in enumerate(episode_list):
         try:
             episode_id = episode['episode_id']
+            
+            # Check if the episode has already been processed
+            if episode_id in visited_episode_ids:
+                continue  # Skip this episode if it has already been processed
+            
             goal = episode['goal']
             steps = episode['steps']
             
@@ -42,6 +49,10 @@ def generate_embeddings(episode_list):
                 'steps': steps,
                 'embedding': embedding
             }
+            
+            # Mark this episode as processed
+            visited_episode_ids.add(episode_id)
+            
         except Exception as exc:
                 print(exc)
                 continue
@@ -76,12 +87,17 @@ def main_generate_sentence_embedding():
 # Function to read all JSON files from a directory
 def read_all_json_files_from_directory(directory_path):
     episode_list = []
-    for filename in os.listdir(directory_path):
-        if filename.endswith('.json'):
-            file_path = os.path.join(directory_path, filename)
-            with open(file_path, 'r') as file:
-                data = json.load(file)
-                episode_list.extend(data)  # Combine all data into a single list
+    if directory_path.endswith('.json'):
+        with open(directory_path, 'r') as file:
+            data = json.load(file)
+            episode_list.extend(data)  # Combine all data into a single list  
+    else:      
+        for filename in os.listdir(directory_path):
+            if filename.endswith('.json'):
+                file_path = os.path.join(directory_path, filename)
+                with open(file_path, 'r') as file:
+                    data = json.load(file)
+                    episode_list.extend(data)  # Combine all data into a single list
     return episode_list
 
 # Main function to generate sentence embeddings from files in a directory
@@ -137,7 +153,9 @@ def get_top_k_similar_episodes(task, k=5):
 
 # Run the main process
 if __name__ == "__main__":
-    directory_path =  'dataset/caption_json'
-    dst_file = 'dataset/episode_embedding.json'
+    directory_path =  'dataset/steps_summary/google_apps_episode_description_latest.json'
+    dst_file = 'dataset/episode_embedding/google_apps_embedding.json'
+    # os.mkdir(os.path.dirname(dst_file), exist_ok = True)
+    os.makedirs(os.path.dirname(dst_file), exist_ok = True)
     main_generate_sentence_embedding(directory_path, dst_file)
-    get_top_k_similar_episodes('Clear the cart on taobao.com. Add logitech g pro to the cart',10)
+    # get_top_k_similar_episodes('Clear the cart on taobao.com. Add logitech g pro to the cart',10)

@@ -169,7 +169,7 @@ def run_on_agentenv():
                 continue
             else:
                 ws += 1
-                if ws <= 0:   # 跳过开头的k个任务  ws <= k           
+                if ws <= 5:   # 跳过开头的k个任务  ws <= k           
                     continue
 
             ac.setup_task(task_description) # some tasks need to setup preparation before execution
