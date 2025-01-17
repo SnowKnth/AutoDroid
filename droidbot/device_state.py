@@ -828,7 +828,8 @@ class DeviceState(object):
             scrollable = self.__safe_dict_get(view, 'scrollable')
             checkable = self._get_self_ancestors_property(view, 'checkable')
             long_clickable = self._get_self_ancestors_property(view, 'long_clickable')
-            editable = self.__safe_dict_get(view, 'editable')
+            editable = self._get_self_ancestors_property(view, 'editable') #modified by wxd
+            # editable = self.__safe_dict_get(view, 'editable')   # exist in vh file, but not exist in xml of llamatouch
             actionable = clickable or scrollable or checkable or long_clickable or editable
             checked = self.__safe_dict_get(view, 'checked', default=False)
             selected = self.__safe_dict_get(view, 'selected', default=False)
@@ -931,7 +932,7 @@ class DeviceState(object):
                 important_view_ids.append([content_description + view_text,view_id])
 
                 available_actions.append(TouchEvent(view=view))
-        view_descs.append(f"<button id={len(view_descs)}> press enter key: only choose when the current task contains press enter operation</button>")
+        view_descs.append(f"<button id={len(view_descs)}> press enter key: only choose when the current task only contains press enter operation</button>")
         view_descs.append(f"<button id={len(view_descs)}>go back</button>") # len(view_descs) 在添加press enter后已经+1
         available_actions.append(KeyEvent(name='ENTER'))
         available_actions.append(KeyEvent(name='BACK')) # put at last, some func call it by index -1

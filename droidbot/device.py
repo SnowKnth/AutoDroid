@@ -154,6 +154,21 @@ class Device(object):
                 continue
             adapter.connect()
 
+            retries = 0
+            max_retries = 20  
+            while retries < max_retries:
+                try:
+                    adapter.connect()
+                    break  # If connection succeeds, break out of the retry loop
+                except Exception as e:  # Catch any exception during connection
+                    retries += 1
+                    time.sleep(1)
+                    if retries >= max_retries:
+                        print(f"Failed to connect adapter {adapter} after {max_retries} attempts.")
+                        raise e  # Re-raise the last exception
+                    else:
+                        print(f"Attempt {retries} failed for adapter {adapter}. Retrying...")
+
         self.get_sdk_version()
         self.get_release_version()
         self.get_ro_secure()

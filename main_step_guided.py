@@ -7,6 +7,7 @@ from droidbot import input_manager
 from droidbot import env_manager
 from datetime import datetime
 from tools import get_extracted_steps, get_reference_steps
+from torch.multiprocessing import Pool, set_start_method
 
 import requests
 
@@ -30,14 +31,14 @@ emulator_controller_args = {
         "port" : "5554",        # If port is occupied, please switch to 5556, 5558... and so forth
         "no-window" : "true",  # Change this to "true" to run the emulator without GUI.
     }
-first_n_episodes=int(os.environ.get("FIRST_N_EPISODES", 10))
+first_n_episodes=int(os.environ.get("FIRST_N_EPISODES", 495))
 
 # response = requests.get(TASK_METADATA_URL)
 # with open(TASK_METADATA_PATH, "w") as f:
 #     f.write(response.content)
 
 
-def parse_args(extracted_info, ac, episode):
+def parse_args(extracted_info, ac, episode, drb_output_dir):
     """
     parse command line input
     generate options including host name, port number
@@ -45,13 +46,13 @@ def parse_args(extracted_info, ac, episode):
     parser = argparse.ArgumentParser(description="Start DroidBot to test an Android app.",
                                      formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument("-d", action="store", dest="device_serial", required=False,
-                        help="The serial number of target device (use `adb devices` to find)")
+                        help="The serial number of target device (use `adb devices` to find)", default = ac.device_serial)
     
     #lccc-1
     parser.add_argument("-a", action="store", dest="apk_path",
                         help="The file path to target APK", default=extracted_info[0]['app'])
     parser.add_argument("-o", action="store", dest="output_dir", 
-                        help="directory of output", default="drb_output/"+str(episode))
+                        help="directory of output", default= drb_output_dir+"/"+str(episode))
     parser.add_argument("-task", action="store", dest="task",
                         help="the task to execute, in natural language", default=extracted_info[0]['task'])
     # parser.add_argument("-step", action="store", dest="step",
@@ -91,8 +92,8 @@ def parse_args(extracted_info, ac, episode):
     # print options
     return options
 
-def explore(extracted_info, ac, episode):
-    opts = parse_args(extracted_info, ac, episode)
+def explore(extracted_info, ac, episode, drb_output_dir):
+    opts = parse_args(extracted_info, ac, episode, drb_output_dir)
 
     if not os.path.exists(opts.apk_path):
         print("APK does not exist.")########Stuck here
@@ -128,23 +129,20 @@ def pre_download_APK():
     app.pull_installed_apps('llamatouch_apps', TASK_METADATA_PATH)
 
 
-def run_on_agentenv():  
-
-    ac = AndroidController(
-        avd_name=AVD_NAME,
-        emulator_controller_args=emulator_controller_args,
-        local_output_path="exec_output",
-        max_steps=15,
-        instruction_fp=TASK_METADATA_PATH,
-    )
+def run_on_agentenv(ac: AndroidController, range_pair, drb_output_dir):  
 
     # setup AgentEnv: load emulator, connect to emulator, back to home.
     ac.set_up()
     ws = 0
-    for _ in range(first_n_episodes): # iterate through the first n episodes
+    for index in range(first_n_episodes): # iterate through the first n episodes
         try:
+
             # get instruction from AgentEnv
             task_description, gr_path, app_short, episode = ac.get_instruction()
+            if(index+1 < range_pair[0]): # 放在ac.get_instruction() iterator后面
+                continue
+            elif index+1 > range_pair[1]:
+                break
             if task_description is None: 
                 break
             # if app_short not in ["Settings"]:
@@ -165,19 +163,19 @@ def run_on_agentenv():
             # 从dataset/llamatouch_dataset_0521数据集中提取apk，优先从end_no.activity中提取包名，其次从end_no.vh中提取，对apk进行检验；adb shell pm list packages；adb shell pm path <package_name>； adb pull /data/app/com.example.myapp-1/base.apk /path/to/save/base.apk； 然后初始化APK
             # subTasks = get_extracted_steps(task_description, app_short)
             
-            if  (not 'webshopping' in gr_path):
-                continue
-            else:
-                ws += 1
-                if ws <= 5:   # 跳过开头的k个任务  ws <= k           
-                    continue
+            # if  ('googleapps' in gr_path or 'general' in gr_path ):
+            #     continue
+            # else:
+            #     ws += 1
+            #     if ws <= 5:   # 跳过开头的k个任务  ws <= k           
+            #         continue
 
             ac.setup_task(task_description) # some tasks need to setup preparation before execution
             ac.device.disconnect()
             similarTasks, subTasks = get_reference_steps(task_description, app_short, 3)
             ac.save_intructions(similarTasks, subTasks)
             
-            explore(subTasks, ac, episode)
+            explore(subTasks, ac, episode, drb_output_dir)
  
             # save the last environment state of an episode
             # ac.get_state() #这里需要吗
@@ -187,7 +185,7 @@ def run_on_agentenv():
         except Exception as e:
             print(f"Error in task {task_description}: {e}")
             # remove content in folder os.path.join("exec_output", "captured_data")
-            os.system(f"rm -r {os.path.join('exec_output', 'captured_data')}")
+            os.system(f"rm -r {os.path.join(ac.local_output_path, episode, 'captured_data')}")
             import traceback
             traceback.print_exc()
 
@@ -197,11 +195,50 @@ def run_on_agentenv():
     
     # Execution finished, close AgentEnv：disconnect u2d and close emulator using subprocess.Popen(cmd)
     ac.tear_down()
+    
+def parallel_run_on_agentenv(args):
+    # run on multiple agents
+    avd_name, port, AgentEnv_output_dir, droidbot_out_dir, target_range = args
+    emulator_controller_args = {
+        "snapshot" : "default_boot",
+        "port" : port,        # If port is occupied, please switch to 5556, 5558... and so forth
+        "no-window" : "true",  # Change this to "true" to run the emulator without GUI.
+    }
+    ac = AndroidController(
+        avd_name=avd_name,
+        emulator_controller_args=emulator_controller_args,
+        local_output_path=AgentEnv_output_dir,
+        max_steps=20,
+        instruction_fp=TASK_METADATA_PATH,
+    )
+    run_on_agentenv(ac, range_pair=target_range, drb_output_dir=droidbot_out_dir)
 
 
 if __name__ == "__main__":
     start_time = datetime.now()
-    run_on_agentenv()
+    # AgentEnv_output_dir = "exec_output"
+    # droidbot_out_dir = "drb_output"
+    # ac = AndroidController(
+    #     avd_name=AVD_NAME,
+    #     emulator_controller_args=emulator_controller_args,
+    #     local_output_path="exec_output",
+    #     max_steps=20,
+    #     instruction_fp=TASK_METADATA_PATH,
+    # )
+    # run_on_agentenv(ac, range_pair=target_range, drb_output_dir=droidbot_out_dir)
+    
+    AVD_NAME_LIST = [ "Copy1_of_p6a", "Copy2_of_p6a", "Copy3_of_p6a", "Copy4_of_p6a"]
+    port_list = [ "5556", "5558", "5560", "5562"]
+    AgentEnv_output_dir = "exec_output_deepseek_nooracle-01-11"
+    droidbot_out_dir = "drb_output_deepseek_nooracle_01-11"
+    target_range_list = [(1,50),(51,100),(101,150),(151,200)]
+    # target_range_list = [(1,120),(121,240),(241,360),(361,495)]
+    
+    args = [ (avd_name, port_list[i], AgentEnv_output_dir, droidbot_out_dir, target_range_list[i])  for i, avd_name in enumerate(AVD_NAME_LIST)]
+    set_start_method('spawn', force=True)
+    with Pool(processes=4) as pool:
+        results = pool.map(parallel_run_on_agentenv, args)
+    
     end_time = datetime.now()
     elapsed_time = end_time - start_time
     print(f"Execution time: {elapsed_time}")

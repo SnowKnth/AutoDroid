@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import hashlib
 import os
+import glob
 
 using_sentence_transformer = True
 # model =  SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
@@ -70,10 +71,8 @@ def write_embeddings(file_path, embeddings):
     with open(file_path, 'w') as file:
         json.dump(embeddings, file)
 
-# Main process
-def main_generate_sentence_embedding():
-    episode_list_path = 'episode_list.json'
-    episode_embedding_path = 'episode_embedding.json'
+# 
+def generate_sentence_embedding_for_file(episode_list_path, episode_embedding_path):
     
     # Read episode list
     episode_list = read_episode_list(episode_list_path)
@@ -83,6 +82,27 @@ def main_generate_sentence_embedding():
     
     # Write embeddings to a file
     write_embeddings(episode_embedding_path, embeddings)
+    
+
+def generate_sentence_embedding_for_dir_seperated(pattern, output_dir):
+    """
+    处理目录中的所有符合条件的文件
+    :param input_dir: 输入目录
+    :param output_dir: 输出目录
+    """
+    # 确保输出目录存在
+    os.makedirs(output_dir, exist_ok=True)
+
+    # 使用 glob 匹配所有符合条件的文件
+    # pattern = os.path.join(input_dir, 'google_apps_episode_description_*.json')
+    for input_file in glob.glob(pattern):
+        # 生成输出文件名
+        base_name = os.path.basename(input_file)  # 获取文件名（不含路径）
+        output_file = os.path.join(output_dir, base_name.replace('.json', '_embedding.json'))
+
+        # 调用函数生成嵌入并保存
+        generate_sentence_embedding_for_file(input_file, output_file)
+        print(f"Processed: {input_file} -> {output_file}")
 
 # Function to read all JSON files from a directory
 def read_all_json_files_from_directory(directory_path):
@@ -100,7 +120,7 @@ def read_all_json_files_from_directory(directory_path):
                     episode_list.extend(data)  # Combine all data into a single list
     return episode_list
 
-# Main function to generate sentence embeddings from files in a directory
+# Main function to generate sentence embeddings from files in a directory into one embedding file
 def main_generate_sentence_embedding(directory_path, dest_file):
     episode_embedding_path = dest_file
     
@@ -112,6 +132,7 @@ def main_generate_sentence_embedding(directory_path, dest_file):
     
     # Write embeddings to a file
     write_embeddings(episode_embedding_path, embeddings)
+    
 
 
 
@@ -122,6 +143,16 @@ def load_embeddings(file_path):
     with open(file_path, 'r') as file:
         embeddings = json.load(file)
     return embeddings
+
+# Load embeddings from all .json files in a directory
+def load_embeddings_from_directory(directory_path):
+    all_embeddings = {}
+    for filename in os.listdir(directory_path):
+        if filename.endswith('.json'):
+            file_path = os.path.join(directory_path, filename)
+            embeddings = load_embeddings(file_path)
+            all_embeddings.update(embeddings)  # 假设每个文件返回一个列表
+    return all_embeddings
 
 # Function to find the top K similar episodes
 def _find_top_k_similar(task, embeddings, model, k=5):
@@ -136,9 +167,9 @@ def _find_top_k_similar(task, embeddings, model, k=5):
 
 # Function to find the top K similar episodes for a given task
 def get_top_k_similar_episodes(task, k=5):
-    episode_embedding_path = 'dataset/episode_embedding.json'   
+    episode_embedding_dir = 'dataset/episode_embedding/'   
     # Load embeddings
-    embeddings = load_embeddings(episode_embedding_path)   
+    embeddings = load_embeddings_from_directory(episode_embedding_dir)
     # # Initialize model
     # model = SentenceTransformer('paraphrase-MiniLM-L6-v2')   
     # Find top K similar episodes
@@ -153,9 +184,15 @@ def get_top_k_similar_episodes(task, k=5):
 
 # Run the main process
 if __name__ == "__main__":
-    directory_path =  'dataset/steps_summary/google_apps_episode_description_latest.json'
-    dst_file = 'dataset/episode_embedding/google_apps_embedding.json'
-    # os.mkdir(os.path.dirname(dst_file), exist_ok = True)
-    os.makedirs(os.path.dirname(dst_file), exist_ok = True)
-    main_generate_sentence_embedding(directory_path, dst_file)
+    # directory_path =  'dataset/steps_summary/google_apps_episode_description_latest.json'
+    # dst_file = 'dataset/episode_embedding/google_apps_embedding.json'
+    # # os.mkdir(os.path.dirname(dst_file), exist_ok = True)
+    # os.makedirs(os.path.dirname(dst_file), exist_ok = True)
+    # main_generate_sentence_embedding(directory_path, dst_file)
+    
+    
+    pattern = 'dataset/steps_summary/google_apps_episode_description_*.json'
+    output_dir = 'dataset/episode_embedding/'
+    generate_sentence_embedding_for_dir_seperated(pattern, output_dir)
+
     # get_top_k_similar_episodes('Clear the cart on taobao.com. Add logitech g pro to the cart',10)
