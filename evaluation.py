@@ -69,9 +69,9 @@ def traverse_and_compare(directory):
                         acc_step += right_steps
                         mismatched_files.append(file_path)
                     except yaml.YAMLError as e:
-                        print(f"Error reading {file_path}: {e}")
-    print(f"\nTask Accuracy: {acc_task}/{task_total} ({acc_task/task_total:.2%})")
-    print(f"\nStep Accuracy: {acc_step}/{step_total} ({acc_step/step_total:.2%})")
+                        logging.info(f"Error reading {file_path}: {e}")
+    logging.info(f"\nTask Accuracy: {acc_task}/{task_total} ({acc_task/task_total:.2%})")
+    logging.info(f"\nStep Accuracy: {acc_step}/{step_total} ({acc_step/step_total:.2%})")
 
     return mismatched_files
 
@@ -95,12 +95,12 @@ def compare_records(file_path, data):
             if index < len(action_history_list) and action_history_list[index] == action:
                 right_steps += 1
     else:
-        print(f"No baseline action found for task:{file_path} {task_name}")
+        logging.info(f"No baseline action found for task:{file_path} {task_name}")
     return steps, right_steps
 
 
 traverse_and_compare('output')
 # 打印结果字典
 # for task_name, action_history in result_dict.items():
-#     print(f"Task Name: {task_name}")
-#     print(f"Action History:\n{action_history}\n")
+#     logging.info(f"Task Name: {task_name}")
+#     logging.info(f"Action History:\n{action_history}\n")

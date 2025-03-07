@@ -42,31 +42,31 @@ class EventGenerator:
         action_val = np.unravel_index(action_types.argmax(), action_types.shape)
 
         if ACTION_TYPES[action_val[0]] == 'gesture':
-            # print("action: gesture")
+            # logging.info("action: gesture")
             gesture_types = self.action['gesture_type']
             gesture_val = np.unravel_index(gesture_types.argmax(), gesture_types.shape)
 
             gesture_pos = self.action['gesture_pos']
             x_pos, y_pos = np.unravel_index(gesture_pos.argmax(), gesture_pos.shape)
             if GESTURE_TYPES[gesture_val[0]] == "touch":
-                # print("action: click")
+                # logging.info("action: click")
                 event = TouchEvent(x_pos, y_pos)
             elif GESTURE_TYPES[gesture_val[0]] == "long_touch":
-                # print("long click")
+                # logging.info("long click")
                 event = LongTouchEvent(x=x_pos, y=y_pos, duration=2000)
             elif GESTURE_TYPES[gesture_val[0]] == "scroll_up":
-                # print("scroll up")
+                # logging.info("scroll up")
                 event = ScrollEvent(x=x_pos, y=y_pos, direction="UP")
             elif GESTURE_TYPES[gesture_val[0]] == "scroll_down":
-                # print("scroll down")
+                # logging.info("scroll down")
                 event = ScrollEvent(x=x_pos, y=y_pos, direction="DOWN")
         elif ACTION_TYPES[action_val[0]] == 'intent':
-            # print("action: intent")
+            # logging.info("action: intent")
             intent_list = self.action["broadcast"]
             intent_type = "adb shell am start -a " + POSSIBLE_BROADCASTS[np.unravel_index(intent_list.argmax(), intent_list.shape)[0]]
             event = IntentEvent(intent=intent_type)
         elif ACTION_TYPES[action_val[0]] == 'key':
-            # print("action key press")
+            # logging.info("action key press")
             key_press_list = self.action['key']
             key_press_type = POSSIBLE_KEYS[np.unravel_index(key_press_list.argmax(), key_press_list.shape)[0]]
             event = KeyEvent(name=key_press_type)

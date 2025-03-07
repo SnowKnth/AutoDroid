@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import argparse
+import logging
 from droidbot.droidbot import DroidBot
 from droidbot import input_manager
 from droidbot import env_manager
@@ -21,6 +22,13 @@ from tools import (
 ####because 'AGENTENV_PATH' is set so environment can be found
 sys.path.insert(0, os.environ.get("AGENTENV_PATH"))
 from environment import AndroidController, PrepareApps
+
+# 全局配置 logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)s %(filename)s:%(lineno)d - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 
 # config
 AVD_NAME = "pixel_6a_api31"
@@ -96,10 +104,10 @@ def explore(extracted_info, ac, episode, drb_output_dir):
     opts = parse_args(extracted_info, ac, episode, drb_output_dir)
 
     if not os.path.exists(opts.apk_path):
-        print("APK does not exist.")########Stuck here
+        logging.info("APK does not exist.")########Stuck here
         return
-    print(opts)
-    print("-----------------------------")
+    logging.info(opts)
+    logging.info("-----------------------------")
     droidbot = DroidBot(
         app_path=opts.apk_path,
         device_serial=opts.device_serial,
@@ -147,15 +155,17 @@ def run_on_agentenv(ac: AndroidController, range_pair, drb_output_dir):
                 break
             # if app_short not in ["Settings"]:
             #     continue
-
-            print(f"Current instruction: {task_description}")
+            if episode not in ["1359994677477286277"]:
+                continue
+            import logging
+            logging.info(f"Current instruction: {task_description}")
             
             # setup task environment if needed
-            # print(f"setting up task {task_description}...")
+            # logging.info(f"setting up task {task_description}...")
 
             
             # go to the dropdown s
-            # print(f"swipe up the screen")
+            # logging.info(f"swipe up the screen")
             # ac.device.swipe(500, 1500, 500, 500) #upstairs, x then y
             
             # time.sleep(2)
@@ -183,7 +193,7 @@ def run_on_agentenv(ac: AndroidController, range_pair, drb_output_dir):
             ac.reset_env()
 
         except Exception as e:
-            print(f"Error in task {task_description}: {e}")
+            logging.info(f"Error in task {task_description}: {e}")
             # remove content in folder os.path.join("exec_output", "captured_data")
             os.system(f"rm -r {os.path.join(ac.local_output_path, episode, 'captured_data')}")
             import traceback
@@ -227,19 +237,20 @@ if __name__ == "__main__":
     # )
     # run_on_agentenv(ac, range_pair=target_range, drb_output_dir=droidbot_out_dir)
     
-    AVD_NAME_LIST = [ "Copy1_of_p6a", "Copy2_of_p6a", "Copy3_of_p6a", "Copy4_of_p6a"]
+    AVD_NAME_LIST = [ "Copy1_of_p6a"]
+                    #  , "Copy2_of_p6a", "Copy3_of_p6a", "Copy4_of_p6a"]
     port_list = [ "5556", "5558", "5560", "5562"]
-    AgentEnv_output_dir = "exec_output_deepseek_nooracle-01-11"
-    droidbot_out_dir = "drb_output_deepseek_nooracle_01-11"
+    AgentEnv_output_dir = "exec_output_deepseek_nooracle-03-03"
+    droidbot_out_dir = "drb_output_deepseek_nooracle_03-03"
     target_range_list = [(1,50),(51,100),(101,150),(151,200)]
     # target_range_list = [(1,120),(121,240),(241,360),(361,495)]
     
     args = [ (avd_name, port_list[i], AgentEnv_output_dir, droidbot_out_dir, target_range_list[i])  for i, avd_name in enumerate(AVD_NAME_LIST)]
     set_start_method('spawn', force=True)
-    with Pool(processes=4) as pool:
+    with Pool(processes=1) as pool:
         results = pool.map(parallel_run_on_agentenv, args)
     
     end_time = datetime.now()
     elapsed_time = end_time - start_time
-    print(f"Execution time: {elapsed_time}")
+    logging.info(f"Execution time: {elapsed_time}")
     # pre_download_APK()

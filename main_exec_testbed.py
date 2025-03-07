@@ -30,7 +30,7 @@ with open(TASK_METADATA_PATH, "w") as f:
 class AndroidController(AgentEnv):
     def __init__(self, device_serial, local_output_path, max_steps=30, task_id=0):
         os.system(f"adb connect {device_serial}")
-        print(f"{device_serial=}, {local_output_path=}")
+        logging.info(f"{device_serial=}, {local_output_path=}")
         super().__init__(
             device_serial=device_serial,
             local_output_path=local_output_path,
@@ -116,7 +116,7 @@ def run_on_agentenv(
         try:
             task_description = row["description"]
             epi = row["episode"]
-            print(f"exec {index}-th epi: {epi}, {task_description}")
+            logging.info(f"exec {index}-th epi: {epi}, {task_description}")
 
             # check whether this task is completed
             # check whether folder:
@@ -153,7 +153,7 @@ def run_on_agentenv(
                     )
                 )
 
-                # print("selected action: ", action)
+                # logging.info("selected action: ", action)
 
                 if action == FINISHED:
                     ac.post_action(
@@ -194,7 +194,7 @@ def run_on_agentenv(
             )
 
         except Exception as e:
-            print(f"Error in epi {epi}: {e}")
+            logging.info(f"Error in epi {epi}: {e}")
             # remove content in folder os.path.join("exec_output", "captured_data")
             os.system(f"rm -r {os.path.join('exec_output', 'captured_data')}")
             import traceback

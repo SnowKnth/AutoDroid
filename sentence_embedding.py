@@ -55,9 +55,9 @@ def generate_embeddings(episode_list):
             visited_episode_ids.add(episode_id)
             
         except Exception as exc:
-                print(exc)
+                logging.info(exc)
                 continue
-    print(index)
+    logging.info(index)
     return embeddings
 
 # Read episode list from a file
@@ -102,7 +102,7 @@ def generate_sentence_embedding_for_dir_seperated(pattern, output_dir):
 
         # 调用函数生成嵌入并保存
         generate_sentence_embedding_for_file(input_file, output_file)
-        print(f"Processed: {input_file} -> {output_file}")
+        logging.info(f"Processed: {input_file} -> {output_file}")
 
 # Function to read all JSON files from a directory
 def read_all_json_files_from_directory(directory_path):
@@ -175,11 +175,11 @@ def get_top_k_similar_episodes(task, k=5):
     # Find top K similar episodes
     top_k = _find_top_k_similar(task, embeddings, model, k)  
     # for i, (episode_id, goal, steps, similarity) in enumerate(top_k):
-    #     print(f"Top {i + 1}:")
-    #     print(f"Episode ID: {episode_id}")
-    #     print(f"Goal: {goal}")
-    #     print(f"Steps: {steps}")
-    #     print(f"Similarity: {similarity}")
+    #     logging.info(f"Top {i + 1}:")
+    #     logging.info(f"Episode ID: {episode_id}")
+    #     logging.info(f"Goal: {goal}")
+    #     logging.info(f"Steps: {steps}")
+    #     logging.info(f"Similarity: {similarity}")
     return top_k
 
 # Run the main process

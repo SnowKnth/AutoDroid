@@ -4,8 +4,6 @@ import hashlib
 from .intent import Intent
 import subprocess
 
-# 设置全局日志级别为 WARNING
-logging.basicConfig(level=logging.WARNING)
 
 class App(object):
     """
@@ -31,6 +29,11 @@ class App(object):
 
         # from androguard.core.bytecodes.apk import APK
         from androguard.core.apk import APK
+        
+        # 获取 androguard 的日志对象
+        androguard_logger = logging.getLogger('androguard')
+        # 设置 androguard 的日志级别为 INFO
+        androguard_logger.setLevel(logging.INFO)
         self.apk = APK(self.app_path, skip_analysis=False)
         self.package_name = self.apk.get_package()
         self.app_name = self.apk.get_app_name()

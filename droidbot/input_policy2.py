@@ -15,7 +15,7 @@ from torch.nn.utils.rnn import pad_sequence
 from .input_event import KeyEvent, IntentEvent, TouchEvent, UIEvent, KillAppEvent
 from .input_policy import UtgBasedInputPolicy
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s")
+# logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s")
 DEBUG = True
 ACTION_INEFFECTIVE = 'ineffective'
 
@@ -49,7 +49,7 @@ class UIEmbedLSTM(nn.Module):
         return torch.stack([self._encode_view(state, view) for view in views])
 
     def _encode_view(self, state, view):
-        # print(view)
+        # logging.info(view)
         view_children = view['children'] if 'children' in view else []
         is_parent = 1 if len(view_children) > 0 else -1
         view_text = view['text'] if 'text' in view else None
@@ -157,7 +157,7 @@ class SinusoidalPositionalEncoding(nn.Module):
         b = pos_enc[:, 3]
         l_emb, r_emb, t_emb, b_emb = self.pe[l], self.pe[r], self.pe[t], self.pe[b]
         pos_emb = torch.cat([l_emb, r_emb, t_emb, b_emb], dim=1)
-        # print(f'pos_enc for {i},{j}: wh={w},{h}')
+        # logging.info(f'pos_enc for {i},{j}: wh={w},{h}')
         return pos_emb
 
 
@@ -231,7 +231,7 @@ class UIEmbedTransformer(nn.Module):
         return embs_pad, attn_mask
 
     def _encode_view_meta(self, state, view):
-        # print(view)
+        # logging.info(view)
         view_children = view['children'] if 'children' in view else []
         is_parent = 1 if len(view_children) > 0 else -1
         view_text = view['text'] if 'text' in view else None
@@ -470,7 +470,7 @@ class Memory:
             epoch_start_time = time.time()
             loss, n_pairs = train()
             elapsed = time.time() - epoch_start_time
-            print(f'| iter: {i:3d} | time: {elapsed:6.2f}s | #pairs: {n_pairs:6d} | loss: {loss:8.4f}')
+            logging.info(f'| iter: {i:3d} | time: {elapsed:6.2f}s | #pairs: {n_pairs:6d} | loss: {loss:8.4f}')
 
         # update embedding
         with torch.no_grad():
@@ -655,7 +655,7 @@ class MemoryGuidedPolicy(UtgBasedInputPolicy):
         log_lines = self.device.logcat.get_recent_lines()
         filtered_lines = []
         app_pid = self.device.get_app_pid(self.app)
-        # print(f'current app_pid: {app_pid}')
+        # logging.info(f'current app_pid: {app_pid}')
         for line in log_lines:
             try:
                 seps = line.split()

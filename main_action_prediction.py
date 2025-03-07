@@ -40,7 +40,7 @@ def predict_ui_actions(first_n_episodes: int = 0):
         else helper.get_all_episodes()
     )
     for index, epi in enumerate(all_epis):
-        print(f"processing {index}-th epi: {epi}")
+        logging.info(f"processing {index}-th epi: {epi}")
 
         task_description = helper.get_task_description_by_episode(epi)
         action_history = [f"- start from a random screen"]

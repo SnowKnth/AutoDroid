@@ -45,10 +45,10 @@ try:
                                 fout.write(converted_sh)
                             fout.close
                         else:
-                            print(f"No APK file found for {app_title}")
+                            logging.info(f"No APK file found for {app_title}")
                     else:
-                        print(f"No task_name found in {task_file_path}")
+                        logging.info(f"No task_name found in {task_file_path}")
 
 except KeyboardInterrupt:
-    print("Program interrupted!")                
+    logging.info("Program interrupted!")                
                 

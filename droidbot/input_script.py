@@ -647,13 +647,13 @@ if __name__ == '__main__':
         test_operation = test_script.get_operation_based_on_state(welcome_state)
         if not test_operation:
             none += 1
-            print('None')
+            logging.info('None')
         else:
-            print('%s: %s' % (test_operation.id, test_operation.events))
+            logging.info('%s: %s' % (test_operation.id, test_operation.events))
             if test_operation.id == 'swipe_operation':
                 swipe += 1
             elif test_operation.id == 'skip_operation':
                 skip += 1
-    print('swipe_operation: %f/%f (%f)' % (swipe, total, swipe / total))
-    print('skip_operation: %f/%f (%f)' % (skip, total, skip / total))
-    print('none_operation: %f/%f (%f)' % (none, total, none / total))
+    logging.info('swipe_operation: %f/%f (%f)' % (swipe, total, swipe / total))
+    logging.info('skip_operation: %f/%f (%f)' % (skip, total, skip / total))
+    logging.info('none_operation: %f/%f (%f)' % (none, total, none / total))

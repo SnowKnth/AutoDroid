@@ -289,7 +289,7 @@ class UTG(object):
                 start_state_str = state_str
             return steps
         except Exception as e:
-            print(e)
+            logging.info(e)
             self.logger.warning(f"Cannot find a path from {from_state.state_str} to {to_state.state_str}")
             return None
 
@@ -338,6 +338,6 @@ class UTG(object):
                 simple_nav_steps.append((state, action))
             return simple_nav_steps
         except Exception as e:
-            print(e)
+            logging.info(e)
             return None
 

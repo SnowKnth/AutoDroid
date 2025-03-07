@@ -16,10 +16,10 @@ def getFullDirectory(prefix,file_start):
         complete_filename = matching_filenames[0]  
         file_path = os.path.join(prefix, complete_filename)  
         basename = os.path.basename(file_path)  
-        print(basename)  # 输出匹配到的文件名  
+        logging.info(basename)  # 输出匹配到的文件名  
         return file_path
     else:  
-        print("没有找到匹配的文件名")
+        logging.info("没有找到匹配的文件名")
     
 
 
@@ -64,7 +64,7 @@ try:
                     fout.write(converted_sh)
                 fout.close
 except KeyboardInterrupt:
-    print("Program interrupted!")                
+    logging.info("Program interrupted!")                
                 
 def getFullDirectory(prefix,file_start):
         # 假设你只知道目录前缀     
@@ -80,6 +80,6 @@ def getFullDirectory(prefix,file_start):
         complete_filename = matching_filenames[0]  
         file_path = os.path.join(prefix, complete_filename)  
         basename = os.path.basename(file_path)  
-        print(basename)  # 输出匹配到的文件名  
+        logging.info(basename)  # 输出匹配到的文件名  
     else:  
-        print("没有找到匹配的文件名")
+        logging.info("没有找到匹配的文件名")

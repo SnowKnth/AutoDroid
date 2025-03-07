@@ -122,14 +122,14 @@ def run_on_agentenv():
             if task_description is None:
                 break
 
-            print(f"Current instruction: {task_description}")
+            logging.info(f"Current instruction: {task_description}")
             
             # setup task environment if needed
-            print(f"setting up task {task_description}...")
+            logging.info(f"setting up task {task_description}...")
             ac.setup_task(task_description) # some tasks need to setup preparation before execution
             
             # go to the dropdown s
-            print(f"swipe up the screen")
+            logging.info(f"swipe up the screen")
             ac.device.swipe(500, 1500, 500, 500) #upstairs, x then y
             
             time.sleep(2)
@@ -153,12 +153,12 @@ def run_on_agentenv():
                     )
                 )
                 
-                print("-----------------------------------------------------------------------------")
-                print(f"propmt: {prompt}")
-                print(f"got the action from the agent, costed time: {time.time()-s};action: {action}")
-                print(f"candidate_actions: {candidate_actions}")
-                print(f"target_view: {target_view}")
-                print(f"thought: {thought}")
+                logging.info("-----------------------------------------------------------------------------")
+                logging.info(f"propmt: {prompt}")
+                logging.info(f"got the action from the agent, costed time: {time.time()-s};action: {action}")
+                logging.info(f"candidate_actions: {candidate_actions}")
+                logging.info(f"target_view: {target_view}")
+                logging.info(f"thought: {thought}")
 
                 if action == FINISHED:
                     ac.post_action(
@@ -199,7 +199,7 @@ def run_on_agentenv():
             ac.reset_env()
 
         except Exception as e:
-            print(f"Error in task {task_description}: {e}")
+            logging.info(f"Error in task {task_description}: {e}")
             # remove content in folder os.path.join("exec_output", "captured_data")
             os.system(f"rm -r {os.path.join('exec_output', 'captured_data')}")
             import traceback

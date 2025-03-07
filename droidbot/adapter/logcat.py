@@ -70,7 +70,7 @@ class Logcat(Adapter):
                 f.write(line)
         if f is not None:
             f.close()
-        print("[CONNECTION] %s is disconnected" % self.__class__.__name__)
+        logging.info("[CONNECTION] %s is disconnected" % self.__class__.__name__)
 
     def parse_line(self, logcat_line):
         for parser in self.parsers:

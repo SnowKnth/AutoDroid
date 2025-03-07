@@ -10,7 +10,7 @@ helper = DatasetHelper()
 
 
 def plot_by_folder(trace_folder: str):
-    print(trace_folder)
+    logging.info(trace_folder)
     epi_id = trace_folder.split("/")[-1]
     task_description = helper.get_task_description_by_episode(epi_id)
     cat = helper.get_category_by_episode(epi_id).value

@@ -99,7 +99,7 @@ class ProcessMonitor(Adapter):
                 self.lock.release()
 
             time.sleep(1)
-        print("[CONNECTION] %s is disconnected" % self.__class__.__name__)
+        logging.info("[CONNECTION] %s is disconnected" % self.__class__.__name__)
 
     def get_ppids_by_pid(self, pid):
         """

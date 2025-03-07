@@ -26,7 +26,7 @@ for file in json_files:
         if 'state_str' in data.keys():
             all_state_strs.append(data['state_str'])
     except:
-        print(file, 'wrong')
+        logging.info(file, 'wrong')
         continue
 # import pdb;pdb.set_trace()
 def load_yaml_files(directory):
@@ -40,7 +40,7 @@ def load_yaml_files(directory):
                     try:
                         yaml_contents[file_path] = yaml.safe_load(f)
                     except yaml.YAMLError as exc:
-                        print(f"Error in loading {file_path}: {exc}")
+                        logging.info(f"Error in loading {file_path}: {exc}")
     return yaml_contents
 
 
@@ -57,18 +57,18 @@ for path, content in yaml_files_content.items():
             if isinstance(step['state_str'], str):
                 if step['state_str'] not in all_state_strs:
                     
-                    print(f'warning,', step['state_str'], 'original data missing')
+                    logging.info(f'warning,', step['state_str'], 'original data missing')
                     wrong_num += 1
                 else:
                     right_num += 1
-                # print('str', step['state_str'])
+                # logging.info('str', step['state_str'])
             else:
                 for state in step['state_str']:
                     for state_step in step['state_str']:
                         if state_step not in all_state_strs:
-                            print(f'warning,', state_step, 'original data missing')
+                            logging.info(f'warning,', state_step, 'original data missing')
                             wrong_num += 1
                         else:
                             right_num += 1
                     
-print(wrong_num, right_num)
+logging.info(wrong_num, right_num)

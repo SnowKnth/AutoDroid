@@ -113,7 +113,7 @@ class TestEnv(gym.Env):
             from gym.envs.classic_control import rendering
             if self.viewer is None:
                 self.viewer = rendering.SimpleImageViewer()
-                print(self.device.get_current_state().to_dict())
+                logging.info(self.device.get_current_state().to_dict())
             #self.viewer.imshow(self.device.get_current_state())
             return self.viewer.isopen
 

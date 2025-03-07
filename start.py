@@ -60,7 +60,7 @@ def main():
     opts = parse_args()
     import os
     if not os.path.exists(opts.apk_path):
-        print("APK does not exist.")
+        logging.info("APK does not exist.")
         return
 
     droidbot = DroidBot(

@@ -31,7 +31,7 @@ class QEMUConn(Adapter):
         initiate a QEMU connection
         :return:
         """
-        logging.basicConfig(level=logging.INFO)
+        # logging.basicConfig(level=logging.INFO)
         self.logger = logging.getLogger('QEMU')
 
         self.hda = hda
@@ -90,7 +90,7 @@ class QEMUConn(Adapter):
             self.send_command("cont")
 
         # 3. Connect to ADB
-        print(["adb", "connect", "%s:%s" % (self.domain, self.hostfwd_port)])
+        logging.info(["adb", "connect", "%s:%s" % (self.domain, self.hostfwd_port)])
         p = subprocess.Popen(["adb", "connect", "%s:%s" % (self.domain, self.hostfwd_port)])
         p.wait()
         self.connected = True
@@ -132,12 +132,12 @@ if __name__ == "__main__":
     qemu_conn.set_up()
     qemu_conn.connect(from_snapshot=False)
     time.sleep(5)
-    print("Start saving")
+    logging.info("Start saving")
     qemu_conn.send_command("stop")
     qemu_conn.send_command("savevm test1")
     qemu_conn.send_command("cont")
     time.sleep(10)
-    print("Start recovering")
+    logging.info("Start recovering")
     qemu_conn.send_command("loadvm test1")
     time.sleep(10)
     qemu_conn.send_command("delvm test1")

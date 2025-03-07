@@ -636,7 +636,7 @@ class DeviceState(object):
     #     view_tree.show()
     #     for node in view_tree.expand_tree(mode=Tree.WIDTH, sorting=False):
     #         if self.views[node]['clickable']:
-    #             print(node, self.views[node]['text'], self.views[node]['content_description'])            
+    #             logging.info(node, self.views[node]['text'], self.views[node]['content_description'])            
     #     # import pdb;pdb.set_trace()
     #     return view_tree
     def _build_view_graph(self):        
@@ -658,12 +658,12 @@ class DeviceState(object):
         for view_id in range(1, len(self.views)):
             if self.__safe_dict_get(self.views[view_id], 'clickable', default=False):
                 successors = self._extract_all_children(view_id)
-                # print('origin:', view_id, 'succs: ', successors)
+                # logging.info('origin:', view_id, 'succs: ', successors)
                 for successor in successors:
                     if successor != view_id and self.__safe_dict_get(self.views[successor], 'clickable', False):
-                        # print(self.views[view_id], 'disabled, because of ', self.views[successor])
+                        # logging.info(self.views[view_id], 'disabled, because of ', self.views[successor])
                         self.views[view_id]['clickable'] = False
-                        # print('origin:', view_id, 'because of:', successor, 'disabled')
+                        # logging.info('origin:', view_id, 'because of:', successor, 'disabled')
                         break
             if self.__safe_dict_get(self.views[view_id], 'checkable', default=False):
                 successors = self._extract_all_children(view_id)
@@ -688,7 +688,7 @@ class DeviceState(object):
         successors = []
         #successors_of_view is dict containing element like 14:[15, 63, 111], 15\63\111 also have their chidren
         successors_of_view = nx.dfs_successors(self.view_graph, source=id, depth_limit=100)
-        # print(successors_of_view)
+        # logging.info(successors_of_view)
         for k, v in successors_of_view.items():
             for successor_id in v:
                 if successor_id not in successors and successor_id != id:
@@ -772,12 +772,12 @@ class DeviceState(object):
     #     for view_id in range(1, len(self.views)):
     #         if self.__safe_dict_get(self.views[view_id], 'clickable', default=False):
     #             successors = self._extract_all_children(view_id)
-    #             # print('origin:', view_id, 'succs: ', successors)
+    #             # logging.info('origin:', view_id, 'succs: ', successors)
     #             for successor in successors:
     #                 if successor != view_id and self.__safe_dict_get(self.views[successor], 'clickable', False):
-    #                     # print(self.views[view_id], 'disabled, because of ', self.views[successor])
+    #                     # logging.info(self.views[view_id], 'disabled, because of ', self.views[successor])
     #                     self.views[view_id]['clickable'] = False
-    #                     print('origin:', view_id, 'because of:', successor, 'disabled')
+    #                     logging.info('origin:', view_id, 'because of:', successor, 'disabled')
     #                     break
     #         if self.__safe_dict_get(self.views[view_id], 'checkable', default=False):
     #             successors = self._extract_all_children(view_id)
@@ -788,7 +788,7 @@ class DeviceState(object):
 
     
     def get_described_actions(self, prefix='', remove_time_and_ip=False,
-                                merge_buttons =True, add_edit_box = True, add_check_box = True, add_pure_text = True):
+                                merge_buttons =True, add_edit_box = True, add_check_box = True, add_enter_back = True, add_scroll = False):
         """
         Get a text description of current state, making up new_state_str. can't handle situation where number of views changes or text|content_description changes. return 
         state_desc e.g.: '<button id=0>Add holidays</button>\n<button id=1>Add contact birthdays</button>"
@@ -822,7 +822,7 @@ class DeviceState(object):
         for view_id in enabled_view_ids:
             if view_id in removed_view_ids:
                 continue
-            # print(view_id)
+            # logging.info(view_id)
             view = self.views[view_id]
             clickable = self._get_self_ancestors_property(view, 'clickable')
             scrollable = self.__safe_dict_get(view, 'scrollable')
@@ -909,7 +909,7 @@ class DeviceState(object):
 
 
             elif scrollable:
-                # print(view_id, 'continued')
+                # logging.info(view_id, 'continued')
                 continue
                 # view_descs.append(scroll_up_frame.replace('@', str(len(view_descs))))#.replace('&', view_class).replace('#', text))
                 # available_actions.append(ScrollEvent(view=view, direction='UP'))
@@ -932,10 +932,15 @@ class DeviceState(object):
                 important_view_ids.append([content_description + view_text,view_id])
 
                 available_actions.append(TouchEvent(view=view))
-        view_descs.append(f"<button id={len(view_descs)}> press enter key: only choose when the current task only contains press enter operation</button>")
-        view_descs.append(f"<button id={len(view_descs)}>go back</button>") # len(view_descs) 在添加press enter后已经+1
-        available_actions.append(KeyEvent(name='ENTER'))
-        available_actions.append(KeyEvent(name='BACK')) # put at last, some func call it by index -1
+        if add_scroll:
+            available_actions.append(ScrollEvent(direction='UP'))
+            available_actions.append(ScrollEvent(direction='DOWN'))
+        if add_enter_back:
+            # view_descs.append(f"<button id={len(view_descs)}> press enter key: only choose when the current task only contains press enter operation</button>")
+            # view_descs.append(f"<button id={len(view_descs)}>go back</button>") # len(view_descs) 在添加press enter后已经+1
+            #available_actions这里后续加上scroll down/up; scroll down/up作为prompt中的tip描述对应的选项 by wxd
+            available_actions.append(KeyEvent(name='ENTER'))
+            available_actions.append(KeyEvent(name='BACK')) # put at last, some func call it by index -1
         
         # state_desc = 'The current state has the following UI elements: \n' #views and corresponding actions, with action id in parentheses:\n '
         state_desc = prefix #'Given a screen, an instruction, predict the id of the UI element to perform the insturction. The screen has the following UI elements: \n'
@@ -943,7 +948,7 @@ class DeviceState(object):
         state_desc += '\n'.join(view_descs)
         
         views_without_id = self._remove_view_ids(view_descs)
-        # print(views_without_id)
+        # logging.info(views_without_id)
         return state_desc, available_actions, views_without_id, important_view_ids
     
     def get_view_desc(self, view):
@@ -990,7 +995,7 @@ class DeviceState(object):
                 
             view_text, content_description, important_view_ids = self._merge_textv2(clickable_children_ids, False, [])
             checked = self._get_children_checked(clickable_children_ids)
-                # print(view_id, clickable_ancestor_id, clickable_children_ids, view_text, content_description)
+                # logging.info(view_id, clickable_ancestor_id, clickable_children_ids, view_text, content_description)
 
                 # view_desc = btn_frame.replace('@', str(len(view_descs))).replace('#', view_text).replace('$', str(checked or selected))
 
@@ -1217,8 +1222,8 @@ class DeviceState(object):
             # exclude navigation bar if exists
             if self.__safe_dict_get(view_dict, 'visible') and \
                 self.__safe_dict_get(view_dict, 'resource_id') not in \
-               ['android:id/navigationBarBackground',
-                'android:id/statusBarBackground']:
+               ['android:id/navigationBarBackground', #bottom navigation bar
+                'android:id/statusBarBackground']: #top status bar
                 enabled_view_ids.append(view_dict['temp_id'])
         for view_id in enabled_view_ids:
             view = self.views[view_id]

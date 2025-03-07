@@ -105,12 +105,12 @@ class Device(object):
             adapter_name = adapter.__class__.__name__
             adapter_enabled = self.adapters[adapter]
             if not adapter_enabled:
-                print("[CONNECTION] %s is not enabled." % adapter_name)
+                logging.info("[CONNECTION] %s is not enabled." % adapter_name)
             else:
                 if adapter.check_connectivity():
-                    print("[CONNECTION] %s is enabled and connected." % adapter_name)
+                    logging.info("[CONNECTION] %s is enabled and connected." % adapter_name)
                 else:
-                    print("[CONNECTION] %s is enabled but not connected." % adapter_name)
+                    logging.info("[CONNECTION] %s is enabled but not connected." % adapter_name)
 
     def wait_for_device(self):
         """
@@ -164,10 +164,10 @@ class Device(object):
                     retries += 1
                     time.sleep(1)
                     if retries >= max_retries:
-                        print(f"Failed to connect adapter {adapter} after {max_retries} attempts.")
+                        logging.info(f"Failed to connect adapter {adapter} after {max_retries} attempts.")
                         raise e  # Re-raise the last exception
                     else:
-                        print(f"Attempt {retries} failed for adapter {adapter}. Retrying...")
+                        logging.info(f"Attempt {retries} failed for adapter {adapter}. Retrying...")
 
         self.get_sdk_version()
         self.get_release_version()
@@ -640,7 +640,7 @@ class Device(object):
             install_p = subprocess.Popen(install_cmd, stdout=subprocess.PIPE)
             install_count = 0
             while self.connected and package_name not in self.adb.get_installed_apps() and install_count < 20:
-                print("Please wait while installing the app...")
+                logging.info("Please wait while installing the app...")
                 time.sleep(2)
                 install_count += 1
             if not self.connected or install_count == 20:
@@ -731,7 +731,7 @@ class Device(object):
             uninstall_cmd = ["adb", "-s", self.serial, "uninstall", package_name]
             uninstall_p = subprocess.Popen(uninstall_cmd, stdout=subprocess.PIPE)
             while package_name in self.adb.get_installed_apps():
-                print("Please wait while uninstalling the app...")
+                logging.info("Please wait while uninstalling the app...")
                 time.sleep(2)
             uninstall_p.terminate()
 
@@ -927,7 +927,7 @@ class Device(object):
             self.minicap.connect()
 
         if self.minicap.check_connectivity():
-            print("[CONNECTION] %s is reconnected." % self.minicap.__class__.__name__)
+            logging.info("[CONNECTION] %s is reconnected." % self.minicap.__class__.__name__)
         self.pause_sending_event = False
 
 class AgentEnvDevice():

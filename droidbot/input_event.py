@@ -245,7 +245,7 @@ class EventLog(object):
         self.start_profiling()
         self.event_str = self.event.get_event_str(self.from_state)
         logging.getLogger('Log2File').info("Action: %s" % self.event_str)
-        print("Action: %s" % self.event_str)
+        logging.info("Action: %s" % self.event_str)
         if send_event:
             self.device.send_event(self.event)
         if self.is_start_event():
@@ -673,14 +673,14 @@ class ScrollEvent(UIEvent):
             # do not drag from the center to avoid mis-touch
             # start_x += width * bias
             # end_x += width * bias
-            # print(height, start_y, end_y, start_x, end_x, width)
+            # logging.info(height, start_y, end_y, start_x, end_x, width)
         elif self.direction == "DOWN":
             start_y -= height * drag_length
             end_y += height * drag_length
             # do not drag from the center to avoid mis-touch
             # start_x += width * bias
             # end_x += width * bias
-            # print(height, start_y, end_y)
+            # logging.info(height, start_y, end_y)
         elif self.direction == "LEFT":
             start_x += width * drag_length
             end_x -= width * drag_length

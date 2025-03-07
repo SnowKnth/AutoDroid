@@ -70,7 +70,7 @@ class DroidMaster(object):
         initiate droidbot's with configurations
         :return:
         """
-        logging.basicConfig(level=logging.DEBUG if debug_mode else logging.INFO)
+        # logging.basicConfig(level=logging.DEBUG if debug_mode else logging.INFO)
         self.logger = logging.getLogger('DroidMaster')
         DroidMaster.instance = self
 
@@ -147,7 +147,7 @@ class DroidMaster(object):
     @staticmethod
     def get_instance():
         if DroidMaster.instance is None:
-            print("Error: DroidMaster is not initiated!")
+            logging.info("Error: DroidMaster is not initiated!")
             sys.exit(-1)
         return DroidMaster.instance
 
@@ -289,14 +289,14 @@ class DroidMaster(object):
 
     def start_daemon(self):
         self.server = SimpleXMLRPCServer((self.domain, self.rpc_port), RPCHandler)
-        print("Listening on port %s..." % self.rpc_port)
+        logging.info("Listening on port %s..." % self.rpc_port)
         self.server.register_function(self.spawn, "spawn")
         self.server.register_function(self.start_worker, "start_worker")
         self.server.register_function(self.stop_worker, "stop_worker")
         self.server.serve_forever()
 
     def stop_daemon(self):
-        print("Shutting down DroidMaster server...")
+        logging.info("Shutting down DroidMaster server...")
         self.server.shutdown()
         self.server_thread.join(0)
 

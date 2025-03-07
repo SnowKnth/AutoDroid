@@ -160,7 +160,7 @@ class DQN:
         while episode < max_episodes:
             # self.env.render()
             if steps >= max_steps:
-                print("episode {}, reached max steps".format(episode))
+                logging.info("episode {}, reached max steps".format(episode))
                 self.save_model("dqn_basic_maxed_episode{}_time_step{}.h5".format(episode, self.time_steps))
 
             if done:
@@ -169,7 +169,7 @@ class DQN:
                     tf.summary.scalar('Main/episode_steps', steps, step=episode)
 
                 self.stored_states = np.zeros((self.time_steps, self.state_shape[0]))
-                print("episode {}: {} reward".format(episode, total_reward))
+                logging.info("episode {}: {} reward".format(episode, total_reward))
 
                 if episode % save_freq == 0:  # save model every n episodes
                     self.save_model("dqn_basic_episode{}_time_step{}.h5".format(episode, self.time_steps))
@@ -223,17 +223,17 @@ class DQN:
 #     dqn_agent = DQN(env, time_steps=4)
 #     # dqn_agent.load_model("basic_models/time_step4/dqn_basic_episode50_time_step4.h5")
 #     # rewards = dqn_agent.test()
-#     # print("Total rewards: ", rewards)
+#     # logging.info("Total rewards: ", rewards)
 #     dqn_agent.train(max_episodes=50)
 #     # env = gym.make('CartPole-v0')
 #     # for i_episode in range(20):
 #     #     observation = env.reset()
 #     #     for t in range(100):
 #     #         env.render()
-#     #         print(observation)
+#     #         logging.info(observation)
 #     #         action = env.action_space.sample()
 #     #         observation, reward, done, info = env.step(action)
 #     #         if done:
-#     #             print("Episode finished after {} timesteps".format(t + 1))
+#     #             logging.info("Episode finished after {} timesteps".format(t + 1))
 #     #             break
 #     # env.close()

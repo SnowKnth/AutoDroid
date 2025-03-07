@@ -124,7 +124,7 @@ class Monitor(object):
                     break
                 else:
                     temp_pid = None
-                    print("Process not found")
+                    logging.info("Process not found")
             self.pid = temp_pid
         #self.notify()
         return self.pid
@@ -133,7 +133,7 @@ class Monitor(object):
         try:
             self.device = frida.get_usb_device()
         except Exception as e:
-            print("Device not found")
+            logging.info("Device not found")
             self.device = None
         return
 
@@ -189,5 +189,5 @@ class Monitor(object):
 
     def stop(self):
         self.detach(self.session)
-        print("stop monitor...")
+        logging.info("stop monitor...")
         return

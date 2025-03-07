@@ -87,12 +87,12 @@ class DroidBotAppConn(Adapter):
                 and self.device.get_sdk_version() < 23 and self.enable_accessibility_hard:
             device.adb.enable_accessibility_service_db(ACCESSIBILITY_SERVICE)
             while ACCESSIBILITY_SERVICE not in device.get_service_names():
-                print("Restarting device...")
+                logging.info("Restarting device...")
                 time.sleep(1)
 
         # device.start_app(droidbot_app)
         while ACCESSIBILITY_SERVICE not in device.get_service_names() and self.__can_wait:
-            print("Please enable accessibility for DroidBot app manually.")
+            logging.info("Please enable accessibility for DroidBot app manually.")
             time.sleep(1)
 
     def tear_down(self):
@@ -109,6 +109,7 @@ class DroidBotAppConn(Adapter):
             import threading
             listen_thread = threading.Thread(target=self.listen_messages)
             listen_thread.start()
+            logging.info("[CONNECTION] %s is connected" % self.__class__.__name__)
         except socket.error:
             self.connected = False
             traceback.print_exc()
@@ -142,7 +143,7 @@ class DroidBotAppConn(Adapter):
                 if not isinstance(message, str):
                     message = message.decode()
                 self.handle_message(message)
-            print("[CONNECTION] %s is disconnected" % self.__class__.__name__)
+            logging.info("[CONNECTION] %s is disconnected" % self.__class__.__name__)
         except Exception:
             if self.check_connectivity():
                 traceback.print_exc()
@@ -187,13 +188,13 @@ class DroidBotAppConn(Adapter):
             try:
                 self.sock.close()
             except Exception as e:
-                print(e)
+                logging.info(e)
         try:
             forward_remove_cmd = "adb -s %s forward --remove tcp:%d" % (self.device.serial, self.port)
             p = subprocess.Popen(forward_remove_cmd.split(), stderr=subprocess.PIPE, stdout=subprocess.PIPE)
             out, err = p.communicate()
         except Exception as e:
-            print(e)
+            logging.info(e)
         self.__can_wait = False
 
     def __view_tree_to_list(self, view_tree, view_list):

@@ -2,6 +2,7 @@ import hashlib
 import os
 import re
 import json
+import logging
 
 import networkx as nx
 from openai import OpenAI
@@ -28,8 +29,8 @@ def get_id_from_view_desc(view_desc):
     try:
         ret = int(re.findall(r"id=(\d+)", view_desc)[0])
     except:
-        print(f"error indexing id from view desc")
-        print(view_desc)
+        logging.error(f"error indexing id from view desc")
+        logging.error(view_desc)
         ret = -1
     return ret
     # if view_desc[0] == ' ':
@@ -44,7 +45,7 @@ def get_id_from_view_desc(view_desc):
     #         return int(view_desc_list[1][3:])
     # else:  # for example, <p id=4>June</p>
     #     latter_part = view_desc_list[1].split('>', 1)
-    #     # print('************', view_desc, view_without_id)
+    #     # logging.error('************', view_desc, view_without_id)
     #     return int(latter_part[0][3:])
 
 
@@ -681,7 +682,7 @@ def get_described_actions(
     state_desc += "\n".join(view_descs)
 
     views_without_id = _remove_view_ids(view_descs)
-    # print(views_without_id)
+    # logging.error(views_without_id)
     return state_desc, available_actions, views_without_id, important_view_ids
 
 
@@ -720,11 +721,11 @@ def get_action_from_views_actions(
     # ids = [str(idx) for idx, i in enumerate(candidate_actions)]
     ids = str([i for i in range(len(candidate_actions))])
 
-    # print(
+    # logging.error(
     #     "********************************** prompt: **********************************"
     # )
-    # print(prompt)
-    # print(
+    # logging.error(prompt)
+    # logging.error(
     #     "********************************** end of prompt **********************************"
     # )
 
@@ -733,7 +734,7 @@ def get_action_from_views_actions(
     # post process for extracting next action; by wxd If idx==-1(finished or impossible), selected_action can't return "Task_completed"
     idx, action_type, input_text = extract_action(response)
 
-    # print(f"candidate actions: {candidate_actions}")
+    # logging.error(f"candidate actions: {candidate_actions}")
 
     idx = int(idx)
     if idx != -1:
@@ -871,23 +872,26 @@ def get_json_dict_response(prompt:str, max_retries:int, constraints:dict = None)
     response = ""
     while retries < max_retries:
     # Query the GPT model to get the substeps
-        response = query_gpt(prompt)
-        print("------------------------\n"+prompt)
-        print("------------------------\n"+response)
-        response_json = extract_between_plus_brackets(response)
-        if response_json == "":
-            retries += 1
-            continue    
         try:
+            response = query_gpt(prompt)
+            logging.info("------------------------\n"+prompt)
+            logging.info("------------------------\n"+response)
+            response_json = extract_between_plus_brackets(response)
+            if response_json == "":
+                retries += 1
+                continue    
+        
             step = json.loads(response_json)
             if checkStep(step, constraints):           
                 break  # Exit the loop if parsing is successful
             else: 
                 retries += 1
                 continue
-        except json.JSONDecodeError:
-            print(f"Error: Unable to parse the response from GPT. Retry {retries + 1}/{max_retries}")
+
+        except Exception as e:
+            logging.exception(f"Error: Unable to parse the response from GPT. Retry {retries + 1}/{max_retries}:")
             retries += 1
+        
     return response, step, retries
 
 def get_json_dict_then_list_response(prompt:str, max_retries:int, constraints:list = None): #constraints: list[dict]
@@ -898,28 +902,78 @@ def get_json_dict_then_list_response(prompt:str, max_retries:int, constraints:li
     if len(constraints) == 2:
         while retries < max_retries:
         # Query the GPT model to get the substeps
-            response = query_gpt(prompt)
-            print("------------------------\n"+prompt)
-            print("------------------------\n"+response)
-            response_json = extract_between_plus_brackets(response)
-            respose_json_list = extract_between_brackets(response)
-
-            if response_json == "" or respose_json_list == "":
-                retries += 1
-                continue    
             try:
+                response = query_gpt(prompt)
+                logging.info("------------------------\n"+prompt)
+                logging.info("------------------------\n"+response)
+                response_json = extract_between_plus_brackets(response)
+                respose_json_list = extract_between_brackets(response)
+
+                if response_json == "" or respose_json_list == "":
+                    retries += 1
+                    continue    
+
                 step = json.loads(response_json)
-                step_list = json.loads(respose_json_list)
-                if checkStep(step, constraints[0]) and checkSteps(steps, constraints[1]):           
-                    break  # Exit the loop if parsing is successful
+                step_list = []
+                if respose_json_list != "":
+                    step_list = json.loads(respose_json_list)
+                if checkStep(step, constraints[0]):
+                    if step_list != []:
+                        if checkSteps(step_list, constraints[1]):           
+                            break
+                        else:
+                            retries += 1
+                            continue
+                    else:
+                        break   
                 else: 
                     retries += 1
                     continue
-            except json.JSONDecodeError:
-                print(f"Error: Unable to parse the response from GPT. Retry {retries + 1}/{max_retries}")
+            except Exception as e:
+                logging.exception(f"Error: Unable to parse the response from GPT. Retry {retries + 1}/{max_retries}:")
                 retries += 1
                 
     return response, step, step_list, retries
+
+def update_reference_steps(reference_steps:list, step_list:list, self_step:int):
+           # Validate and clean the fields in the steps
+    app_short = reference_steps[0].get("app", "").split("/")[-1].split(".")[0]
+    function = reference_steps[0].get("function", "")
+    validated_steps = []
+    for step in step_list:
+        validated_step = {
+            "app": f"llamatouch_apps/{app_short}.apk",
+            "function": function,
+            "step_number": step.get("step_number", -1),
+            "event_or_assertion": step.get("event_or_assertion", ""),
+            "task": step.get("task", ""),
+            "status": -1,
+            "example_email":  "",
+            "example_password": ""
+        }
+        
+        # Perform string validation on the fields
+        for key, value in validated_step.items():
+            if isinstance(value, str):
+                validated_step[key] = value.strip()  # Remove leading/trailing whitespace
+        
+        if validated_step["task"] == "Press Home" or validated_step["task"] == "Task Complete":
+            continue
+        validated_steps.append(validated_step)
+        
+    validated_step = {
+        "app": f"llamatouch_apps/{app_short}.apk",
+        "function": function,
+        "step_number": self_step + len(step_list),
+        "event_or_assertion": "Assertion",
+        "task": f"Verify that I have finished testing the wole function '{function}'",
+        "status": -1,
+        "example_email":  "",
+        "example_password": ""
+    }
+    validated_steps.append(validated_step)
+    reference_steps = reference_steps[:self_step-1]  + validated_steps
+    return reference_steps
     
 def get_reference_steps(function:str, app_short:str, top_k:int):
     '''Get top k similar episodes from the database and generate a comprehensive one'''
@@ -927,28 +981,29 @@ def get_reference_steps(function:str, app_short:str, top_k:int):
     simple_assert_prompt = "For assertion, choose from the following templates:  'Verify that the <element with description> exists in the current state', 'Verify that the <element with description> does not exist in the current state', 'Verify that the <element with description> is <state>'\n"
     #  'Verify that the <element with description> is visible in the current state', 'Verify that the <element with description> is not visible in the current state', 'Verify that the <element with description> is enabled in the current state', 'Verify that the <element with description> is not enabled in the current state', 'Verify that the <element with description> is selected in the current state', 'Verify that the <element with description> is not selected in the current state', 'Verify that the <element with description> has the text <text>', 'Verify that the <element with description> has the partial text <text>', 'Verify that the <element with description> has the attribute <attribute> with the value <value>', 'Verify that the <element with description> does not have the attribute <attribute>'"
     
-    # task_prompt = f"Generate a comprehensive step-by-step guide containing multi-substeps(i.e. tasks) for the function: {function} in the app: {app_short}. If the substep is an event, please use the 'Event' type; if the substep is an assertion, please use the 'Assertion' type. \n{simple_assert_prompt} Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from 1), 'event_or_assertion'(str, 'Event' or 'Assertion'), 'task'(str). Below are the reference steps of similar functions. Please refer to them to generate the comprehensive steps. Eliminate 'Press Home' step; eliminate duplicated, confusing and irrelevant steps.\n"
+    # task_prompt = f"Generate a comprehensive step-by-step guide containing multi-substeps(i.e. subtasks) for the function: {function} in the app: {app_short}. If the substep is an event, please use the 'Event' type; if the substep is an assertion, please use the 'Assertion' type. \n{simple_assert_prompt} Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from 1), 'event_or_assertion'(str, 'Event' or 'Assertion'), 'task'(str). Below are the reference steps of similar functions. Please refer to them to generate the comprehensive steps. Eliminate 'Press Home' step; eliminate duplicated, confusing and irrelevant steps.\n"
     
-    task_prompt = f"Generate a comprehensive step-by-step guide containing multi-substeps(i.e. tasks) for the function: {function} in the app: {app_short}. If the substep is an event, please use the 'Event' type; Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from 1), 'event_or_assertion'(str, 'Event'), 'task'(str). Below are the reference steps of similar functions. Please refer to them to generate the comprehensive steps. Eliminate 'Press Home' step; eliminate duplicated, confusing and irrelevant steps.\n"
+    task_prompt = f"Generate a comprehensive step-by-step guide containing multi-substeps(i.e. subtasks) for the function: {function} in the app: {app_short}. If the substep is an event, please use the 'Event' type; Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from 1), 'event_or_assertion'(str, 'Event'), 'task'(str). Below are the reference steps of similar functions (0 or more). Please refer to them to generate the comprehensive steps. Eliminate 'Press Home' step; eliminate duplicated, confusing and irrelevant steps. Eliminate steps of 'Unlock device' and 'connect to the internet'\n"
     
     reference_prompt = ""
-    top_k = get_top_k_similar_episodes(function, top_k)
-    for i, (episode_id, goal, steps, similarity) in enumerate(top_k):
-        reference_prompt += f"Reference {i + 1}: \nFunction: {goal}\nSimilarity: {similarity}\nSteps:{steps}\n"
+    # top_k = get_top_k_similar_episodes(function, top_k)
+    # for i, (episode_id, goal, steps, similarity) in enumerate(top_k):
+    #     reference_prompt += f"Reference {i + 1}: \nFunction: {goal}\nSimilarity: {similarity}\nSteps:{steps}\n"
     prompt = task_prompt + reference_prompt
-    print(prompt)
+    logging.info("------------------------"+prompt)
     retries = 0
     max_retries = 10
     
     while retries < max_retries:
     # Query the GPT model to get the substeps
-        response = query_gpt(prompt)
-        response = extract_between_brackets(response)
-        if response == "":
-            retries += 1
-            continue    
-        print("------------------------"+response)
         try:
+            response = query_gpt(prompt)
+            response = extract_between_brackets(response)
+            if response == "":
+                retries += 1
+                continue    
+            logging.info("------------------------"+response)
+
             steps = json.loads(response)
             def checkSteps(steps):
                 for i, step in enumerate(steps):
@@ -966,12 +1021,12 @@ def get_reference_steps(function:str, app_short:str, top_k:int):
             else: 
                 retries += 1
                 continue
-        except json.JSONDecodeError:
-            print(f"Error: Unable to parse the response from GPT. Retry {retries + 1}/{max_retries}")
+        except Exception as e:
+            logging.exception(f"Error: Unable to parse the response from GPT. Retry {retries + 1}/{max_retries}")
             retries += 1
     
     if retries == max_retries:
-        print("Error: Unable to extract steps after maximum retries.")
+        logging.error("Error: Unable to extract steps after maximum retries.")
         return []
     
        # Validate and clean the fields in the steps
@@ -983,7 +1038,7 @@ def get_reference_steps(function:str, app_short:str, top_k:int):
             "step_number": step.get("step_number", -1),
             "event_or_assertion": step.get("event_or_assertion", ""),
             "task": step.get("task", ""),
-            "status": -1,
+            "status": -1, #status=-1表示直接使用LLM方法，status=1表示先使用match方法
             "example_email":  "",
             "example_password": ""
         }
@@ -1044,11 +1099,11 @@ def get_extracted_steps(function:str, app_short:str):
                 retries += 1
                 continue
         except json.JSONDecodeError:
-            print(f"Error: Unable to parse the response from GPT. Retry {retries + 1}/{max_retries}")
+            logging.exception(f"Error: Unable to parse the response from GPT. Retry {retries + 1}/{max_retries}")
             retries += 1
     
     if retries == max_retries:
-        print("Error: Unable to extract steps after maximum retries.")
+        logging.error("Error: Unable to extract steps after maximum retries.")
         return []
     
        # Validate and clean the fields in the steps
@@ -1091,32 +1146,38 @@ def get_extracted_steps(function:str, app_short:str):
 
 
 def query_gpt(prompt):
-    client = OpenAI(api_key=os.environ["OPENAI_APIKEY"], base_url=os.environ["OPENAI_BASEURL"])
-    retry = 0
-    completion = client.chat.completions.create(
-        messages=[
-            {
-                "role": "system", "content": "You are a test expert in testing app functions"
-             
-             },
-            {
-                "role": "user",
-                "content": prompt,
-            }
-        ],
-        # "gpt-3.5-turbo" points to "gpt-3.5-turbo-0125"
-        # model="gpt-4-0125-preview",
-        # model="gpt-4o-2024-05-13",
-        # model="gpt-4o",
-        model="deepseek-chat",
-        # model="gpt-3.5-turbo",
-        # model="gpt-3.5-turbo-ca",
-        temperature=0,
-        seed=0x1110,
-        timeout=60,
-        stream=False
-    )
-    res = completion.choices[0].message.content
+    while True:
+        try:
+            client = OpenAI(api_key=os.environ["OPENAI_APIKEY"], base_url=os.environ["OPENAI_BASEURL"])
+            retry = 0
+            completion = client.chat.completions.create(
+                messages=[
+                    {
+                        "role": "system", "content": "You are a test expert in testing app functions"
+                    
+                    },
+                    {
+                        "role": "user",
+                        "content": prompt,
+                    }
+                ],
+                # "gpt-3.5-turbo" points to "gpt-3.5-turbo-0125"
+                # model="gpt-4-0125-preview",
+                # model="gpt-4o-2024-05-13",
+                # model="gpt-4o",
+                model="deepseek-chat",
+                # model="gpt-3.5-turbo",
+                # model="gpt-3.5-turbo-ca",
+                temperature=0,
+                seed=0x1110,
+                timeout=60,
+                stream=False
+            )
+            res = completion.choices[0].message.content
+            break
+        except Exception as e:
+            logging.exception("query_gpt error:\n")
+            continue
     return res
 
 # Run the main process

@@ -8,4 +8,4 @@ match = re.search(r'\d+', response)
 finish = 0
 # 判断是否已经执行到后面的task了
 if not match:
-    print("Not match")
+    logging.info("Not match")

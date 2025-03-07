@@ -50,7 +50,7 @@ class DroidBotConn(Adapter):
         initiate a DroidBot connection
         :return:
         """
-        logging.basicConfig(level=logging.INFO)
+        # logging.basicConfig(level=logging.INFO)
         self.logger = logging.getLogger('DroidBot')
 
         self.device_unique_id = device_unique_id

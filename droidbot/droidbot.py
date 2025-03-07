@@ -54,9 +54,9 @@ class DroidBot(object):
         initiate droidbot with configurations
         :return:
         """
-        logging.basicConfig(filename='droidbot.log',level=logging.DEBUG if debug_mode else logging.INFO)
+        # logging.basicConfig(filename='droidbot.log',level=logging.DEBUG if debug_mode else logging.INFO)
 
-        self.logger = logging.getLogger('DroidBot')
+        self.logger = logging.getLogger(__name__)
         DroidBot.instance = self
 
         self.output_dir = output_dir
@@ -132,7 +132,7 @@ class DroidBot(object):
     @staticmethod
     def get_instance():
         if DroidBot.instance is None:
-            print("Error: DroidBot is not initiated!")
+            logging.info("Error: DroidBot is not initiated!")
             sys.exit(-1)
         return DroidBot.instance
 
@@ -186,8 +186,8 @@ class DroidBot(object):
         self.logger.info("DroidBot Stopped")
 
     def stop(self):
-        print("-----------------------------")
-        print(len(self.input_manager.events))
+        logging.info("-----------------------------")
+        logging.info(len(self.input_manager.events))
         events_list = [event.__dict__ for event in self.input_manager.events]
         app_name = self.extracted_info[0]['app'].split('.')[0].split('/')[1]
         function_name = self.extracted_info[-1]['function']
