@@ -240,8 +240,8 @@ if __name__ == "__main__":
     AVD_NAME_LIST = [ "Copy1_of_p6a"]
                     #  , "Copy2_of_p6a", "Copy3_of_p6a", "Copy4_of_p6a"]
     port_list = [ "5556", "5558", "5560", "5562"]
-    AgentEnv_output_dir = "exec_output_deepseek_nooracle-03-03"
-    droidbot_out_dir = "drb_output_deepseek_nooracle_03-03"
+    AgentEnv_output_dir = "exec_output_deepseek_nooracle-03-12-01"
+    droidbot_out_dir = "drb_output_deepseek_nooracle_03-12-01"
     target_range_list = [(1,50),(51,100),(101,150),(151,200)]
     # target_range_list = [(1,120),(121,240),(241,360),(361,495)]
     

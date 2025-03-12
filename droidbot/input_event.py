@@ -244,7 +244,7 @@ class EventLog(object):
         self.from_state = self.device.get_current_state()
         self.start_profiling()
         self.event_str = self.event.get_event_str(self.from_state)
-        logging.getLogger('Log2File').info("Action: %s" % self.event_str)
+        # logging.getLogger('Log2File').info("Action: %s" % self.event_str)
         logging.info("Action: %s" % self.event_str)
         if send_event:
             self.device.send_event(self.event)

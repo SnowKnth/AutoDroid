@@ -1048,7 +1048,7 @@ class DeviceState(object):
             elif isinstance(action, SetTextEnterEvent):
                 # action_name = f'enter "{action.text}" into'
                 # desc = view_desc + f'.settext{action.text}'
-                desc = '- TapOn: ' + view_desc  + ' InputText: ' + action.text  + 'and then press enter'     
+                desc = '- TapOn: ' + view_desc  + ' InputText: ' + action.text  + ' and then press enter'     
             elif isinstance(action, ScrollEvent):
                 # action_name = f'scroll {action.direction.lower()}'
                 # desc = view_desc + f'.scroll{action.direction.lower()}'

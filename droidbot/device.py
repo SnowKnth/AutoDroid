@@ -152,7 +152,7 @@ class Device(object):
             adapter_enabled = self.adapters[adapter]
             if not adapter_enabled:
                 continue
-            adapter.connect()
+            # adapter.connect()
 
             retries = 0
             max_retries = 20  
