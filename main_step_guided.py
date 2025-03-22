@@ -155,8 +155,8 @@ def run_on_agentenv(ac: AndroidController, range_pair, drb_output_dir):
                 break
             # if app_short not in ["Settings"]:
             #     continue
-            if episode not in ["1359994677477286277"]:
-                continue
+            # if episode not in ["1359994677477286277"]:
+            #     continue
             import logging
             logging.info(f"Current instruction: {task_description}")
             
@@ -193,7 +193,7 @@ def run_on_agentenv(ac: AndroidController, range_pair, drb_output_dir):
             ac.reset_env()
 
         except Exception as e:
-            logging.info(f"Error in task {task_description}: {e}")
+            logging.exception(f"Error in task {task_description}: {e}")
             # remove content in folder os.path.join("exec_output", "captured_data")
             os.system(f"rm -r {os.path.join(ac.local_output_path, episode, 'captured_data')}")
             import traceback
@@ -238,11 +238,11 @@ if __name__ == "__main__":
     # run_on_agentenv(ac, range_pair=target_range, drb_output_dir=droidbot_out_dir)
     
     AVD_NAME_LIST = [ "Copy1_of_p6a"]
-                    #  , "Copy2_of_p6a", "Copy3_of_p6a", "Copy4_of_p6a"]
-    port_list = [ "5556", "5558", "5560", "5562"]
-    AgentEnv_output_dir = "exec_output_deepseek_nooracle-03-12-01"
-    droidbot_out_dir = "drb_output_deepseek_nooracle_03-12-01"
-    target_range_list = [(1,50),(51,100),(101,150),(151,200)]
+    # AVD_NAME_LIST = [ "Copy1_of_p6a", "Copy2_of_p6a", "Copy3_of_p6a", "Copy4_of_p6a"]
+    port_list = [ "5556", "5558", "5560",   "5562"]
+    AgentEnv_output_dir = "exec_output_deepseek_nooracle_03-22_301-400"
+    droidbot_out_dir = "drb_output_deepseek_nooracle_03-22_301-400"
+    target_range_list = [(301,400),(110,200),(1,50),(151,200)]
     # target_range_list = [(1,120),(121,240),(241,360),(361,495)]
     
     args = [ (avd_name, port_list[i], AgentEnv_output_dir, droidbot_out_dir, target_range_list[i])  for i, avd_name in enumerate(AVD_NAME_LIST)]

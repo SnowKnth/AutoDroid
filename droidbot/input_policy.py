@@ -1318,6 +1318,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         self.extracted_info = extracted_info # extracted_info[-1]中的status为-1，为额外增添的步骤，直接调用LLM用于判断该function是否已完成；其余正常步骤status=1，先使用match方法，再用LLM
         self.attempt_count = 0
         self.max_attempt_count = 3 # 每个step的重试次数
+        self.action_count_limit = 60 # start函数的最大循环数目
         self.__num_restarts = 0
         self.__num_steps_outside = 0
         self.__event_trace = ""
@@ -1334,6 +1335,8 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         self.update_steps_after_looking_after_matching = True
         self.scrollable = False
         self.scroll_first = False
+        self.wait_count = 0
+        self.wait_max = 5
     
 
     # 同时触发多个事件保存状态的情况处理
@@ -1498,7 +1501,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                         self.task = self.extracted_info[self.step-1]['task']
                         self.attempt_count = 0
                     elif self.step == max_subtask_step:
-                        self.logger.warning(f"StepTaskPolicy: The number of subtasks exceeds the maximum number of subtasks {max_subtask_step}")
+                        self.logger.warning(f"StepTaskPolicy::start:: The number of subtasks exceeds the maximum number of subtasks {max_subtask_step}")
                         break
                     elif finish == -1: #添加最后一个事件为task_complete事件
                         raw_views = self.addiAC.get_state() 
@@ -1509,9 +1512,13 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                         break
                     else: #finish可能==1(当触发input事件时)或 self.max_attempt_count< self.attempt_count <= max_extra_step
                         continue
+                    
+                if self.action_count > self.action_count_limit:
+                    self.logger.warning(f"StepTaskPolicy::start:: The number of action_count exceeds the maximum number of action_count_limit: {self.action_count_limit}")
+                    break
                         
                 
-                self.logger.info(f'StepTaskPolicy start(action_count[{self.action_count}]): finish [{finish}] / condition[{condition}] / event[{event}] / task[{self.task}] / attempt_count[{self.attempt_count}]')
+                self.logger.info(f'StepTaskPolicy start:: (action_count[{self.action_count}]): finish [{finish}] / condition[{condition}] / event[{event}] / task[{self.task}] / attempt_count[{self.attempt_count}]')
 
             except KeyboardInterrupt:
                 break
@@ -1536,7 +1543,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         @return: InputEvent
         """
         current_state = self.current_state
-        self.logger.info("Current state: %s" % current_state.state_str)
+        self.logger.info("generate_event_based_on_utg :: Current state: %s" % current_state.state_str)
         if current_state.state_str in self.__missed_states:
             self.__missed_states.remove(current_state.state_str)
 
@@ -1702,7 +1709,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
             desc = current_state.get_action_desc(action)
             if desc != "":
                 self.__action_history.append(desc) # - TapOn: <input>Search or type web address</input>.'''; by wxd 实际上是个SetTextEnterEvent, 生成的描述有问题
-            self.logger.info(f"StepTaskPolicy action: [ {action} ] desc: [ {desc} ] task: [ {self.task}]")
+            self.logger.info(f"StepTaskPolicy::generate_event_based_on_utg:: action: [ {action} ] desc: [ {desc} ] task: [ {self.task}]")
             return finish, action
 
         if (finish != -1) and (self.__random_explore):
@@ -2255,23 +2262,24 @@ class StepTaskPolicy(UtgBasedInputPolicy):
             match = -1
         else:
             match = step['action_id']
-        if match == -4: # wait until latest action finish    
+        if match == -4 and self.wait_count<self.wait_max: # wait until latest action finish    
             finish = 0 # still in current substep
-            self.logger.info(f"wait until latest action finish")
+            self.logger.info(f"wait until latest action finish: wait_count: {self.wait_count}")
             time.sleep(8)
+            self.wait_count += 1
             return finish, None, candidate_actions # None denotes no event to execute
             
             
- 
+        self.wait_count = 0 # other event will reset wait_count
         finish = 0
         # 判断是否已经执行到后面的task了，这个要列出全部吗？列出前n个？  假如执行到后面了,这个时候要重新调整测试接下来步骤的整体描述！;没有到后面的话，应该让从整体任务看是否要选择某个组件；还是没找到合适组件的话，再选择back或scroll(实现一个scrollable的判别器)而不是默认back（加上动作生效的diff判断反馈给模型），其他时候是否要怎样重新调整测试接下来步骤的整体描述！
-        if match == -1 and self.step <= len(self.extracted_info)-1:
+        if (match == -1 or  match == -4) and self.step <= len(self.extracted_info)-1:
             scroll_str = ""
             if self.scrollable:
                 scroll_str = " or -3 (corresponding to scroll up)"
             update_following_steps_str = ""
             if self.function_guide_after_looking_after and self.update_steps_after_looking_after_in_functional_guide:
-                update_following_steps_functional_guide_str = f"If Condition 3 happens, please review future subtasks and determine how they should be updated based on completed subtasks, current state and action_id choice in <Question 2>. \nFuture subtasks here should firstly include current subtask '{self.task}', then include the list of future subtasks in <Question 1>. Update future subtasks here (includes subtask description related to current selected action as the first updated future subtask, don't include 'Action ID number' here) using comprehensive step-by-step guide containing multi-substeps(i.e. subtasks). If the substep is an event, please use the 'Event' type; Please format the response (response2) as another JSON array of objects following response1 with the following keys: 'step_number'(int, starting from {self.step}), 'event_or_assertion'(str, 'Event'), 'task'(str). Note that future tasks shouldn't be updated and response2 shouldn't output if next action is chosen as action_id of -1 or -3 in <Question 2>.Append answer using template ```json\n\"response2\":JSON array of objects\n'''" # -3, scroll
+                update_following_steps_functional_guide_str = f"If Condition 3 happens, please review future subtasks and determine how they should be updated based on completed subtasks, current state and action_id choice in <Question 2>. \nFuture subtasks to be updated here should firstly include current subtask '{self.task}', then include the list of future subtasks in <Question 1>. Update future subtasks here (firstly include subtask description related to current selected action as the first updated future subtask, don't include 'Action ID number' here) using comprehensive step-by-step guide containing multi-substeps(i.e. subtasks). If the substep is an event, please use the 'Event' type; Please format the response (response2) as another JSON array of objects following response1 with the following keys: 'step_number'(int, starting from {self.step}), 'event_or_assertion'(str, 'Event'), 'task'(str). Note that future tasks shouldn't be updated and response2 shouldn't output if next action is chosen as action_id of -1 or -3 in <Question 2>.Append answer using template ```json\n\"response2\":JSON array of objects\n'''" # -3, scroll
             if self.update_steps_after_looking_after_matching:
                 update_following_steps_str_after_matching_future_substeps= f"If Condition 1 happens, besides above Completed Actions listed, the subtask you choose with subtask_id in <Question 1> is also seen as done. \nPlease review the list of future subtasks in <Question 1> after the subtask you choose with subtask_id (set as list1, not include the subtask you choose with subtask_id), and determine how list1 should be updated based on completed subtasks and current state. Update list1 using comprehensive step-by-step guide containing multi-substeps(i.e. subtasks). If the substep is an event, please use the 'Event' type; Please format the response (response2) as another JSON array of objects following response1 with the following keys: 'step_number'(int, starting from {self.step}), 'event_or_assertion'(str, 'Event'), 'task'(str). Append answer using template ```json\n\"response2\":JSON array of objects\n'''"
 
@@ -2322,8 +2330,9 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                 response, step, step_list, retries = tools.get_json_dict_then_list_response(prompt, max_retries, constraints_list)
                 if step_list is not None and step_list != []:
                     self.extracted_info = tools.update_reference_steps(self.extracted_info, step_list, self.step)
-                    self.task = self.extracted_info[self.step-1]['task']
-                    self.attempt_count = 0
+                    if self.task != self.extracted_info[self.step-1]['task']:
+                        self.task = self.extracted_info[self.step-1]['task']
+                        self.attempt_count = 0
             else:
 
                 response, step, retries = tools.get_json_dict_response(prompt, max_retries, constraints)
