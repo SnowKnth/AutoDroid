@@ -20,6 +20,10 @@ import pdb
 import os
 from query_lmql import prompt_llm_with_history
 from openai import OpenAI
+####because 'AGENTENV_PATH' is set so environment can be found
+sys.path.insert(0, os.environ.get("AGENTENV_PATH"))
+from environment import AndroidController
+
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 # Max number of restarts
@@ -767,7 +771,7 @@ class ManualPolicy(UtgBasedInputPolicy):
 
 class TaskPolicy(UtgBasedInputPolicy):
 
-    def __init__(self, device, app, random_input, task, use_memory=False, debug_mode=False):
+    def __init__(self, device, app, random_input, task, extracted_info, addiAC: AndroidController, use_memory=False, debug_mode=False):
         super(TaskPolicy, self).__init__(device, app, random_input)
         self.logger = logging.getLogger(self.__class__.__name__)
         self.task = task
@@ -782,6 +786,9 @@ class TaskPolicy(UtgBasedInputPolicy):
         self.__action_history = []
         self.__thought_history = []
         self.use_memory = use_memory
+        self.conversation = ""
+        self.addiAC = addiAC
+        self.extracted_info = extracted_info
         # if use_memory:
         #     self.memory = Memory(app_name=self.app.app_name, app_output_path=self.device.output_dir)
         if self.use_memory:
@@ -792,6 +799,147 @@ class TaskPolicy(UtgBasedInputPolicy):
             else:
                 self.logger.info(f'============\nFound element: {self.similar_ele_statement}\nPath: {self.similar_ele_path}\nFunction: {self.similar_ele_function}\n============')
                 self.state_ele_memory = {}  # memorize some important states that contain elements of insight
+
+    def start(self, input_manager):
+        """
+        start producing events
+        :param input_manager: instance of InputManager
+        """
+        self.action_count = 0
+        start_time = 0
+        while input_manager.enabled and self.action_count < input_manager.event_count:
+            try:
+                # # make sure the first event is go to HOME screen
+                # # the second event is to start the app
+                # if self.action_count == 0 and self.master is None:
+                #     event = KeyEvent(name="HOME")
+                # elif self.action_count == 1 and self.master is None:
+                #     event = IntentEvent(self.app.get_start_intent())
+                if self.action_count == 0 and self.master is None:
+                    event = KillAppEvent(app=self.app)
+                else:
+                    event = self.generate_event(input_manager)
+                
+                if event == None or event == FINISHED:
+                    end_time = time.time()
+                    last_time = end_time - start_time
+                    self.logger.info(
+                        "Have finish the search and the action number is %s/logger_info.txt" % self.action_count)  # Todo: how to get info string
+                    self.logger.info("save output_file is %s" % input_manager.output_dir)
+                    info_str = "Have finished the search and the action number is " + str(self.action_count)
+                    time_str = "Lasting time is " + str(last_time)
+                    if input_manager.output_dir is not None:
+                        logger_info_file_name = "%s/logger_info.txt" % (input_manager.output_dir)
+                        logger_info_file = open(logger_info_file_name, "w")
+                        logger_info_file.writelines(info_str)
+                        logger_info_file.writelines("\n")
+                        logger_info_file.writelines(time_str)
+                        logger_info_file.close()
+                    break
+                input_manager.add_event(event, send_event=True)#output event and its views(.png) into disk
+                if not (self.action_count == 0 and event.event_type == "kill_app" ):
+                    self.addiAC.save_chat(self.conversation)
+                    self.conversation = ""
+                if event.event_type == "key":
+                    if event.name == "BACK":
+                        self.addiAC.post_action(
+                            "action_type: PRESS_BACK, touch_point: [-1.0, -1.0], lift_point: [-1.0, -1.0], typed_text: ''"
+                        )
+                    elif event.name == "ENTER":
+                        self.addiAC.post_action(
+                            "action_type: PRESS_ENTER, touch_point: [-1.0, -1.0], lift_point: [-1.0, -1.0], typed_text: ''"
+                        )
+                elif event.event_type == "click":
+                    tl, br = event.view["bounds"]
+                    self.addiAC.tap(tl, br) # also save action in file
+                elif event.event_type == "long_click":
+                    tl, br = event.view["bounds"]
+                    self.addiAC.long_press(tl, br)
+                elif event.event_type == "swipe":
+                    act = f"action_type: dual_point, touch_point: [{event.start_x}, {event.start_y}], lift_point: [{event.end_x}, {event.end_y}], typed_text: ''"
+                    self.addiAC.post_action(act)
+                elif event.event_type == "set_text":
+                    tl, br = event.view["bounds"]
+                    self.addiAC.tap(tl, br)
+                    # time.sleep(5)
+                    raw_views = self.addiAC.get_state() # State includes more than "view_hierarchy_json"; save view hierarchy, screenshot, top activity name and agent action in local
+                    self.addiAC.device.disconnect()
+                    self.addiAC.text(event.text)
+                    # time.sleep(5)
+                elif event.event_type == "set_text_and_enter":
+                    tl, br = event.view["bounds"]
+                    self.addiAC.tap(tl, br)
+                    # time.sleep(5)
+                    raw_views = self.addiAC.get_state() # State includes more than "view_hierarchy_json"; save view hierarchy, screenshot, top activity name and agent action in local
+                    self.addiAC.device.disconnect()
+                    self.addiAC.text(event.text)
+                    # time.sleep(5)
+                    raw_views = self.addiAC.get_state() # State includes more than "view_hierarchy_json"; save view hierarchy, screenshot, top activity name and agent action in local
+                    self.addiAC.device.disconnect()
+                    self.addiAC.post_action(
+                            "action_type: PRESS_ENTER, touch_point: [-1.0, -1.0], lift_point: [-1.0, -1.0], typed_text: ''"
+                        )
+                elif event.event_type == "intent":
+                    self.addiAC.intent(event.get_intent_str())
+                elif event.event_type == "kill_app":
+                    kill_intent = event.get_intent_str()
+                    if kill_intent is not None:
+                        self.addiAC.intent(event.get_intent_str())
+                    # self.addiAC._backtohome()
+                elif event.event_type in ("oracle"):
+                    self.addiAC.intent(event.get_event_str(self.current_state))           
+                else:
+                    raise Exception(f"Error action event type: {event.event_type}")
+                
+            except KeyboardInterrupt:
+                break
+            except InputInterruptedException as e:
+                self.logger.warning("stop sending events: %s" % e)
+                break
+            # except RuntimeError as e:
+            #     self.logger.warning(e.message)
+            #     break
+            except Exception as e:
+                self.logger.warning("exception during sending events: %s" % e)
+                import traceback
+                traceback.print_exc()
+                continue
+            self.action_count += 1
+            
+        raw_views = self.addiAC.get_state() 
+        self.addiAC.device.disconnect()
+        # if cannot finish the search with the action_max_count
+        if self.action_count >= input_manager.event_count:
+            self.logger.info("Cannot finish the search within action number is %s" % input_manager.event_count)
+            self.logger.info("save output_file is %s" % self.output_dir)
+            info_str = "Cannot finish the search within action number is " + str(input_manager.event_count)
+            end_time = time.time()
+            last_time = end_time - start_time
+            time_str = "last time is " + str(last_time)
+            if input_manager.output_dir is not None:
+                logger_info_file_name = "%s/logger_info.txt" % (input_manager.output_dir)
+                logger_info_file = open(logger_info_file_name, "w")
+                logger_info_file.writelines(info_str)
+                logger_info_file.writelines("\n")
+                logger_info_file.writelines(time_str)
+                logger_info_file.close()
+        else:
+            # since the time_limit  is up & cannot completion or FINISHED
+            self.logger.info("Reach the time limit or event == FINISHED, and the action number is %s" % self.action_count)
+            self.logger.info("save output_file is %s" % input_manager.output_dir)
+            info_str = 'Reach the time limit and the action number is' + str(self.action_count)
+            end_time = time.time()
+            last_time = end_time - start_time
+            time_str = "last time is " + str(last_time)
+            if input_manager.output_dir is not None:
+                logger_info_file_name = "%s/logger_info.txt" % (input_manager.output_dir)
+                logger_info_file = open(logger_info_file_name, "w")
+                logger_info_file.writelines(info_str)
+                logger_info_file.writelines("\n")
+                logger_info_file.writelines(time_str)
+                logger_info_file.close()
+        self.logger.info("time cost:", time.time() - start_time)
+
 
     def get_most_similar_element(self):
         """
@@ -1007,7 +1155,7 @@ class TaskPolicy(UtgBasedInputPolicy):
                     # self.__action_history.append(current_state.get_action_desc(action[eventid]))
                 self.__action_history.append(current_state.get_action_descv2(action[-1], target_view))
                 self.__thought_history.append(thought)
-                return last_state, action[-1]
+                return last_state, action[-1] # by wxd，这里last_state的设置没看懂，前面加了一些scroll操作
             '''
             end for dealing with scrollers
             '''
@@ -1195,7 +1343,7 @@ class TaskPolicy(UtgBasedInputPolicy):
             response = tools.query_gpt(prompt)
             
             self.logger.info(f'response: {response}')
-            idx, action_type, input_text = tools.extract_action(response)
+            idx, action_type, input_text = tools.extract_action(response) # action_type not used here, idx decides action type
         # import pdb;pdb.set_trace()
         file_name = self.device.output_dir +'/'+ self.task.replace('"', '_').replace("'", '_') + '.yaml' #str(str(time.time()).replace('.', ''))
         idx = int(idx)
@@ -1287,13 +1435,11 @@ class TaskPolicy(UtgBasedInputPolicy):
         # import pdb;pdb.set_trace()
         return self._insert_predictions_into_state_prompt(state_prompt, current_state_item_descriptions)
 
-####because 'AGENTENV_PATH' is set so environment can be found
-sys.path.insert(0, os.environ.get("AGENTENV_PATH"))
-from environment import AndroidController
+
 
 class StepTaskPolicy(UtgBasedInputPolicy):
 
-    def __init__(self, device, app, random_input,  extracted_info, api, addiAC: AndroidController, step=0):
+    def __init__(self, device, app, random_input,  extracted_info, addiAC: AndroidController, step=0):
         super(StepTaskPolicy, self).__init__(device, app, random_input)
         self.logger = logging.getLogger(f"{self.__class__.__name__}.{addiAC.emulator_controller.avd_name}")
         # 创建一个 FileHandler，并指定日志文件路径
@@ -1325,7 +1471,6 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         self.__missed_states = set()
         self.__random_explore = random_input
         self.__action_history = []
-        self.api = api
         self.addiAC = addiAC
         self.conversation = ""
         self.function_guide_before_looking_after = False
@@ -1502,6 +1647,8 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                         self.attempt_count = 0
                     elif self.step == max_subtask_step:
                         self.logger.warning(f"StepTaskPolicy::start:: The number of subtasks exceeds the maximum number of subtasks {max_subtask_step}")
+                        raw_views = self.addiAC.get_state() 
+                        self.addiAC.device.disconnect()
                         break
                     elif finish == -1: #添加最后一个事件为task_complete事件
                         raw_views = self.addiAC.get_state() 
@@ -1509,21 +1656,29 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                         self.addiAC.post_action( "action_type: STATUS_TASK_COMPLETE, touch_point: [-1.0, -1.0], lift_point: [-1.0, -1.0], typed_text: ''")
                         break
                     elif self.attempt_count >= max_extra_step or (self.addiAC.episode_done() and self.attempt_count >= 3):
+                        raw_views = self.addiAC.get_state() 
+                        self.addiAC.device.disconnect()
                         break
                     else: #finish可能==1(当触发input事件时)或 self.max_attempt_count< self.attempt_count <= max_extra_step
                         continue
                     
                 if self.action_count > self.action_count_limit:
                     self.logger.warning(f"StepTaskPolicy::start:: The number of action_count exceeds the maximum number of action_count_limit: {self.action_count_limit}")
+                    raw_views = self.addiAC.get_state() 
+                    self.addiAC.device.disconnect()
                     break
                         
                 
                 self.logger.info(f'StepTaskPolicy start:: (action_count[{self.action_count}]): finish [{finish}] / condition[{condition}] / event[{event}] / task[{self.task}] / attempt_count[{self.attempt_count}]')
 
             except KeyboardInterrupt:
+                raw_views = self.addiAC.get_state() 
+                self.addiAC.device.disconnect()
                 break
             except InputInterruptedException as e:
                 self.logger.warning("stop sending events: %s" % e)
+                raw_views = self.addiAC.get_state() 
+                self.addiAC.device.disconnect()
                 break
             except Exception as e:
                 self.logger.exception("exception during generating and sending events: %s" % e)
@@ -1533,6 +1688,8 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                 if continuous_fail_count <= 10:
                     continue
                 else:
+                    raw_views = self.addiAC.get_state() 
+                    self.addiAC.device.disconnect()
                     break
             self.action_count += 1
         

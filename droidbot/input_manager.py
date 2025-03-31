@@ -14,7 +14,7 @@ from .input_policy import UtgBasedInputPolicy, UtgNaiveSearchPolicy, UtgGreedySe
 
 DEFAULT_POLICY = POLICY_GREEDY_DFS
 DEFAULT_EVENT_INTERVAL = 1
-DEFAULT_EVENT_COUNT = 100000000
+DEFAULT_EVENT_COUNT = 30
 DEFAULT_TIMEOUT = -1
 
 
@@ -30,7 +30,7 @@ class InputManager(object):
     def __init__(self, device, app, task, extracted_info, ac, policy_name, random_input,
                  event_count, event_interval,output_dir,
                  script_path=None, profiling_method=None, master=None,
-                 replay_output=None, use_memory=True):
+                 replay_output=None, use_memory=False): # use_memory modified to False here
         """
         manage input event sent to the target device
         :param device: instance of Device
@@ -58,7 +58,6 @@ class InputManager(object):
         
         self.extracted_info = extracted_info #lccc
         self.ac = ac
-        self.api = 'sk-lNSaW2EZ2kkc0Bw1Db9645248e98434693410e0656F93c2d'
 
         self.monkey = None
 
@@ -88,10 +87,10 @@ class InputManager(object):
         elif self.policy_name == POLICY_MANUAL:
             input_policy = ManualPolicy(device, app)
         elif self.policy_name == POLICY_TASK:
-            input_policy = TaskPolicy(device, app, self.random_input, task=self.task, use_memory=self.use_memory)
+            input_policy = TaskPolicy(device, app, self.random_input, task=self.task, extracted_info=self.extracted_info, addiAC=self.ac, use_memory=self.use_memory)
         elif self.policy_name == POLICY_STEPTASK:
             #lccc
-            input_policy = StepTaskPolicy(device, app, self.random_input, extracted_info=self.extracted_info, addiAC=self.ac, api=self.api)
+            input_policy = StepTaskPolicy(device, app, self.random_input, extracted_info=self.extracted_info, addiAC=self.ac)
         else:
             self.logger.warning("No valid input policy specified. Using policy \"none\".")
             input_policy = None

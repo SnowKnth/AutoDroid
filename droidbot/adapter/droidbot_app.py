@@ -151,6 +151,8 @@ class DroidBotAppConn(Adapter):
                 self.logger.warning("Restarting droidbot app")
                 self.last_acc_event = None
                 self.disconnect()
+                
+                
                 self.connect()
 
     def handle_message(self, message):

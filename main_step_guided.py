@@ -31,15 +31,16 @@ logging.basicConfig(
 )
 
 # config
-AVD_NAME = "pixel_6a_api31"
+AVD_NAME = "pixel_6a_api31" # not used in wxd version
 TASK_METADATA_PATH = "../dataset/llamatouch_task_metadata.tsv"
 # TASK_METADATA_URL = "https://raw.githubusercontent.com/LlamaTouch/LlamaTouch/main/dataset/llamatouch_task_metadata.tsv"
 emulator_controller_args = {
         "snapshot" : "default_boot",
         "port" : "5554",        # If port is occupied, please switch to 5556, 5558... and so forth
         "no-window" : "true",  # Change this to "true" to run the emulator without GUI.
-    }
+    }  # not used in wxd version
 first_n_episodes=int(os.environ.get("FIRST_N_EPISODES", 495))
+
 
 # response = requests.get(TASK_METADATA_URL)
 # with open(TASK_METADATA_PATH, "w") as f:
@@ -118,7 +119,7 @@ def explore(extracted_info, ac, episode, drb_output_dir):
         is_emulator=opts.is_emulator,
         output_dir=opts.output_dir,
         env_policy=env_manager.POLICY_NONE,
-        policy_name=input_manager.POLICY_STEPTASK,
+        policy_name=input_manager.POLICY_TASK,
         script_path=opts.script_path,
         event_interval=opts.interval,
         timeout=opts.timeout,
@@ -144,61 +145,72 @@ def run_on_agentenv(ac: AndroidController, range_pair, drb_output_dir):
     ws = 0
     for index in range(first_n_episodes): # iterate through the first n episodes
         try:
-
-            # get instruction from AgentEnv
-            task_description, gr_path, app_short, episode = ac.get_instruction()
+            task_description, gr_path, app_short, episode, full_path = ac.get_instruction() #this is an iterator, it must be called in the loop first to skip
+            if task_description is None: 
+                continue
             if(index+1 < range_pair[0]): # 放在ac.get_instruction() iterator后面
                 continue
             elif index+1 > range_pair[1]:
                 break
-            if task_description is None: 
-                break
-            # if app_short not in ["Settings"]:
-            #     continue
-            # if episode not in ["1359994677477286277"]:
-            #     continue
-            import logging
-            logging.info(f"Current instruction: {task_description}")
-            
-            # setup task environment if needed
-            # logging.info(f"setting up task {task_description}...")
+            try_count = 0
+            while try_count < 5: # try at most 5 times for each task
+                try:
+                    try_count += 1
+                    # get instruction from AgentEnv
 
-            
-            # go to the dropdown s
-            # logging.info(f"swipe up the screen")
-            # ac.device.swipe(500, 1500, 500, 500) #upstairs, x then y
-            
-            # time.sleep(2)
-            
-            # 从dataset/llamatouch_dataset_0521数据集中提取apk，优先从end_no.activity中提取包名，其次从end_no.vh中提取，对apk进行检验；adb shell pm list packages；adb shell pm path <package_name>； adb pull /data/app/com.example.myapp-1/base.apk /path/to/save/base.apk； 然后初始化APK
-            # subTasks = get_extracted_steps(task_description, app_short)
-            
-            # if  ('googleapps' in gr_path or 'general' in gr_path ):
-            #     continue
-            # else:
-            #     ws += 1
-            #     if ws <= 5:   # 跳过开头的k个任务  ws <= k           
-            #         continue
+                    # if app_short not in ["Settings"]:
+                    #     continue
+                    # if episode not in ["1359994677477286277"]:
+                    #     continue
+                    logging.info(f"Current instruction: {task_description}")
+                    
+                    # setup task environment if needed
+                    # logging.info(f"setting up task {task_description}...")
 
-            ac.setup_task(task_description) # some tasks need to setup preparation before execution
-            ac.device.disconnect()
-            similarTasks, subTasks = get_reference_steps(task_description, app_short, 3)
-            ac.save_intructions(similarTasks, subTasks)
-            
-            explore(subTasks, ac, episode, drb_output_dir)
- 
-            # save the last environment state of an episode
-            # ac.get_state() #这里需要吗
-            # reset the environment for next task, reload_snapshot and reconnect using u2d
-            ac.reset_env()
+                    
+                    # go to the dropdown s
+                    # logging.info(f"swipe up the screen")
+                    # ac.device.swipe(500, 1500, 500, 500) #upstairs, x then y
+                    
+                    # time.sleep(2)
+                    
+                    # 从dataset/llamatouch_dataset_0521数据集中提取apk，优先从end_no.activity中提取包名，其次从end_no.vh中提取，对apk进行检验；adb shell pm list packages；adb shell pm path <package_name>； adb pull /data/app/com.example.myapp-1/base.apk /path/to/save/base.apk； 然后初始化APK
+                    # subTasks = get_extracted_steps(task_description, app_short)
+                    
+                    # if  ('googleapps' in gr_path or 'general' in gr_path ):
+                    #     continue
+                    # else:
+                    #     ws += 1
+                    #     if ws <= 5:   # 跳过开头的k个任务  ws <= k           
+                    #         continue
 
+                    ac.setup_task(task_description) # some tasks need to setup preparation before execution
+                    ac.device.disconnect()
+                    similarTasks, subTasks = get_reference_steps(task_description, app_short, 3)
+                    ac.save_intructions(similarTasks, subTasks)
+                    
+                    explore(subTasks, ac, episode, drb_output_dir)
+                    
+                    
+        
+                    # save the last environment state of an episode
+                    # ac.get_state() #这里需要吗
+                    # reset the environment for next task, reload_snapshot and reconnect using u2d
+                    ac.reset_env()
+                    break
+
+                except Exception as e:
+                    logging.exception(f"Error in task {task_description}: {e}")
+                    # remove content in folder os.path.join("exec_output", "captured_data")
+                    os.system(f"mv -r {full_path} {os.path.join(ac.local_output_path, 'error_episode', f'{index}_{try_count}')}")
+                    # import traceback
+                    # traceback.print_exc()
+                    # reset the environment and go to next task
+                    ac.reset_env()
+                    continue
+            
         except Exception as e:
-            logging.exception(f"Error in task {task_description}: {e}")
-            # remove content in folder os.path.join("exec_output", "captured_data")
-            os.system(f"rm -r {os.path.join(ac.local_output_path, episode, 'captured_data')}")
-            import traceback
-            traceback.print_exc()
-
+            logging.exception(f"Error and skip task {task_description}: {e}")
             # reset the environment and go to next task
             ac.reset_env()
             continue
@@ -237,12 +249,12 @@ if __name__ == "__main__":
     # )
     # run_on_agentenv(ac, range_pair=target_range, drb_output_dir=droidbot_out_dir)
     
-    AVD_NAME_LIST = [ "Copy1_of_p6a"]
+    AVD_NAME_LIST = [ "Copy4_of_p6a"]
     # AVD_NAME_LIST = [ "Copy1_of_p6a", "Copy2_of_p6a", "Copy3_of_p6a", "Copy4_of_p6a"]
-    port_list = [ "5556", "5558", "5560",   "5562"]
-    AgentEnv_output_dir = "exec_output_deepseek_nooracle_03-22_301-400"
-    droidbot_out_dir = "drb_output_deepseek_nooracle_03-22_301-400"
-    target_range_list = [(301,400),(110,200),(1,50),(151,200)]
+    port_list = [ "5562", "5556", "5560", "5558"]
+    AgentEnv_output_dir = "exec_output_llamatouch_autodroid_deepseek_scroll_text_03-31_1-495"
+    droidbot_out_dir = "drb_output_llamatouch_autodroid_deepseek_scroll_text_03-31_1-495"
+    target_range_list = [(1,495),(110,200),(1,50),(151,200)]
     # target_range_list = [(1,120),(121,240),(241,360),(361,495)]
     
     args = [ (avd_name, port_list[i], AgentEnv_output_dir, droidbot_out_dir, target_range_list[i])  for i, avd_name in enumerate(AVD_NAME_LIST)]
