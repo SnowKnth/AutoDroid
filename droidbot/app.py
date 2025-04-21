@@ -2,6 +2,7 @@ import logging
 import os
 import hashlib
 from .intent import Intent
+from loguru import logger
 import subprocess
 
 
@@ -29,12 +30,23 @@ class App(object):
 
         # from androguard.core.bytecodes.apk import APK
         from androguard.core.apk import APK
+        from androguard.util import set_log as androguard_set_log
+        androguard_set_log("ERROR")
         
-        # 获取 androguard 的日志对象
-        androguard_logger = logging.getLogger('androguard')
-        # 设置 androguard 的日志级别为 INFO
-        androguard_logger.setLevel(logging.INFO)
+        # from loguru import logger
+        # # 1. 先设置控制台输出级别为 INFO
+        # logger.add(sys.stderr, level="INFO")
+        # # 2. 后设置全局级别为 ERROR
+        # logger.level("ERROR")
+        
+        # 方法 2：使用 filter 完全自定义控制台输出
+        # def stderr_filter(record):
+        #     return record["level"].no >= logger.level("INFO").no  # 强制允许 INFO+
+        # logger.add(sys.stderr, filter=stderr_filter)  # 完全绕过全局级别
+        # logger.level("ERROR")  # 设置全局级别
+        
         self.apk = APK(self.app_path, skip_analysis=False)
+        
         self.package_name = self.apk.get_package()
         self.app_name = self.apk.get_app_name()
         self.main_activity = self.apk.get_main_activity()

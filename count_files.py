@@ -56,7 +56,16 @@ def count_files_and_directories(directory):
 
 if __name__ == "__main__":
     # 指定目录路径
-    directory_path = "/data/wxd/LlamaTouch/AutoDroid/exec_output_llamatouch_autodroid_deepseek"
+    
+    # directory_path = "/data/wxd/LlamaTouch/RASSDroid/exec_output_deepseek_oracle_03-30_1-250"
+    # directory_path = "/data/wxd/LlamaTouch/RASSDroid/exec_output_deepseek_oracle_03-30_251-495"
+    # directory_path = "/data/wxd/LlamaTouch/RASSDroid/exec_output_deepseek_oracle_04-13_251-495"
+    directory_path = "/data/wxd/LlamaTouch/RASSDroid/exec_output_llamatouch_autodroid_deepseek_scroll_text_04-16_234-495"
+    
+    
+    
+    # directory_path = "/data/wxd/LlamaTouch/RASSDroid/exec_output_llamatouch_autodroid_deepseek_scroll_text_04-05_1-495"
+    # directory_path = "/data/wxd/LlamaTouch/AutoDroid/exec_output_llamatouch_autodroid_deepseek_with_sleep_5s"
 
     # 调用函数统计文件和文件夹数量
     # file_count, dir_count = count_files_and_directories(directory_path)

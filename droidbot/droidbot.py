@@ -173,21 +173,24 @@ class DroidBot(object):
                 self.droidbox.get_output()
             else:
                 self.input_manager.start()
+            self.stop()
+            self.logger.info("DroidBot Stopped")
         except KeyboardInterrupt:
             self.logger.info("Keyboard interrupt.")
             pass
-        except Exception:
+        except Exception as e:
             import traceback
             traceback.print_exc()
             self.stop()
-            sys.exit(-1)
-
-        self.stop()
-        self.logger.info("DroidBot Stopped")
+            self.logger.error("DroidBot Stopped with error: %s", str(e))
+            # sys.exit(-1)            
+            raise DroidBotException("DroidBot Stopped with error") from e
+        
 
     def stop(self):
         logging.info("-----------------------------")
-        logging.info(len(self.input_manager.events))
+        if self.input_manager is not None:
+            logging.info(len(self.input_manager.events))
         events_list = [event.__dict__ for event in self.input_manager.events]
         app_name = self.extracted_info[0]['app'].split('.')[0].split('/')[1]
         function_name = self.extracted_info[-1]['function']
@@ -196,7 +199,8 @@ class DroidBot(object):
 
         num = 0
         while True:
-            file_name = f"{app_name}_{function_name}_{num}.json"
+            function_name_cleaned = function_name.replace('"', '_').replace("'", '_').replace(" ", "_").replace(".", "_").replace("/", "_")
+            file_name = f"{app_name}_{function_name_cleaned}_{num}.json"
             file_path = os.path.join(file_path_ori, file_name)
             if not os.path.exists(file_path):
                 break

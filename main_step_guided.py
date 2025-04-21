@@ -7,7 +7,7 @@ from droidbot.droidbot import DroidBot
 from droidbot import input_manager
 from droidbot import env_manager
 from datetime import datetime
-from tools import get_extracted_steps, get_reference_steps
+from tools import get_reference_steps
 from torch.multiprocessing import Pool, set_start_method
 
 import requests
@@ -26,7 +26,7 @@ from environment import AndroidController, PrepareApps
 # 全局配置 logging
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s %(levelname)s %(filename)s:%(lineno)d - %(message)s',
+    format='%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
@@ -63,7 +63,7 @@ def parse_args(extracted_info, ac, episode, drb_output_dir):
     parser.add_argument("-o", action="store", dest="output_dir", 
                         help="directory of output", default= drb_output_dir+"/"+str(episode))
     parser.add_argument("-task", action="store", dest="task",
-                        help="the task to execute, in natural language", default=extracted_info[0]['task'])
+                        help="the task to execute, in natural language", default=extracted_info[0]['function'])
     # parser.add_argument("-step", action="store", dest="step",
                         # help="whether generation is required for this task", default=0)
     parser.add_argument("-extracted_info", action="store", dest="extracted_info",
@@ -153,7 +153,7 @@ def run_on_agentenv(ac: AndroidController, range_pair, drb_output_dir):
             elif index+1 > range_pair[1]:
                 break
             try_count = 0
-            while try_count < 5: # try at most 5 times for each task
+            while try_count < 3: # try at most 3 times for each task
                 try:
                     try_count += 1
                     # get instruction from AgentEnv
@@ -186,7 +186,7 @@ def run_on_agentenv(ac: AndroidController, range_pair, drb_output_dir):
 
                     ac.setup_task(task_description) # some tasks need to setup preparation before execution
                     ac.device.disconnect()
-                    similarTasks, subTasks = get_reference_steps(task_description, app_short, 3)
+                    similarTasks, subTasks = get_reference_steps(task_description, app_short, 0)
                     ac.save_intructions(similarTasks, subTasks)
                     
                     explore(subTasks, ac, episode, drb_output_dir)
@@ -200,7 +200,7 @@ def run_on_agentenv(ac: AndroidController, range_pair, drb_output_dir):
                     break
 
                 except Exception as e:
-                    logging.exception(f"Error in task {task_description}: {e}")
+                    logging.exception(f"main_step_guided::run_on_agentenv::Error in task {task_description}: {e}")
                     # remove content in folder os.path.join("exec_output", "captured_data")
                     os.system(f"mv -r {full_path} {os.path.join(ac.local_output_path, 'error_episode', f'{index}_{try_count}')}")
                     # import traceback
@@ -249,12 +249,12 @@ if __name__ == "__main__":
     # )
     # run_on_agentenv(ac, range_pair=target_range, drb_output_dir=droidbot_out_dir)
     
-    AVD_NAME_LIST = [ "Copy4_of_p6a"]
+    AVD_NAME_LIST = [ "Copy1_of_p6a"]
     # AVD_NAME_LIST = [ "Copy1_of_p6a", "Copy2_of_p6a", "Copy3_of_p6a", "Copy4_of_p6a"]
-    port_list = [ "5562", "5556", "5560", "5558"]
-    AgentEnv_output_dir = "exec_output_llamatouch_autodroid_deepseek_scroll_text_03-31_1-495"
-    droidbot_out_dir = "drb_output_llamatouch_autodroid_deepseek_scroll_text_03-31_1-495"
-    target_range_list = [(1,495),(110,200),(1,50),(151,200)]
+    port_list = ["5556", "5562", "5560", "5558"]
+    AgentEnv_output_dir = "exec_output_llamatouch_autodroid_deepseek_scroll_text_new_04-17_234-495"
+    droidbot_out_dir = "drb_output_llamatouch_autodroid_deepseek_scroll_text_new_04-17_234-495"
+    target_range_list = [(234,495),(110,200),(1,50),(151,200)]
     # target_range_list = [(1,120),(121,240),(241,360),(361,495)]
     
     args = [ (avd_name, port_list[i], AgentEnv_output_dir, droidbot_out_dir, target_range_list[i])  for i, avd_name in enumerate(AVD_NAME_LIST)]

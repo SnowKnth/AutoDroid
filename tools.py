@@ -802,7 +802,7 @@ constraints = {
         "type": str,
         "value_constraints": lambda value, index: value in ('Event', 'Assertion')
     },
-    "task": {
+    "subtask": {
         "type": str,
         "value_constraints": lambda value, index: True  # 无特殊约束
     }
@@ -946,7 +946,7 @@ def update_reference_steps(reference_steps:list, step_list:list, self_step:int):
             "function": function,
             "step_number": step.get("step_number", -1),
             "event_or_assertion": step.get("event_or_assertion", ""),
-            "task": step.get("task", ""),
+            "subtask": step.get("subtask", ""),
             "status": -1,
             "example_email":  "",
             "example_password": ""
@@ -957,7 +957,7 @@ def update_reference_steps(reference_steps:list, step_list:list, self_step:int):
             if isinstance(value, str):
                 validated_step[key] = value.strip()  # Remove leading/trailing whitespace
         
-        if validated_step["task"] == "Press Home" or validated_step["task"] == "Task Complete":
+        if validated_step["subtask"] == "Press Home" or validated_step["subtask"] == "Task Complete":
             continue
         validated_steps.append(validated_step)
         
@@ -966,7 +966,7 @@ def update_reference_steps(reference_steps:list, step_list:list, self_step:int):
         "function": function,
         "step_number": self_step + len(step_list),
         "event_or_assertion": "Assertion",
-        "task": f"Verify that I have finished testing the wole function '{function}'",
+        "subtask": f"Verify that I have finished testing the wole function '{function}'",
         "status": -1,
         "example_email":  "",
         "example_password": ""
@@ -981,14 +981,22 @@ def get_reference_steps(function:str, app_short:str, top_k:int):
     simple_assert_prompt = "For assertion, choose from the following templates:  'Verify that the <element with description> exists in the current state', 'Verify that the <element with description> does not exist in the current state', 'Verify that the <element with description> is <state>'\n"
     #  'Verify that the <element with description> is visible in the current state', 'Verify that the <element with description> is not visible in the current state', 'Verify that the <element with description> is enabled in the current state', 'Verify that the <element with description> is not enabled in the current state', 'Verify that the <element with description> is selected in the current state', 'Verify that the <element with description> is not selected in the current state', 'Verify that the <element with description> has the text <text>', 'Verify that the <element with description> has the partial text <text>', 'Verify that the <element with description> has the attribute <attribute> with the value <value>', 'Verify that the <element with description> does not have the attribute <attribute>'"
     
-    task_prompt = f"Generate a comprehensive step-by-step guide containing multi-substeps(i.e. subtasks) for the function: {function} in the app: {app_short}. If the substep is an event, please use the 'Event' type; if the substep is an assertion, please use the 'Assertion' type. \n{simple_assert_prompt} Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from 1), 'event_or_assertion'(str, 'Event' or 'Assertion'), 'task'(str). Below are the reference steps of similar functions (0 or more). Please refer to them to generate the comprehensive steps. Eliminate 'Press Home' step; eliminate duplicated, confusing and irrelevant steps. Eliminate steps of 'Unlock device' and 'connect to the internet'\n"
-    
-    # task_prompt = f"Generate a comprehensive step-by-step guide containing multi-substeps(i.e. subtasks) for the function: {function} in the app: {app_short}. If the substep is an event, please use the 'Event' type; Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from 1), 'event_or_assertion'(str, 'Event'), 'task'(str). Below are the reference steps of similar functions (0 or more). Please refer to them to generate the comprehensive steps. Eliminate 'Press Home' step; eliminate duplicated, confusing and irrelevant steps. Eliminate steps of 'Unlock device' and 'connect to the internet'\n"
-    
     reference_prompt = ""
-    # top_k = get_top_k_similar_episodes(function, top_k)
-    # for i, (episode_id, goal, steps, similarity) in enumerate(top_k):
-    #     reference_prompt += f"Reference {i + 1}: \nFunction: {goal}\nSimilarity: {similarity}\nSteps:{steps}\n"
+    task_prompt_ref1 = ""
+    task_prompt_ref2 = ""
+    if top_k > 0:
+        task_prompt_ref1 = "Below are the reference steps of similar functions. "
+        task_prompt_ref2 = "refer to them "
+        top_k = get_top_k_similar_episodes(function, top_k)
+        for i, (episode_id, goal, steps, similarity) in enumerate(top_k):
+            reference_prompt += f"Reference {i + 1}: \nFunction: {goal}\nSimilarity: {similarity}\nSteps:{steps}\n"
+    
+    task_prompt = f"Generate a comprehensive step-by-step guide containing multi-substeps(i.e. subtasks) for the function: {function} in the app: {app_short}. If the substep is an event, please use the 'Event' type; if the substep is an assertion, please use the 'Assertion' type. \n{simple_assert_prompt} Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from 1), 'event_or_assertion'(str, 'Event' or 'Assertion'), 'subtask'(str). {task_prompt_ref1}Please {task_prompt_ref2}to generate comprehensive steps. Eliminate 'Press Home' step; eliminate duplicated, confusing and irrelevant steps. Eliminate steps of 'Unlock device' and 'connect to the internet'\n"
+    
+    # task_prompt = f"Generate a comprehensive step-by-step guide containing multi-substeps(i.e. subtasks) for the function: {function} in the app: {app_short}. If the substep is an event, please use the 'Event' type; Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from 1), 'event_or_assertion'(str, 'Event'), 'subtask'(str). {task_prompt_ref1}Please {task_prompt_ref2}to generate comprehensive steps. Eliminate 'Press Home' step; eliminate duplicated, confusing and irrelevant steps. Eliminate steps of 'Unlock device' and 'connect to the internet'\n"
+    
+
+
     prompt = task_prompt + reference_prompt
     logging.info("------------------------"+prompt)
     retries = 0
@@ -1009,9 +1017,9 @@ def get_reference_steps(function:str, app_short:str, top_k:int):
                 for i, step in enumerate(steps):
                     if not isinstance(step, dict):
                         return False
-                    if "step_number" not in step or "event_or_assertion" not in step or "task" not in step:
+                    if "step_number" not in step or "event_or_assertion" not in step or "subtask" not in step:
                         return False
-                    if not isinstance(step["step_number"], int) or not isinstance(step["event_or_assertion"], str)  or not isinstance(step["task"], str):
+                    if not isinstance(step["step_number"], int) or not isinstance(step["event_or_assertion"], str)  or not isinstance(step["subtask"], str):
                         return False
                     if step["step_number"] != (i+1) or step["event_or_assertion"] not in ('Event', 'Assertion'):
                         return False
@@ -1037,7 +1045,7 @@ def get_reference_steps(function:str, app_short:str, top_k:int):
             "function": function,
             "step_number": step.get("step_number", -1),
             "event_or_assertion": step.get("event_or_assertion", ""),
-            "task": step.get("task", ""),
+            "subtask": step.get("subtask", ""),
             "status": -1, #status=-1表示直接使用LLM方法，status=1表示先使用match方法
             "example_email":  "",
             "example_password": ""
@@ -1048,7 +1056,7 @@ def get_reference_steps(function:str, app_short:str, top_k:int):
             if isinstance(value, str):
                 validated_step[key] = value.strip()  # Remove leading/trailing whitespace
         
-        if validated_step["task"] == "Press Home" or validated_step["task"] == "Task Complete":
+        if validated_step["subtask"] == "Press Home" or validated_step["subtask"] == "Task Complete":
             continue
         validated_steps.append(validated_step)
         
@@ -1057,7 +1065,7 @@ def get_reference_steps(function:str, app_short:str, top_k:int):
         "function": function,
         "step_number": len(steps)+1,
         "event_or_assertion": "Assertion",
-        "task": f"Verify that I have finished testing the wole function '{function}'",
+        "subtask": f"Verify that I have finished testing the wole function '{function}'",
         "status": -1,
         "example_email":  "",
         "example_password": ""
@@ -1065,84 +1073,9 @@ def get_reference_steps(function:str, app_short:str, top_k:int):
     validated_steps.append(validated_step)
     
     return prompt, validated_steps    
-    
-def get_extracted_steps(function:str, app_short:str):
-    """
-    Extract the substeps from the function description
-    """
-    steps = []
-    
-    # Define the prompt to ask the LLM to divide the function into substeps
-    prompt = f"Divide the following function into substeps(i.e. tasks), generating both Event and Assertion types:\n\n{function}\n\nPlease format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from 1), 'event_or_assertion'('Event' or 'Assertion'), 'task'(str)."
-    retries = 0
-    max_retries = 10
-    
-    while retries < max_retries:
-    # Query the GPT model to get the substeps
-        response = query_gpt(prompt)        
-        try:
-            steps = json.loads(response)
-            def checkSteps(steps):
-                for i, step in enumerate(steps):
-                    if not isinstance(step, dict):
-                        return False
-                    if "step_number" not in step or "event_or_assertion" not in step or "task" not in step:
-                        return False
-                    if not isinstance(step["step_number"], int) or not isinstance(step["event_or_assertion"], str)  or not isinstance(step["task"], str):
-                        return False
-                    if step["step_number"] != (i+1) or step["event_or_assertion"] not in ('Event', 'Assertion'):
-                        return False
-                return True
-            if checkSteps(steps):           
-                break  # Exit the loop if parsing is successful
-            else: 
-                retries += 1
-                continue
-        except json.JSONDecodeError:
-            logging.exception(f"Error: Unable to parse the response from GPT. Retry {retries + 1}/{max_retries}")
-            retries += 1
-    
-    if retries == max_retries:
-        logging.error("Error: Unable to extract steps after maximum retries.")
-        return []
-    
-       # Validate and clean the fields in the steps
-    validated_steps = []
-    for step in steps:
-        validated_step = {
-            "app": f"llamatouch_apps/{app_short}.apk",
-            "function": function,
-            "step_number": step.get("step_number", -1),
-            "event_or_assertion": step.get("event_or_assertion", ""),
-            "task": step.get("task", ""),
-            "status": -1,
-            "example_email":  "",
-            "example_password": ""
-        }
-        
-        # Perform string validation on the fields
-        for key, value in validated_step.items():
-            if isinstance(value, str):
-                validated_step[key] = value.strip()  # Remove leading/trailing whitespace
-        
-        validated_steps.append(validated_step)
-    validated_step = {
-        "app": f"llamatouch_apps/{app_short}.apk",
-        "function": function,
-        "step_number": len(steps)+1,
-        "event_or_assertion": "Assertion",
-        "task": f"could you tell me if I have successfully completed the process of {function} function?",
-        "status": -1,
-        "example_email":  "",
-        "example_password": ""
-    }
-    validated_steps.append(validated_step)
-    
-    return validated_steps
-    
 
-    #{'app': 'apps/a13.apk', 'function': 'Search something', 'step_number': 1, 'event_or_assertion': 'Event', 'task': 'Click a view "https://html.duckduckgo.com, url edit text"', 'status': 1, 'example_email': '', 'example_password': ''}
-    #{'app': 'apps/a13.apk', 'function': 'b11', 'step_number': 5, 'event_or_assertion': 'Assertion', 'task': "could you tell me if I have successfully completed the process of visiting the 'Search something' function?", 'status': -1, 'example_email': '', 'example_password': ''}
+    #{'app': 'apps/a13.apk', 'function': 'Search something', 'step_number': 1, 'event_or_assertion': 'Event', 'subtask': 'Click a view "https://html.duckduckgo.com, url edit text"', 'status': 1, 'example_email': '', 'example_password': ''}
+    #{'app': 'apps/a13.apk', 'function': 'b11', 'step_number': 5, 'event_or_assertion': 'Assertion', 'subtask': "could you tell me if I have successfully completed the process of visiting the 'Search something' function?", 'status': -1, 'example_email': '', 'example_password': ''}
 
 
 def query_gpt(prompt):
