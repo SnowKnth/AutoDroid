@@ -972,28 +972,41 @@ def update_reference_steps(reference_steps:list, step_list:list, self_step:int):
         "example_password": ""
     }
     validated_steps.append(validated_step)
-    reference_steps = reference_steps[:self_step-1]  + validated_steps
+    reference_steps = reference_steps[:self_step-1]  + validated_steps # [:self_step-1] 不包含self_step-1位置的元素
     return reference_steps
-    
-def get_reference_steps(function:str, app_short:str, top_k:int):
-    '''Get top k similar episodes from the database and generate a comprehensive one'''
-    full_assert_prompt = "For assertion, choose from the following templates: 'Verify that the <element> is <state>', 'Verify that the <element> exists', 'Verify that the <element> is visible', 'Verify that the <element> is not visible', 'Verify that the <element> is enabled', 'Verify that the <element> is not enabled', 'Verify that the <element> is selected', 'Verify that the <element> is not selected', 'Verify that the <element> has the text <text>', 'Verify that the <element> has the partial text <text>', 'Verify that the <element> has the attribute <attribute> with the value <value>', 'Verify that the <element> does not have the attribute <attribute>'"
-    simple_assert_prompt = "For assertion, choose from the following templates:  'Verify that the <element with description> exists in the current state', 'Verify that the <element with description> does not exist in the current state', 'Verify that the <element with description> is <state>'\n"
+
+def get_standard_prompt(function:str, app_short:str, start_step:int = 1) -> str:
+    full_assert_template = "For assertion, choose from the following templates: 'Verify that the <element> is <state>', 'Verify that the <element> exists', 'Verify that the <element> is visible', 'Verify that the <element> is not visible', 'Verify that the <element> is enabled', 'Verify that the <element> is not enabled', 'Verify that the <element> is selected', 'Verify that the <element> is not selected', 'Verify that the <element> has the text <text>', 'Verify that the <element> has the partial text <text>', 'Verify that the <element> has the attribute <attribute> with the value <value>', 'Verify that the <element> does not have the attribute <attribute>'"
+    simple_assert_template = ""
+    # simple_assert_template = "For assertion, choose from the following templates:  'Verify that the <element with description> exists in the current state', 'Verify that the <element with description> does not exist in the current state', 'Verify that the <element with description> is <state>'\n"
+    few_assert = False
     #  'Verify that the <element with description> is visible in the current state', 'Verify that the <element with description> is not visible in the current state', 'Verify that the <element with description> is enabled in the current state', 'Verify that the <element with description> is not enabled in the current state', 'Verify that the <element with description> is selected in the current state', 'Verify that the <element with description> is not selected in the current state', 'Verify that the <element with description> has the text <text>', 'Verify that the <element with description> has the partial text <text>', 'Verify that the <element with description> has the attribute <attribute> with the value <value>', 'Verify that the <element with description> does not have the attribute <attribute>'"
+    standard_prompt = ""
+    if simple_assert_template != "": 
+        standard_prompt = f"a comprehensive step-by-step guide containing multi-substeps(i.e. subtasks) for the function: {function} in the app: {app_short}. If the substep is an event, please use the 'Event' type; if the substep is an assertion, please use the 'Assertion' type. \n{simple_assert_template} Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from {start_step}), 'event_or_assertion'(str, 'Event' or 'Assertion'), 'subtask'(str)."
+    elif few_assert:
+        standard_prompt = f"a comprehensive step-by-step guide containing multi-substeps(i.e. subtasks) for the function: {function} in the app: {app_short}. If the substep is an event, please use the 'Event' type; Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from {start_step}), 'event_or_assertion'(str, 'Event'), 'subtask'(str)."
+    else:
+        standard_prompt = f"a comprehensive step-by-step guide containing multi-substeps(i.e. subtasks) for the function: {function} in the app: {app_short}. Only retain event substep and use the 'Event' type in 'event_or_assertion'; Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from {start_step}), 'event_or_assertion'(str, 'Event'), 'subtask'(str). Eliminate assertion substep." 
+    return standard_prompt
+
+def get_reference_steps(function:str, app_short:str, standard_prompt:str, top_k:int = 0):
+    '''Get top k similar episodes from the database and generate a comprehensive one'''
     
     reference_prompt = ""
     task_prompt_ref1 = ""
     task_prompt_ref2 = ""
     if top_k > 0:
         task_prompt_ref1 = "Below are the reference steps of similar functions. "
-        task_prompt_ref2 = "refer to them "
+        task_prompt_ref2 = "refer to them to "
         top_k = get_top_k_similar_episodes(function, top_k)
         for i, (episode_id, goal, steps, similarity) in enumerate(top_k):
             reference_prompt += f"Reference {i + 1}: \nFunction: {goal}\nSimilarity: {similarity}\nSteps:{steps}\n"
     
-    task_prompt = f"Generate a comprehensive step-by-step guide containing multi-substeps(i.e. subtasks) for the function: {function} in the app: {app_short}. If the substep is an event, please use the 'Event' type; if the substep is an assertion, please use the 'Assertion' type. \n{simple_assert_prompt} Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from 1), 'event_or_assertion'(str, 'Event' or 'Assertion'), 'subtask'(str). {task_prompt_ref1}Please {task_prompt_ref2}to generate comprehensive steps. Eliminate 'Press Home' step; eliminate duplicated, confusing and irrelevant steps. Eliminate steps of 'Unlock device' and 'connect to the internet'\n"
-    
-    # task_prompt = f"Generate a comprehensive step-by-step guide containing multi-substeps(i.e. subtasks) for the function: {function} in the app: {app_short}. If the substep is an event, please use the 'Event' type; Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from 1), 'event_or_assertion'(str, 'Event'), 'subtask'(str). {task_prompt_ref1}Please {task_prompt_ref2}to generate comprehensive steps. Eliminate 'Press Home' step; eliminate duplicated, confusing and irrelevant steps. Eliminate steps of 'Unlock device' and 'connect to the internet'\n"
+
+    task_prompt = f"Generate {standard_prompt} {task_prompt_ref1}Please {task_prompt_ref2}generate comprehensive steps. Eliminate 'Press Home' step; eliminate duplicated, confusing and irrelevant steps. Eliminate steps of 'Unlock device' and 'connect to the internet'\n"
+        
+        #comprehensive step-by-step guide containing multi-substeps(i.e. subtasks). If the substep is an event, please use the 'Event' type; Please format the response (response2) as another JSON array of objects following response1 with the following keys: 'step_number'(int, starting from {self.step}), 'event_or_assertion'(str, 'Event'), 'subtask'(str). 
     
 
 
@@ -1079,10 +1092,10 @@ def get_reference_steps(function:str, app_short:str, top_k:int):
 
 
 def query_gpt(prompt):
-    while True:
+    retry = 0
+    while retry < 7:
         try:
-            client = OpenAI(api_key=os.environ["OPENAI_APIKEY"], base_url=os.environ["OPENAI_BASEURL"])
-            retry = 0
+            client = OpenAI(api_key=os.environ["OPENAI_APIKEY"], base_url=os.environ["OPENAI_BASEURL"])           
             completion = client.chat.completions.create(
                 messages=[
                     {
@@ -1107,9 +1120,11 @@ def query_gpt(prompt):
                 stream=False
             )
             res = completion.choices[0].message.content
+            retry = 0
             break
         except Exception as e:
             logging.exception("query_gpt error:\n")
+            retry += 1
             continue
     return res
 

@@ -7,7 +7,7 @@ from droidbot.droidbot import DroidBot
 from droidbot import input_manager
 from droidbot import env_manager
 from datetime import datetime
-from tools import get_reference_steps
+from tools import get_reference_steps, get_standard_prompt
 from torch.multiprocessing import Pool, set_start_method
 
 import requests
@@ -119,7 +119,7 @@ def explore(extracted_info, ac, episode, drb_output_dir):
         is_emulator=opts.is_emulator,
         output_dir=opts.output_dir,
         env_policy=env_manager.POLICY_NONE,
-        policy_name=input_manager.POLICY_TASK,
+        policy_name=input_manager.POLICY_STEPTASK,
         script_path=opts.script_path,
         event_interval=opts.interval,
         timeout=opts.timeout,
@@ -152,6 +152,8 @@ def run_on_agentenv(ac: AndroidController, range_pair, drb_output_dir):
                 continue
             elif index+1 > range_pair[1]:
                 break
+            # if episode != "84143002711104077":
+            #     continue
             try_count = 0
             while try_count < 3: # try at most 3 times for each task
                 try:
@@ -186,7 +188,8 @@ def run_on_agentenv(ac: AndroidController, range_pair, drb_output_dir):
 
                     ac.setup_task(task_description) # some tasks need to setup preparation before execution
                     ac.device.disconnect()
-                    similarTasks, subTasks = get_reference_steps(task_description, app_short, 0)
+                    standard_template = get_standard_prompt(task_description, app_short, 1)
+                    similarTasks, subTasks = get_reference_steps(task_description, app_short, standard_template, top_k=0)
                     ac.save_intructions(similarTasks, subTasks)
                     
                     explore(subTasks, ac, episode, drb_output_dir)
@@ -251,11 +254,17 @@ if __name__ == "__main__":
     
     AVD_NAME_LIST = [ "Copy1_of_p6a"]
     # AVD_NAME_LIST = [ "Copy1_of_p6a", "Copy2_of_p6a", "Copy3_of_p6a", "Copy4_of_p6a"]
-    port_list = ["5556", "5562", "5560", "5558"]
-    AgentEnv_output_dir = "exec_output_llamatouch_autodroid_deepseek_scroll_text_new_04-17_234-495"
-    droidbot_out_dir = "drb_output_llamatouch_autodroid_deepseek_scroll_text_new_04-17_234-495"
-    target_range_list = [(234,495),(110,200),(1,50),(151,200)]
-    # target_range_list = [(1,120),(121,240),(241,360),(361,495)]
+    port_list = [  "5556","5558","5556", "5562"]
+    AgentEnv_output_dir = "exec_output_llamatouch_RASSDroid_deepseek_05-11_1-"
+    droidbot_out_dir = "drb_output_llamatouch_RASSDroid_deepseek_05-11_1-"
+    target_range_list = [(1,495),(110,200),(1,50),(151,200)]
+  
+    AVD_NAME_LIST = [ "Copy1_of_p6a"]
+    # AVD_NAME_LIST = [ "Copy1_of_p6a", "Copy2_of_p6a", "Copy3_of_p6a", "Copy4_of_p6a"]
+    port_list = [  "5556","5558","5556", "5562"]
+    AgentEnv_output_dir = "exec_output_llamatouch_RASSDroid_deepseek_05-11_1-"
+    droidbot_out_dir = "drb_output_llamatouch_RASSDroid_deepseek_05-11_1-"
+    target_range_list = [(1,495),(110,200),(1,50),(151,200)]
     
     args = [ (avd_name, port_list[i], AgentEnv_output_dir, droidbot_out_dir, target_range_list[i])  for i, avd_name in enumerate(AVD_NAME_LIST)]
     set_start_method('spawn', force=True)
