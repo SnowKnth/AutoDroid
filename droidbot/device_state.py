@@ -788,7 +788,7 @@ class DeviceState(object):
 
     
     def get_described_actions(self, prefix='', remove_time_and_ip=False,
-                                merge_buttons =True, add_edit_box = True, add_check_box = True, add_enter_back = True, add_scroll = False):
+                                merge_buttons =True, add_edit_box = True, add_check_box = True, add_enter_back = True, add_scroll = True):
         """
         Get a text description of current state, making up new_state_str. can't handle situation where number of views changes or text|content_description changes. return 
         state_desc e.g.: '<button id=0>Add holidays</button>\n<button id=1>Add contact birthdays</button>"
@@ -932,10 +932,12 @@ class DeviceState(object):
                 important_view_ids.append([content_description + view_text,view_id])
 
                 available_actions.append(TouchEvent(view=view))
-        if add_scroll:
+        if add_scroll and len(view_descs) > 0:
+            view_descs.append(f"<scroll_up id={len(view_descs)}> scroll up to find more besides above action choice</scroll_up>")
+            view_descs.append(f"<scroll_down id={len(view_descs)}> scroll down to review content that may exist before above action choice</scroll_down>") # len(view_descs)
             available_actions.append(ScrollEvent(direction='UP'))
             available_actions.append(ScrollEvent(direction='DOWN'))
-        if add_enter_back:
+        if add_enter_back and len(view_descs)>0:
             # view_descs.append(f"<button id={len(view_descs)}> press enter key: only choose when the current task only contains press enter operation</button>")
             # view_descs.append(f"<button id={len(view_descs)}>go back</button>") # len(view_descs) 在添加press enter后已经+1
             #available_actions这里后续加上scroll down/up; scroll down/up作为prompt中的tip描述对应的选项 by wxd
@@ -964,12 +966,8 @@ class DeviceState(object):
         checked = self.__safe_dict_get(view, 'checked', default=False)
         selected = self.__safe_dict_get(view, 'selected', default=False)
 
-        # view_desc = f'view'
-        # btn_frame = "<button id=@ checked=$ class='&' label='~'>#</button>"
-        # input_frame = "<input id=@ class='&' >#</input>"
         if editable:
-                # view_status += 'editable '
-            view_desc = f"<input class='&'>#</input>"#.replace('&', view_class)#.replace('#', text)
+            view_desc = f"<input class='&'>#</input>"
             if view_text:
                 view_desc = view_desc.replace('#', view_text)
             else:
@@ -978,11 +976,8 @@ class DeviceState(object):
                 view_desc = view_desc.replace('&', content_description)
             else:
                 view_desc = view_desc.replace(" class='&'", "")
-            # available_actions.append(SetTextEvent(view=view, text='HelloWorld'))
         elif (clickable or checkable or long_clickable):
-
             view_id = view['temp_id']
-
             clickable_ancestor_id = self._get_ancestor_id(view=view, key='clickable')
             if not clickable_ancestor_id:
                 clickable_ancestor_id = self._get_ancestor_id(view=view, key='checkable')
@@ -1037,6 +1032,8 @@ class DeviceState(object):
         if isinstance(action, UIEvent):
             if action.view is not None: 
                 view_desc = self.get_view_desc(action.view)
+            else:
+                view_desc = None
             # action_name = action.event_type
             if isinstance(action, LongTouchEvent):
                 # desc = view_desc + '.longclick();'
@@ -1052,7 +1049,10 @@ class DeviceState(object):
             elif isinstance(action, ScrollEvent):
                 # action_name = f'scroll {action.direction.lower()}'
                 # desc = view_desc + f'.scroll{action.direction.lower()}'
-                desc = f'- Scroll{action.direction.lower()}: ' + view_desc
+                if view_desc is not None:
+                    desc = f'- Scroll {action.direction.lower()}: ' + view_desc
+                else:
+                    desc = f'- Scroll {action.direction.lower()} current screen'
             elif isinstance(action, OracleEvent):
                 if action.assert_accept:
                     desc = action.condition

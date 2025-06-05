@@ -646,10 +646,12 @@ class ScrollEvent(UIEvent):
             # If no view and no coordinate specified, use the screen center coordinate
             x = width / 2
             y = height / 2
+            self.x = x
+            self.y = y
 
         start_x, start_y = x, y
         end_x, end_y = x, y
-        duration = 500
+        duration = 1000 # slow swipe
 
         drag_length = 3/10
         # bias = 5/11

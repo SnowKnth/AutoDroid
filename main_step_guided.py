@@ -152,8 +152,8 @@ def run_on_agentenv(ac: AndroidController, range_pair, drb_output_dir):
                 continue
             elif index+1 > range_pair[1]:
                 break
-            # if episode != "84143002711104077":
-            #     continue
+            if episode not in ("601779706200353051", "10609424558081693691", "11274761796981573687", "12321418230619720863", "13842732228357970269"):
+                continue
             try_count = 0
             while try_count < 3: # try at most 3 times for each task
                 try:
@@ -236,6 +236,18 @@ def parallel_run_on_agentenv(args):
         max_steps=20,
         instruction_fp=TASK_METADATA_PATH,
     )
+    #日志记录
+    log_recording_fail_episode_outloop = logging.getLogger(f"{ac.emulator_controller.avd_name}.fail_episode")
+    log_recording_fail_episode_outloop.setLevel(logging.INFO)
+    log_recording_fail_episode_outloop.propagate = False
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')  
+    file_handler_recording_fail_episode = logging.FileHandler(
+        f'log/{ac.emulator_controller.avd_name}_fail_episode_outloop.log',
+        mode='a'  # Append mode (instead of overwriting)
+    )
+    file_handler_recording_fail_episode.setFormatter(formatter)
+    log_recording_fail_episode_outloop.addHandler(file_handler_recording_fail_episode)
+    
     run_on_agentenv(ac, range_pair=target_range, drb_output_dir=droidbot_out_dir)
 
 
@@ -252,19 +264,24 @@ if __name__ == "__main__":
     # )
     # run_on_agentenv(ac, range_pair=target_range, drb_output_dir=droidbot_out_dir)
     
-    AVD_NAME_LIST = [ "Copy1_of_p6a"]
-    # AVD_NAME_LIST = [ "Copy1_of_p6a", "Copy2_of_p6a", "Copy3_of_p6a", "Copy4_of_p6a"]
-    port_list = [  "5556","5558","5556", "5562"]
-    AgentEnv_output_dir = "exec_output_llamatouch_RASSDroid_deepseek_05-11_1-"
-    droidbot_out_dir = "drb_output_llamatouch_RASSDroid_deepseek_05-11_1-"
-    target_range_list = [(1,495),(110,200),(1,50),(151,200)]
+    # AVD_NAME_LIST = [ "Copy1_of_p6a"]
+    # # AVD_NAME_LIST = [ "Copy1_of_p6a", "Copy2_of_p6a", "Copy3_of_p6a", "Copy4_of_p6a"]
+    # port_list = [  "5556","5558","5556", "5562"]
+    # AgentEnv_output_dir = "exec_output_llamatouch_RASSDroid_deepseek_05-11_1-"
+    # droidbot_out_dir = "drb_output_llamatouch_RASSDroid_deepseek_05-11_1-"
+    # target_range_list = [(1,495),(110,200),(1,50),(151,200)]
   
-    AVD_NAME_LIST = [ "Copy1_of_p6a"]
-    # AVD_NAME_LIST = [ "Copy1_of_p6a", "Copy2_of_p6a", "Copy3_of_p6a", "Copy4_of_p6a"]
-    port_list = [  "5556","5558","5556", "5562"]
-    AgentEnv_output_dir = "exec_output_llamatouch_RASSDroid_deepseek_05-11_1-"
-    droidbot_out_dir = "drb_output_llamatouch_RASSDroid_deepseek_05-11_1-"
+    AVD_NAME_LIST = [ "Copy3_of_p6a"]
+    port_list = [  "5560","5558","5556", "5562"]
+    AgentEnv_output_dir = "exec_output_llamatouch_RASSDroid_simple-assertion_deepseek_05-21-3d_2-"
+    droidbot_out_dir = "drb_output_llamatouch_RASSDroid_simple-assertion_deepseek_05-21-3d_2-"
     target_range_list = [(1,495),(110,200),(1,50),(151,200)]
+    
+    # AVD_NAME_LIST = [ "Copy3_of_p6a"]
+    # port_list = [  "5560","5558","5556", "5562"]
+    # AgentEnv_output_dir = "exec_output_llamatouch_RASSDroid_simple-assertion_deepseek_05-11_1-"
+    # droidbot_out_dir = "drb_output_llamatouch_RASSDroid_simple-assertion_deepseek_05-11_1-"
+    # target_range_list = [(1,495),(110,200),(1,50),(151,200)]
     
     args = [ (avd_name, port_list[i], AgentEnv_output_dir, droidbot_out_dir, target_range_list[i])  for i, avd_name in enumerate(AVD_NAME_LIST)]
     set_start_method('spawn', force=True)

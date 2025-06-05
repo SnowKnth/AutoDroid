@@ -822,24 +822,30 @@ class Device(object):
     def get_current_state(self):
         self.logger.debug("getting current device state...")
         current_state = None
-        try:
-            views = self.get_views()
-            foreground_activity = self.get_top_activity_name()
-            activity_stack = self.get_current_activity_stack()
-            background_services = self.get_service_names()
-            screenshot_path = self.take_screenshot()
-            self.logger.debug("finish getting current device state...")
-            from .device_state import DeviceState
-            current_state = DeviceState(self,
-                                        views=views,
-                                        foreground_activity=foreground_activity,
-                                        activity_stack=activity_stack,
-                                        background_services=background_services,
-                                        screenshot_path=screenshot_path)
-        except Exception as e:
-            self.logger.warning("exception in get_current_state: %s" % e)
-            import traceback
-            traceback.print_exc()
+        retries = 0
+        max_retries = 3
+        while retries < max_retries:
+            try:
+                views = self.get_views()
+                foreground_activity = self.get_top_activity_name()
+                activity_stack = self.get_current_activity_stack()
+                background_services = self.get_service_names()
+                screenshot_path = self.take_screenshot()
+                self.logger.debug("finish getting current device state...")
+                from .device_state import DeviceState
+                current_state = DeviceState(self,
+                                            views=views,
+                                            foreground_activity=foreground_activity,
+                                            activity_stack=activity_stack,
+                                            background_services=background_services,
+                                            screenshot_path=screenshot_path)
+                break
+            except Exception as e:
+                self.logger.warning("exception in get_current_state: %s" % e)
+                import traceback
+                traceback.print_exc()
+                retries += 1
+                time.sleep(5)
         self.logger.debug("finish getting current device state...")
         self.last_know_state = current_state############ by wxd
         if not current_state:

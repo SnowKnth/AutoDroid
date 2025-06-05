@@ -62,9 +62,9 @@ def insert_id_into_view(view, id):
         return view[:9] + f" id={id}" + view[9:]
     if view[:5] == "<span":
         return view[:5] + f" id={id}" + view[5:]
-    import pdb
+    # import pdb
 
-    pdb.set_trace()
+    # pdb.set_trace()
 
 
 def get_view_without_id(view_desc):
@@ -866,6 +866,10 @@ def checkStep(step, constraints):
     
     return True
 
+def clean_json_string(json_str):
+    # 匹配 \ 后面跟着非合法转义字符的情况，并删除 \
+    return re.sub(r'\\(?![\\/"bfnrt]|u[0-9a-fA-F]{4})', '', json_str)
+
 def get_json_dict_response(prompt:str, max_retries:int, constraints:dict = None):
     step = None
     retries = 0
@@ -880,7 +884,7 @@ def get_json_dict_response(prompt:str, max_retries:int, constraints:dict = None)
             if response_json == "":
                 retries += 1
                 continue    
-        
+            response_json = clean_json_string(response_json)
             step = json.loads(response_json)
             if checkStep(step, constraints):           
                 break  # Exit the loop if parsing is successful
@@ -912,10 +916,11 @@ def get_json_dict_then_list_response(prompt:str, max_retries:int, constraints:li
                 if response_json == "" or respose_json_list == "":
                     retries += 1
                     continue    
-
+                response_json = clean_json_string(response_json)
                 step = json.loads(response_json)
                 step_list = []
                 if respose_json_list != "":
+                    respose_json_list = clean_json_string(respose_json_list)
                     step_list = json.loads(respose_json_list)
                 if checkStep(step, constraints[0]):
                     if step_list != []:
@@ -977,17 +982,17 @@ def update_reference_steps(reference_steps:list, step_list:list, self_step:int):
 
 def get_standard_prompt(function:str, app_short:str, start_step:int = 1) -> str:
     full_assert_template = "For assertion, choose from the following templates: 'Verify that the <element> is <state>', 'Verify that the <element> exists', 'Verify that the <element> is visible', 'Verify that the <element> is not visible', 'Verify that the <element> is enabled', 'Verify that the <element> is not enabled', 'Verify that the <element> is selected', 'Verify that the <element> is not selected', 'Verify that the <element> has the text <text>', 'Verify that the <element> has the partial text <text>', 'Verify that the <element> has the attribute <attribute> with the value <value>', 'Verify that the <element> does not have the attribute <attribute>'"
-    simple_assert_template = ""
-    # simple_assert_template = "For assertion, choose from the following templates:  'Verify that the <element with description> exists in the current state', 'Verify that the <element with description> does not exist in the current state', 'Verify that the <element with description> is <state>'\n"
+    # simple_assert_template = ""
+    simple_assert_template = "For assertion, choose from the following templates:  'Verify that the <element with description> exists in the current state', 'Verify that the <element with description> does not exist in the current state', 'Verify that the <element with description> is <state>'\n"
     few_assert = False
     #  'Verify that the <element with description> is visible in the current state', 'Verify that the <element with description> is not visible in the current state', 'Verify that the <element with description> is enabled in the current state', 'Verify that the <element with description> is not enabled in the current state', 'Verify that the <element with description> is selected in the current state', 'Verify that the <element with description> is not selected in the current state', 'Verify that the <element with description> has the text <text>', 'Verify that the <element with description> has the partial text <text>', 'Verify that the <element with description> has the attribute <attribute> with the value <value>', 'Verify that the <element with description> does not have the attribute <attribute>'"
     standard_prompt = ""
     if simple_assert_template != "": 
-        standard_prompt = f"a comprehensive step-by-step guide containing multi-substeps(i.e. subtasks) for the function: {function} in the app: {app_short}. If the substep is an event, please use the 'Event' type; if the substep is an assertion, please use the 'Assertion' type. \n{simple_assert_template} Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from {start_step}), 'event_or_assertion'(str, 'Event' or 'Assertion'), 'subtask'(str)."
+        standard_prompt = f"a comprehensive step-by-step guide containing multi-substeps(i.e. subtasks, which should be indivisible action substep) for the function: {function} in the app: {app_short}. If the substep is an event, please use the 'Event' type; if the substep is an assertion, please use the 'Assertion' type. \n{simple_assert_template} Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from {start_step}), 'event_or_assertion'(str, 'Event' or 'Assertion'), 'subtask'(str)."
     elif few_assert:
-        standard_prompt = f"a comprehensive step-by-step guide containing multi-substeps(i.e. subtasks) for the function: {function} in the app: {app_short}. If the substep is an event, please use the 'Event' type; Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from {start_step}), 'event_or_assertion'(str, 'Event'), 'subtask'(str)."
+        standard_prompt = f"a comprehensive step-by-step guide containing multi-substeps(i.e. subtasks, which should be indivisible action substep) for the function: {function} in the app: {app_short}. If the substep is an event, please use the 'Event' type; Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from {start_step}), 'event_or_assertion'(str, 'Event'), 'subtask'(str)."
     else:
-        standard_prompt = f"a comprehensive step-by-step guide containing multi-substeps(i.e. subtasks) for the function: {function} in the app: {app_short}. Only retain event substep and use the 'Event' type in 'event_or_assertion'; Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from {start_step}), 'event_or_assertion'(str, 'Event'), 'subtask'(str). Eliminate assertion substep." 
+        standard_prompt = f"a comprehensive step-by-step guide containing multi-substeps(i.e. subtasks, which should be indivisible action substep) for the function: {function} in the app: {app_short}. Only retain event substep and use the 'Event' type in 'event_or_assertion'; Please format the response as a JSON array of objects with the following keys: 'step_number'(int, starting from {start_step}), 'event_or_assertion'(str, 'Event'), 'subtask'(str). Eliminate assertion substep." 
     return standard_prompt
 
 def get_reference_steps(function:str, app_short:str, standard_prompt:str, top_k:int = 0):

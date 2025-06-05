@@ -4,6 +4,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import hashlib
 import os
 import glob
+import logging
 
 using_sentence_transformer = True
 # model =  SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
