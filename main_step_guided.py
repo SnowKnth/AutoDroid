@@ -152,7 +152,7 @@ def run_on_agentenv(ac: AndroidController, range_pair, drb_output_dir):
                 continue
             elif index+1 > range_pair[1]:
                 break
-            if episode not in ("601779706200353051", "10609424558081693691", "11274761796981573687", "12321418230619720863", "13842732228357970269"):
+            if episode not in ( "12321418230619720863", "13842732228357970269"): #"601779706200353051", "10609424558081693691", "11274761796981573687",
                 continue
             try_count = 0
             while try_count < 3: # try at most 3 times for each task

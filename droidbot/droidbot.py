@@ -102,7 +102,7 @@ class DroidBot(object):
                 enable_accessibility_hard=self.enable_accessibility_hard,
                 humanoid=self.humanoid,
                 ignore_ad=ignore_ad)
-            self.app = App(app_path, output_dir=self.output_dir)
+            self.app = App(app_path, output_dir=self.output_dir) # maybe disable temporarily by wxd
 
             self.env_manager = AppEnvManager(
                 device=self.device,

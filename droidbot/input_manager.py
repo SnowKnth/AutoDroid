@@ -115,7 +115,7 @@ class InputManager(object):
             time.sleep(self.event_interval)
             if not self.device.pause_sending_event:#if pause_sending_event, we will not send event and stay in the loop
                 break
-        event_log.stop()##store event and its views(.png) into disk (save wxd)
+        event_log.stop()##store event (.json in events) and its views(.png) into disk (save wxd)
 
     def start(self):
         """

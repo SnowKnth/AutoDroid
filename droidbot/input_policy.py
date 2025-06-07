@@ -1559,7 +1559,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         self.action_count = 0
         # max_step = len(self.extracted_info)*3
         self.addiAC.max_steps = 20 # 与AgengEnv实验保持一致
-        max_subtask_step = 20 # 每个task最多包含subtask的数目
+        max_subtask_step = 30 # 每个task最多包含subtask的数目
         max_extra_step = 15 # after generated steps are finished, the extra steps to finish the task
         continuous_fail_count = 0
         
@@ -1571,15 +1571,17 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                 if self.action_count == 0 and self.master is None:
                     event = KillAppEvent(app=self.app)
                     condition = "Event"
-                    finish = 0
+                    finish = 0 # not enter next subtask
                 else:
+                    if self.action_count == 1:
+                        self.step += 1
+                        self.subtask = self.extracted_info[self.step-1]['subtask']
+                        self.attempt_count = 0
                     #StepTaskPolicy 先忽略system enter 和 layout
                     if ("system enter" in self.subtask.lower()) or ("layout" in self.subtask.lower()):
                         finish = -1                        
                     else:
-                        #考虑self.last_event is None的情况？？？？？
-                        s = time.time()
-                        
+                        #考虑self.last_event is None的情况？？？？？                       
                         finish, event = self.generate_event(input_manager)#产生事件的程序
                         condition = "Event"
                 
@@ -1651,65 +1653,66 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                     if not (self.action_count == 0 and event.event_type == "kill_app" ):
                         self.addiAC.save_chat(self.conversation)
                         self.conversation = ""
-                    if event.event_type == "key":
-                        if event.name == "BACK":
+                    if not (self.action_count == 0 and event.event_type == "kill_app" ):
+                        if event.event_type == "key":
+                            if event.name == "BACK":
+                                self.addiAC.post_action(
+                                    "action_type: PRESS_BACK, touch_point: [-1.0, -1.0], lift_point: [-1.0, -1.0], typed_text: ''"
+                                )
+                            elif event.name == "ENTER":
+                                self.addiAC.post_action(
+                                    "action_type: PRESS_ENTER, touch_point: [-1.0, -1.0], lift_point: [-1.0, -1.0], typed_text: ''"
+                                )
+                        elif event.event_type == "click":
+                            tl, br = event.view["bounds"]
+                            self.addiAC.tap(tl, br) # also save action in file
+                        elif event.event_type == "long_click":
+                            tl, br = event.view["bounds"]
+                            self.addiAC.long_press(tl, br)
+                        elif event.event_type == "swipe":
+                            act = f"action_type: dual_point, touch_point: [{event.start_x}, {event.start_y}], lift_point: [{event.end_x}, {event.end_y}], typed_text: ''"
+                            self.addiAC.post_action(act)
+                        elif event.event_type == "scroll": #by wxd, scroll事件的处理, need modification !!!!!!!!!!!!!!!
+                            width = self.device.get_width()
+                            height = self.device.get_height()
+                            drag_length = 3/10
+                            if event.direction == "UP":
+                                act = f"action_type: dual_point, touch_point: [{event.x}, {event.y+height*drag_length}], lift_point: [{event.x}, {event.y-height*drag_length}], typed_text: ''"
+                            elif event.direction == "DOWN":
+                                act = f"action_type: dual_point, touch_point: [{event.x}, {event.y-height*drag_length}], lift_point: [{event.x}, {event.y+height*drag_length}], typed_text: ''"
+                            self.addiAC.post_action(act)
+                        elif event.event_type == "set_text":
+                            tl, br = event.view["bounds"]
+                            self.addiAC.tap(tl, br)
+                            # time.sleep(5)
+                            raw_views = self.addiAC.get_state() # State includes more than "view_hierarchy_json"; save view hierarchy, screenshot, top activity name and agent action in local
+                            self.addiAC.device.disconnect()
+                            self.addiAC.text(event.text)
+                            # time.sleep(5)
+                        elif event.event_type == "set_text_and_enter":
+                            tl, br = event.view["bounds"]
+                            self.addiAC.tap(tl, br)
+                            # time.sleep(5)
+                            raw_views = self.addiAC.get_state() # State includes more than "view_hierarchy_json"; save view hierarchy, screenshot, top activity name and agent action in local
+                            self.addiAC.device.disconnect()
+                            self.addiAC.text(event.text)
+                            # time.sleep(5)
+                            raw_views = self.addiAC.get_state() # State includes more than "view_hierarchy_json"; save view hierarchy, screenshot, top activity name and agent action in local
+                            self.addiAC.device.disconnect()
                             self.addiAC.post_action(
-                                "action_type: PRESS_BACK, touch_point: [-1.0, -1.0], lift_point: [-1.0, -1.0], typed_text: ''"
-                            )
-                        elif event.name == "ENTER":
-                            self.addiAC.post_action(
-                                "action_type: PRESS_ENTER, touch_point: [-1.0, -1.0], lift_point: [-1.0, -1.0], typed_text: ''"
-                            )
-                    elif event.event_type == "click":
-                        tl, br = event.view["bounds"]
-                        self.addiAC.tap(tl, br) # also save action in file
-                    elif event.event_type == "long_click":
-                        tl, br = event.view["bounds"]
-                        self.addiAC.long_press(tl, br)
-                    elif event.event_type == "swipe":
-                        act = f"action_type: dual_point, touch_point: [{event.start_x}, {event.start_y}], lift_point: [{event.end_x}, {event.end_y}], typed_text: ''"
-                        self.addiAC.post_action(act)
-                    elif event.event_type == "scroll": #by wxd, scroll事件的处理, need modification !!!!!!!!!!!!!!!
-                        width = self.device.get_width()
-                        height = self.device.get_height()
-                        drag_length = 3/10
-                        if event.direction == "UP":
-                            act = f"action_type: dual_point, touch_point: [{event.x}, {event.y+height*drag_length}], lift_point: [{event.x}, {event.y-height*drag_length}], typed_text: ''"
-                        elif event.direction == "DOWN":
-                            act = f"action_type: dual_point, touch_point: [{event.x}, {event.y-height*drag_length}], lift_point: [{event.x}, {event.y+height*drag_length}], typed_text: ''"
-                        self.addiAC.post_action(act)
-                    elif event.event_type == "set_text":
-                        tl, br = event.view["bounds"]
-                        self.addiAC.tap(tl, br)
-                        # time.sleep(5)
-                        raw_views = self.addiAC.get_state() # State includes more than "view_hierarchy_json"; save view hierarchy, screenshot, top activity name and agent action in local
-                        self.addiAC.device.disconnect()
-                        self.addiAC.text(event.text)
-                        # time.sleep(5)
-                    elif event.event_type == "set_text_and_enter":
-                        tl, br = event.view["bounds"]
-                        self.addiAC.tap(tl, br)
-                        # time.sleep(5)
-                        raw_views = self.addiAC.get_state() # State includes more than "view_hierarchy_json"; save view hierarchy, screenshot, top activity name and agent action in local
-                        self.addiAC.device.disconnect()
-                        self.addiAC.text(event.text)
-                        # time.sleep(5)
-                        raw_views = self.addiAC.get_state() # State includes more than "view_hierarchy_json"; save view hierarchy, screenshot, top activity name and agent action in local
-                        self.addiAC.device.disconnect()
-                        self.addiAC.post_action(
-                                "action_type: PRESS_ENTER, touch_point: [-1.0, -1.0], lift_point: [-1.0, -1.0], typed_text: ''"
-                            )
-                    elif event.event_type == "intent":
-                        self.addiAC.intent(event.get_intent_str())
-                    elif event.event_type == "kill_app":
-                        kill_intent = event.get_intent_str()
-                        if kill_intent is not None:
+                                    "action_type: PRESS_ENTER, touch_point: [-1.0, -1.0], lift_point: [-1.0, -1.0], typed_text: ''"
+                                )
+                        elif event.event_type == "intent":
                             self.addiAC.intent(event.get_intent_str())
-                        # self.addiAC._backtohome()
-                    elif event.event_type in ("oracle"):
-                        self.addiAC.intent(event.get_event_str(self.current_state))           
-                    else:
-                        raise Exception(f"Error action event type: {event.event_type}")
+                        elif event.event_type == "kill_app":
+                            kill_intent = event.get_intent_str()
+                            if kill_intent is not None:
+                                self.addiAC.intent(event.get_intent_str())
+                            # self.addiAC._backtohome()
+                        elif event.event_type in ("oracle"):
+                            self.addiAC.intent(event.get_event_str(self.current_state))           
+                        else:
+                            raise Exception(f"Error action event type: {event.event_type}")
 
                         
                     
@@ -1869,7 +1872,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         if (self.scroll_first or self._is_head_page()) and self.action_count > 0:    #kill app不需要滚动, 启动app使用滚动寻找方式
             scrollable_views = current_state.get_scrollable_views()#self._get_scrollable_views(current_state)       
         if len(scrollable_views) > 0: 
-            whole_state_views, whole_state_actions, whole_state_strs = self._scroll_in_homepage(current_state, scrollable_views)
+            whole_state_views, whole_state_actions, whole_state_strs = self._scroll_in_homepage(current_state, scrollable_views, input_manager)
             # no scroll added, because the current_state is the whole state after _scroll_in_homepage
             whole_state_actions.append(KeyEvent(name='ENTER'))
             whole_state_actions.append(KeyEvent(name='BACK')) 
@@ -1877,7 +1880,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
             finish, action, candidate_actions = self._get_action_with_LLM(
                 views=whole_state_views, candidate_actions=whole_state_actions, state_strs=whole_state_strs, action_history=self.__action_history)
 
-            if not isinstance(action, list): # action is not a list, but a single action
+            if action is not None and not isinstance(action, list): # action is not a list, but a single action
                 current_state = self.device.get_current_state() # update current_state after scrolling
                 self.current_state = current_state
                 last_state = current_state
@@ -1888,8 +1891,9 @@ class StepTaskPolicy(UtgBasedInputPolicy):
             if isinstance(action, list):  # the screen has to be scrolled first
                 last_state = self.device.get_current_state() 
                 for eventid in range(len(action) - 1):
-                    self.device.send_event(action[eventid])
-                    time.sleep(1.2)  # wait for the scroll to finish
+                    # self.device.send_event(action[eventid])
+                    input_manager.add_event(action[eventid], send_event=True)
+                    time.sleep(2.1)  # wait for the scroll to finish
                     current_state = self.device.get_current_state()
                     self.current_state = current_state
                     self.utg.add_transition(ScrollEvent(view=action[eventid].view, direction="UP"), last_state, current_state)                   
@@ -1937,7 +1941,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
             self.__event_trace += EVENT_FLAG_STOP_APP
             return None, finish, IntentEvent(intent=stop_app_intent)
         
-    def  _scroll_in_homepage(self, current_state, scrollable_views): #处理scroll的时候，应当区分是局部widget的scroll还是整体页面的scroll，本函数目前只能处理有多个局部 或 只有一个整体 的情况
+    def  _scroll_in_homepage(self, current_state, scrollable_views, input_manager): #处理scroll的时候，应当区分是局部widget的scroll还是整体页面的scroll，本函数目前只能处理有多个局部 或 只有一个整体 的情况
         '''
         if there is at least one scroller in the screen, we scroll each scroller many times until all the screens after scrolling have been recorded
         '''
@@ -1951,7 +1955,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
             scroller = scrollable_views[scrollerid]
             # prefix_scroll_event = []
 
-            prefix_scroll_event = self._scroll_to_top(scroller, all_views_for_mark)
+            prefix_scroll_event = self._scroll_to_top(scroller, all_views_for_mark, input_manager)
             prefix_scroll_event_2 = []
             # after scrolling to the top, update the current_state
             top_state = self.device.get_current_state()
@@ -1962,8 +1966,9 @@ class StepTaskPolicy(UtgBasedInputPolicy):
 
             for _ in range(len(prefix_scroll_event)):  # then scroll down ，注意这里是滚动len(prefix_scroll_event)，同上面的_scroll_to_top次数对应;备选方案是根据view的数量来终止滚动
                 whole_state_strs.append(top_state.state_str)  # record the states from the bottom to the top
-                self.device.send_event(ScrollEvent(view=scroller, direction="DOWN")) #event不会保存，调用input_manager.add_event(event, send_event=True)时会保存
-                time.sleep(1.2)  # wait for the scroll to finish
+                # self.device.send_event(ScrollEvent(view=scroller, direction="DOWN")) #event不会保存，调用input_manager.add_event(event, send_event=True)时会保存
+                input_manager.add_event(ScrollEvent(view=scroller, direction="DOWN"), send_event=True)
+                time.sleep(2.1)  # wait for the scroll to finish
                 scrolled_state = self.device.get_current_state()
                 state_prompt, scrolled_candidate_actions, scrolled_views, _ = scrolled_state.get_described_actions(add_enter_back=False, add_scroll=False)
                 
@@ -1997,7 +2002,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
             
                 
             all_views_for_mark = []
-            _ = self._scroll_to_top(scroller, all_views_for_mark, top_state)    
+            _ = self._scroll_to_top(scroller, all_views_for_mark, input_manager, top_state)    
         return whole_state_views, whole_state_actions, whole_state_strs
     
     
@@ -2041,15 +2046,16 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         with open(file_name, 'w', encoding='utf-8') as f:
             yaml.dump(data, f)
     # scroller is the view that can be scrolled, all_views_for_mark is all views that appear with scrolling
-    def _scroll_to_top(self, scroller, all_views_for_mark, old_state=None):
+    def _scroll_to_top(self, scroller, all_views_for_mark, input_manager, old_state=None):
         prefix_scroll_event = []
         if old_state is None:
             old_state = self.current_state 
         for _ in range(MAX_SCROLL_NUM):  # first scroll up to the top           
-            self.device.send_event(ScrollEvent(view=scroller, direction="UP"))
-            time.sleep(1.2)  # wait for the scroll to finish
+            # self.device.send_event(ScrollEvent(view=scroller, direction="UP"))
+            input_manager.add_event(ScrollEvent(view=scroller, direction="UP"), send_event=True)
+            time.sleep(2.1)  # wait for the scroll to finish
             scrolled_state = self.device.get_current_state()
-            self.utg.add_transition(ScrollEvent(view=scroller, direction="UP"), old_state, scrolled_state) #only store the transition in UTG, not store event? should place under "prefix_scroll_event.append(ScrollEvent(view=scroller, direction="UP"))"?
+            self.utg.add_transition(ScrollEvent(view=scroller, direction="UP"), old_state, scrolled_state) #only store the transition in UTG and state, not store event, should place under "prefix_scroll_event.append(ScrollEvent(view=scroller, direction="UP"))"?
             old_state = scrolled_state #should place under "prefix_scroll_event.append(ScrollEvent(view=scroller, direction="UP"))"?
             state_prompt, scrolled_candidate_actions, scrolled_views, _ = scrolled_state.get_described_actions()
             scrolled_new_views = []  # judge whether there is a new view after scrolling
@@ -2351,6 +2357,12 @@ class StepTaskPolicy(UtgBasedInputPolicy):
     #         desc += f" -subtask {i+1}: {self.extracted_info[i]['subtask']}\n" 
     #     return desc
     
+    def _judge_repeated_action(self, action_history: list):
+        if len(action_history) >= 2:
+            if action_history[-1] == action_history[-2]:
+                return f"Don't choose the action responding to '{action_history[-1]}' that is repeated in the action history."
+        return ""
+    
     #添加Assertion: 对于crash的识别； 对于Identify an element的处理,是多探索几次？还是快速返回yes/no
     #back的处理，back时已执行子步骤是否要回退；广告的识别和插入处理；动态加载页面的处理;提示内容采用图像segment和识别来增强纯vh的方法（再发一篇）
     def _get_action_with_LLM(self, action_history, current_state=None, views=None, candidate_actions=None, state_strs=None):
@@ -2384,7 +2396,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
             return 1, candidate_actions[-1], candidate_actions
         
         history_prompt = 'Completed Actions (do not repeat these when deciding next action): \n\'\'\'\n' + ';\n '.join(action_history) + "\n'''"
-        state_prompt = f'Current activity for the current state is {activity}. \nCurrent State with Available UI Views and Actions (with Action ID):\n \'\'\'\n' + (view_descs) + "\n'''"
+        state_prompt = f'Current activity for the current state is {activity}. \nCurrent State with Available UI Views and Actions (with View/Action ID):\n \'\'\'\n' + (view_descs) + "\n'''"
         # state_prompt = self.remove_duplicate_lines(state_prompt, history_prompt) #这里要删除什么？？？没看懂
         
 
@@ -2393,9 +2405,9 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         question = f"Based on completed actions (pay attention to last few actions), current activity and current state reached so far, I would like to confirm whether I have successfully completed the current '{self.subtask}' subtask. If last few completed actions align with current subtask and lead to expected current activity and state (i.e. current state should not be empty, and last few completed actions lead to expected current state and activity), and no more proper action in current state can be taken to continue with the current subtask, then answer 'yes'; else answer 'no'.  Please provide an answer in 'yes' or 'no'  with brief analysis for this answer. Please format the response as a JSON object with the following keys: 'answer_yes_or_no'(str, 'yes'or'no') 'analysis'(str). " 
         identify_prompt = ""
         if event_or_assertion == "Assertion" and "not" not in self.subtask and self.step != len(self.extracted_info):
-            identify_prompt = f"If your answer is yes, please find the corresponding element related to the assertion '{self.subtask}'. Please think step by step in additional analysis for finding element and only return the element action's ID. Please supplement the JSON response object with the following key: 'action_id'(int). If element action can be found in the current state, choose the action id as action_id; if no proper element action can be found in the current state, set action_id as -1.\n"
+            identify_prompt = f"If your answer is yes, please find the corresponding view related to the assertion '{self.subtask}'. Please think step by step in additional analysis for finding view and only return the view's ID. Please supplement the JSON response object with the following key: 'verify_view_id'(int). If view can be found in the current state, choose the view id as verify_view_id; if no proper view can be found in the current state, set verify_view_id as -1.\n"
         if event_or_assertion == "Assertion" and "not" in self.subtask and self.step != len(self.extracted_info):
-            identify_prompt = f"If your answer is no, please find the element in the state contradictory to '{self.subtask}' . Please think step by step in analysis for finding element and only return the element action's ID. Please supplement the JSON response object with the following key: 'action_id'(int). If element action can be found in the current state, choose the action id as action_id; if no proper element action can be found in the current state, set* action_id as -1.\n"
+            identify_prompt = f"If your answer is no, please find the view in the state contradictory to '{self.subtask}' . Please think step by step in analysis for finding view and only return the view's ID. Please supplement the JSON response object with the following key: 'verify_view_id'(int). If view can be found in the current state, choose the view id as verify_view_id; if no proper view can be found in the current state, set verify_view_id as -1.\n"
         prompt = f'{task_prompt}\n{state_prompt}\n{question}{identify_prompt}' #zyk的版本里没有state_prompt
         self.logger.info("\n-------------------------prompt asking whether subtask has been completed----------------------------------\n")
         
@@ -2412,7 +2424,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                 "required": True,
                 "type": str
             }, 
-            "action_id": {
+            "verify_view_id": {
                 "required": False,
                 "type": int,
                 "value_constraints": lambda value: value >= -1                           
@@ -2427,15 +2439,15 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         #     self.logger.info("-----------------------\n"+response)
         self.logger.info("\n-------------------------end prompt----------------------------------\n")
         self.conversation += f"-------------------------prompt asking whether subtask has been completed:-------------------------\n{prompt}\n" + f"-------------------------Response:-------------------------\n{response}\n"
-        if "action_id" in step:
-            action_id = step['action_id']
+        if "verify_view_id" in step:
+            action_id = step['verify_view_id']
 
         if (step["answer_yes_or_no"] == "yes" and (event_or_assertion != "Assertion" or self.step == len(self.extracted_info))):
             finish = -1 #-1表示完成跳过，不需要执行操作
             self.logger.info(f"Seems the current subtask is completed. No action is needed.")
             return finish, None, candidate_actions
         elif step["answer_yes_or_no"] == "yes" and event_or_assertion == "Assertion" and self.step != len(self.extracted_info):
-            if "not" not in self.subtask:
+            if "not" not in self.subtask: # should exist in the state
                 if action_id != -1:
                     finish = 1
                     selected_action = candidate_actions[action_id]
@@ -2454,10 +2466,12 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                         condition = self.subtask,
                         assert_accept = False
                     )
+                    self.extracted_info = self.extracted_info[:self.step-1] + self.extracted_info[self.step:] # remove the current step from extracted_info at step-1
+                    self.addiAC.update_instructions(self.extracted_info)
                     return finish, selected_action, candidate_actions
                 else: # 继续寻找直到找到或满n次
                     pass
-            else: # not in the state, 不需要找
+            else: # not in the state, 不需要找; 且回答是yes，表示没有
                 finish = 1
                 selected_action = OracleEvent(
                         condition = self.subtask,
@@ -2472,6 +2486,8 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                         condition = self.subtask,
                         assert_accept = False
                     )
+                    self.extracted_info = self.extracted_info[:self.step-1] + self.extracted_info[self.step:] # remove the current step from extracted_info at step-1
+                    self.addiAC.update_instructions(self.extracted_info)
                     return finish, selected_action, candidate_actions
             else: # not in the state
                 # if action_id != -1:#不需要存在但是却存在了，认为assertion失效；if action_id == -1:针对not 回答是 no，认为需要存在,但是action_id == -1对应不存在造成矛盾，认为assertion失效
@@ -2480,10 +2496,12 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                     condition = self.subtask,
                     assert_accept = False
                 )
+                self.extracted_info = self.extracted_info[:self.step-1] + self.extracted_info[self.step:] # remove the current step from extracted_info at step-1
+                self.addiAC.update_instructions(self.extracted_info)
                 return finish, selected_action, candidate_actions
 
                     
-                  
+        avoid_repeated_action_prompt = self._judge_repeated_action(action_history)
 
         # Second, if not finished, then provide the next action.
         
@@ -2496,7 +2514,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         if self.update_steps_before_looking_after_in_functional_guide and self.function_guide_before_looking_after:
             standard_template = tools.get_standard_prompt(func, app, self.step)
             update_following_steps_str = f"<Question 2>:\nNow with above Completed Actions, these subtasks are seen as done: \n\'\'\'{self._get_finished_task()}\'\'\' If next action is found according to wholeFunction '{func}' in the current state, please review the following list of future subtasks and determine how they should be updated based on the current state and action_id choice. \nFuture subtasks: \n\'\'\'{self._get_unfinished_task()}\'\'\'  If next action is found according to wholeFunction, update future subtasks (including current selected action) using {standard_template} Output this response (response2) as another response following response1. Note that future tasks shouldn't be updated and response2 shouldn't output if next action is found according to current subtask. Append answer using template ```json\n\"response2\":JSON array of objects\n'''.\n<End Question 2>\n"  ###by wxd, if next action is found （caused by inference ability of LLM） according to current subtask， should update current and following instructions perhaps!!! 
-        question = f"<Question 1>:\nBased on completed actions, current activity and current state reached so far, which action (identified by the Action ID in current state) should I perform next to effectively continue current subtask  '{self.subtask}' or should I wait until current subtask related latest action in completed actions finish? Please do not suggest any actions that I have already completed. Please think step by step in analysis and only return the action's ID. Please format the response (response1) as a JSON object with the following keys: 'analysis'(str), 'action_id'(int), 'subtask_or_wholeFunction_guided'(str, choose from 'subtask' or 'wholeFunction'). If current subtask '''{self.subtask}''' only contains 'press enter operation', set action_id as {PRESS_ENTER} and 'subtask_or_wholeFunction_guided' as subtask; if next action corresponding to current subtask '{self.subtask}' can be found in the current state, choose the action id as action_id and set 'subtask_or_wholeFunction_guided' as subtask; if current subtask related latest performed action in completed actions may take more time and I should wait until current state shows current subtask is finished, set action_id as {WAIT_ACTION_NUM} and 'subtask_or_wholeFunction_guided' as 'none'; if current subtask '''{self.subtask}''' only contains 'press back operation', set action_id as {PRESS_BACK}, and set 'subtask_or_wholeFunction_guided' as subtask; {whole_function_guide_str}if no proper action can be found in the current state, set action_id as {NO_ACTION_FOUND}, and set 'subtask_or_wholeFunction_guided' as 'none'.\n<End Question 1>\n{update_following_steps_str}"
+        question = f"<Question 1>:\nBased on completed actions, current activity and current state reached so far, which action (identified by the Action ID in current state) should I perform next to effectively continue current subtask  '{self.subtask}' or should I wait until current subtask related latest action in completed actions finish? Please do not suggest any actions that I have already completed. Please think step by step in analysis and only return the action's ID. {avoid_repeated_action_prompt} Please format the response (response1) as a JSON object with the following keys: 'analysis'(str), 'action_id'(int), 'subtask_or_wholeFunction_guided'(str, choose from 'subtask' or 'wholeFunction'). If current subtask '''{self.subtask}''' only contains 'press enter operation', set action_id as {PRESS_ENTER} and 'subtask_or_wholeFunction_guided' as subtask; if next action corresponding to current subtask '{self.subtask}' can be found in the current state, choose the action id as action_id and set 'subtask_or_wholeFunction_guided' as subtask; if current subtask related latest performed action in completed actions may take more time and I should wait until current state shows current subtask is finished, set action_id as {WAIT_ACTION_NUM} and 'subtask_or_wholeFunction_guided' as 'none'; if current subtask '''{self.subtask}''' only contains 'press back operation', set action_id as {PRESS_BACK}, and set 'subtask_or_wholeFunction_guided' as subtask; {whole_function_guide_str}if no proper action can be found in the current state, set action_id as {NO_ACTION_FOUND}, and set 'subtask_or_wholeFunction_guided' as 'none'.\n<End Question 1>\n{update_following_steps_str}"
         # tips = f"Here are a few tips that might help you with your action selection: Please consider that some apps may require login to access main features, but this is not always the case. If considering the login process, please ensure all necessary steps like entering email, password, and then confirming sign-in are included in the recommendation. If you are unsure which action to choose, consider scrolling down to access further features of the app." #去掉关于login的;这里没有把生成的步骤全部列出来是为了在生成的过程中保持一定的自适应性，因为最初合成的步骤不一定和当前用例完全匹配; scroll down目前的处理不奏效
         prompt = f'{task_prompt}\n{history_prompt}\n{state_prompt}\n{question}'
         self.logger.info("\n-------------------------prompt asking for next step----------------------------------\n")
@@ -2570,16 +2588,16 @@ class StepTaskPolicy(UtgBasedInputPolicy):
             update_following_steps_str_after_matching_future_substeps = ""
             standard_template = tools.get_standard_prompt(func, app, self.step)
             if self.function_guide_after_looking_after and self.update_steps_after_looking_after_in_functional_guide:
-                update_following_steps_functional_guide_str = f"\n<Question 4>\nIf Condition 3 happens, please review future subtasks and determine how they should be updated based on completed subtasks, current state and action_id choice in <Question 2>. \nFuture subtasks to be updated here should include subtask description related to current selected action, and the list of future subtasks in <Question 1>. Update future subtasks here (firstly include subtask description related to current selected action as the first updated future subtask, don't include 'Action ID number' here) using {standard_template} Output this response (response2) as another response following response1. Note that future tasks shouldn't be updated and response2 shouldn't output if next action is chosen as action_id of {NO_ACTION_FOUND} in <Question 2>. Append answer using template ```json\n\"response2\":JSON array of objects\n''' \n<End Question 4>\n" 
+                update_following_steps_functional_guide_str = f"\n<Question 4>\nIf Condition 2 happens, please review future subtasks and determine how they should be updated based on completed subtasks, current state and action_id choice in <Question 2>. \nFuture subtasks to be updated here should include subtask description related to current selected action, and the list of future subtasks in <Question 1>. Update future subtasks here (firstly include processed subtask description related to current selected action as the first updated future subtask, eliminite 'Action ID number' and personal information here) using {standard_template} Output this response (response2) as another response following response1. Append answer using template ```json\n\"response2\":JSON array of objects\n''' \n<End Question 4>\n" 
             if self.update_steps_after_looking_after_matching:
                 update_following_steps_str_after_matching_future_substeps= f"\n<Question 3>\nIf Condition 1 or 4 happens, based on whole functional test case and Completed Actions listed above, review the list of future subtasks in <Question 1> after the subtask you choose with subtask_id (set as list1, including the subtask you choose with subtask_id), and determine how list1 should be updated based on completed subtasks and current state. Update list1 using {standard_template} Output this response (response2) as another response following response1. Append answer using template ```json\n\"response2\":JSON array of objects\n''' \n<End Question 3>"
 
             whole_function_guide_str = ""
             if self.function_guide_after_looking_after:
-                whole_function_guide_str = f"<Question 2>\nIf Condition 2 happens, decide which action (identified by the Action ID) in current state should I perform next to effectively continue wholeFunction '{func}'? If current state has nothing to do with wholeFunction '{func}', please try to find an action that may lead to it. Please do not suggest any actions that I have already completed. Please think step by step in analysis and only return the action's ID. If next action that is related with or may lead to wholeFunction '{func}'  can be found in the current state (set as Condition 3), choose the action id as action_id. When no action_id can be chosen to continue testing whole function or may lead to it, choose action_id of {NO_ACTION_FOUND}. \n<End Question 2>"
+                whole_function_guide_str = f"<Question 2>\nIf Condition 2 happens, decide which action (identified by the Action ID) in current state should I perform next to effectively continue wholeFunction '{func}'? If current state has nothing to do with wholeFunction '{func}', please try to find an action that may lead to it. Please do not suggest any actions that I have already completed. Please think step by step in analysis and only return the action's ID. If next action that is related with or may lead to wholeFunction '{func}'  can be found in the current state (set as Condition 3), choose the action id as action_id in response1. {avoid_repeated_action_prompt} When no action_id can be chosen to continue testing whole function or may lead to it, choose action_id of {NO_ACTION_FOUND} in response1. \n<End Question 2>"
             task_background_prompt = f"I am working on a functional test case containing multi-subtasks for the '{func}' feature in the '{app}' app. I've completed some actions and reached the current state.\n"
-            question = f"<Question 1>\nPlease review the following list of future subtasks not including current subtask, go forward one by one until meet one that has already been completed (explicitly according to 'Completed Actions', 'current state' and 'current activity') or can be advanced with action taken from current state. Future subtasks (not include current subtask):\n\'\'\'\n{self._get_after_task()}\'\'\'\nPlease format the response (response1) as a JSON object with the following keys: 'analysis'(str), 'subtask_id'(int), 'already_completed_or_can_be_advanced_with_action_taken'(str), 'action_id'(int). If any future subtask has been completed(set as Condition 1), please put the ID of the subtask into subtask_id, set 'already_completed_or_can_be_advanced_with_action_taken' as 'already_completed', set action_id as -1; If any future subtask can be advanced with action taken from current state(set as Condition 4), please put the ID of the subtask into subtask_id, set 'already_completed_or_can_be_advanced_with_action_taken' as 'can_be_advanced_with_action_taken', and put the id of action to be taken (identified by the Action ID) in current state into action_id; if none of future substeps has been completed and all can't be advanced with action taken from current state (set as Condition 2), put -1 into subtask_id, set 'already_completed_or_can_be_advanced_with_action_taken' as 'None'. Answer using template ```json\n\"response1\":json object containing analysis, subtask_id, already_completed_or_can_be_advanced_with_action_taken and action_id\n'''\n<End Question 1>\n{whole_function_guide_str}{update_following_steps_str_after_matching_future_substeps}{update_following_steps_functional_guide_str}" # By wxd, 这里使用未完成substep去进行寻找呢？？？determine whether any has already been completed or can be completed based on the current state and action_id choice
-            prompt = f'{history_prompt}\n{state_prompt}\n{task_background_prompt}{question}' #zyk的版本里没有state_prompt
+            question = f"<Question 1>\nPlease review the following list of future subtasks not including current subtask, go forward one by one until meet one that has already been completed (explicitly according to 'Completed Actions', 'current state' and 'current activity') or can be advanced with action taken from current state. Future subtasks (not include current subtask):\n\'\'\'\n{self._get_after_task()}\'\'\'\nPlease format the response (response1) as a JSON object with the following keys: 'analysis'(str), 'subtask_id'(int), 'already_completed_or_can_be_advanced_with_action_taken'(str), 'action_id'(int). If any future subtask has been completed(set as Condition 1), please put the ID of the subtask into subtask_id, set 'already_completed_or_can_be_advanced_with_action_taken' as 'already_completed'; If any future subtask can be advanced with action taken from current state(set as Condition 4), please put the ID of the subtask into subtask_id, set 'already_completed_or_can_be_advanced_with_action_taken' as 'can_be_advanced_with_action_taken', and put the id of action to be taken (identified by the Action ID in current state) into action_id; if none of future substeps has been completed and all can't be advanced with action taken from current state (set as Condition 2), put -1 into subtask_id, set 'already_completed_or_can_be_advanced_with_action_taken' as 'None'. Answer using template ```json\n\"response1\":json object containing analysis, subtask_id, already_completed_or_can_be_advanced_with_action_taken and action_id\n'''\n<End Question 1>\n{whole_function_guide_str}{update_following_steps_str_after_matching_future_substeps}{update_following_steps_functional_guide_str}" # By wxd, 这里使用未完成substep去进行寻找呢？？？determine whether any has already been completed or can be completed based on the current state and action_id choice
+            prompt = f'{task_background_prompt}{history_prompt}\n{state_prompt}\n{question}' #zyk的版本里没有state_prompt
             self.logger.info("\n-------------------------prompt asking whether any future subtask has been done ----------------------------------\n")
 
             retries = 0
@@ -2658,8 +2676,8 @@ class StepTaskPolicy(UtgBasedInputPolicy):
             elif step['subtask_id'] == -1: #没找到子任务,分两种情况：有function guide和没有function guide
                 finish = 0
                 if step['action_id'] == NO_ACTION_FOUND: #没找到子任务,分两种情况：有function guide和没有function guide
-                    selected_action = candidate_actions[-1] # back, -1 denotes the end one
-                    return finish, selected_action, candidate_actions
+                    # selected_action = candidate_actions[-1] # back, -1 denotes the end one
+                    return finish, None, candidate_actions
                 elif step['action_id'] > -1: # 目前负值只可以为NO_ACTION_FOUND
                     selected_action = candidate_actions[step['action_id']] # 根据整体functional guide选择的action
                 else: #发生意外情况，选择再来一遍

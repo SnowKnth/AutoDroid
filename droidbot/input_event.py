@@ -651,9 +651,9 @@ class ScrollEvent(UIEvent):
 
         start_x, start_y = x, y
         end_x, end_y = x, y
-        duration = 1000 # slow swipe
+        duration = 1200 # slow swipe
 
-        drag_length = 3/10
+        drag_length = 1/4
         # bias = 5/11
 
         # if self.direction == "UP":
