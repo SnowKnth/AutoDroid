@@ -788,7 +788,7 @@ class DeviceState(object):
 
     
     def get_described_actions(self, prefix='', remove_time_and_ip=False,
-                                merge_buttons =True, add_edit_box = True, add_check_box = True, add_enter_back = True, add_scroll = True):
+                                merge_buttons =True, add_edit_box = True, add_check_box = True, add_home =True, add_enter_back = True, add_scroll = True):
         """
         Get a text description of current state, making up new_state_str. can't handle situation where number of views changes or text|content_description changes. return 
         state_desc e.g.: '<button id=0>Add holidays</button>\n<button id=1>Add contact birthdays</button>"
@@ -933,10 +933,12 @@ class DeviceState(object):
 
                 available_actions.append(TouchEvent(view=view))
         if add_scroll and len(view_descs) > 0:
-            view_descs.append(f"<scroll_up id={len(view_descs)}> scroll up to find more besides above action choice</scroll_up>")
-            view_descs.append(f"<scroll_down id={len(view_descs)}> scroll down to review content that may exist before above action choice</scroll_down>") # len(view_descs)
+            view_descs.append(f"<scroll_up id={len(view_descs)}> scroll up to find more that may exist below showing actions in current state</scroll_up>")
+            view_descs.append(f"<scroll_down id={len(view_descs)}> scroll down to review content that may exist above showing actions in current state</scroll_down>") # len(view_descs)
             available_actions.append(ScrollEvent(direction='UP'))
             available_actions.append(ScrollEvent(direction='DOWN'))
+        if add_home:
+            available_actions.append(KeyEvent(name='HOME'))
         if add_enter_back and len(view_descs)>0:
             # view_descs.append(f"<button id={len(view_descs)}> press enter key: only choose when the current task only contains press enter operation</button>")
             # view_descs.append(f"<button id={len(view_descs)}>go back</button>") # len(view_descs) 在添加press enter后已经+1

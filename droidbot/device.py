@@ -118,18 +118,36 @@ class Device(object):
         :return:
         """
         self.logger.info("waiting for device")
+        # try:
+        #     subprocess.check_call(["adb", "-s", self.serial, "wait-for-device"]) # by wxd, check_call可能会卡死，这里添加失效时间，使用check_output
+        #     # while True:
+        #     #     out = subprocess.check_output(
+        #     #         ["adb", "-s", self.serial, "shell", "getprop", "init.svc.bootanim"]).split()[0]
+        #     #     if not isinstance(out, str):
+        #     #         out = out.decode()
+        #     #     if out == "stopped":
+        #     #         break
+        #     #     time.sleep(1)
+        # except:
+        #     self.logger.warning("error waiting for device")           
         try:
-            subprocess.check_call(["adb", "-s", self.serial, "wait-for-device"])
-            # while True:
-            #     out = subprocess.check_output(
-            #         ["adb", "-s", self.serial, "shell", "getprop", "init.svc.bootanim"]).split()[0]
-            #     if not isinstance(out, str):
-            #         out = out.decode()
-            #     if out == "stopped":
-            #         break
-            #     time.sleep(1)
-        except:
-            self.logger.warning("error waiting for device")
+            result = subprocess.run(
+                ["adb", "-s", self.serial, "wait-for-device"],
+                timeout=20,  # 超时时间（秒）
+                check=True,  # 非零返回码时抛出异常
+                stdout=subprocess.PIPE,  # 捕获 stdout
+                stderr=subprocess.PIPE,  # 捕获 stderr
+                text=True,  # 返回 str 而非 bytes
+            )
+        except subprocess.TimeoutExpired:
+            logging.warning("Command timed out!")
+            raise RuntimeError("wait-for-device command timed out!")            
+        except subprocess.CalledProcessError as e:
+            logging.warning(f"Command failed with return code: {e.returncode}, stdout: {e.stdout}, stderr: {e.stderr}")
+            raise RuntimeError(f"wait-for-device command failed: {e.stderr}")
+                    
+            
+        
 
     def set_up(self):
         """
