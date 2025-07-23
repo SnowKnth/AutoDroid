@@ -1116,6 +1116,7 @@ def query_gpt(prompt):
                 # model="gpt-4-0125-preview",
                 # model="gpt-4o-2024-05-13",
                 # model="gpt-4o",
+                # model="gpt-4o-mini-ca", #works bad
                 model="deepseek-chat",
                 # model="gpt-3.5-turbo",
                 # model="gpt-3.5-turbo-ca",

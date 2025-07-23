@@ -60,7 +60,7 @@ if __name__ == "__main__":
     # directory_path = "/data/wxd/LlamaTouch/RASSDroid/exec_output_deepseek_oracle_03-30_1-250"
     # directory_path = "/data/wxd/LlamaTouch/RASSDroid/exec_output_deepseek_oracle_03-30_251-495"
     # directory_path = "/data/wxd/LlamaTouch/RASSDroid/exec_output_deepseek_oracle_04-13_251-495"
-    directory_path = "/data/wxd/LlamaTouch/RASSDroid/exec_output_llamatouch_RASSDroid_deepseek_06-13"
+    directory_path = "/data/wxd/LlamaTouch/RASSDroid/exec_output_llamatouch_RASSDroid_deepseek_06-30"
     
     
     

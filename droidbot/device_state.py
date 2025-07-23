@@ -933,8 +933,8 @@ class DeviceState(object):
 
                 available_actions.append(TouchEvent(view=view))
         if add_scroll and len(view_descs) > 0:
-            view_descs.append(f"<scroll_up id={len(view_descs)}> scroll up to find more that may exist below showing actions in current state</scroll_up>")
-            view_descs.append(f"<scroll_down id={len(view_descs)}> scroll down to review content that may exist above showing actions in current state</scroll_down>") # len(view_descs)
+            view_descs.append(f"<scroll_up id={len(view_descs)}> scroll up to find more that may exist below showing actions (next page part) in current state</scroll_up>")
+            view_descs.append(f"<scroll_down id={len(view_descs)}> scroll down to review content that may exist before showing actions (previous page part) in current state</scroll_down>") # len(view_descs)
             available_actions.append(ScrollEvent(direction='UP'))
             available_actions.append(ScrollEvent(direction='DOWN'))
         if add_home:

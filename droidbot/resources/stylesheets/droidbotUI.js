@@ -1,3 +1,57 @@
+// 让Bootstrap模态框可拖动（方法1：jQuery UI）
+$(document).ready(function () {
+  $('#chatModal').on('shown.bs.modal', function () {
+    $(this).find('.modal-dialog').draggable({
+      handle: ".modal-header",
+      cursor: 'move'
+    });
+  });
+});
+async function showFinalSubtasks() {
+  // 获取utg_details元素
+  const utg_details = document.getElementById('utg_details');
+  // 设置加载提示，提升用户体验
+  utg_details.innerHTML = '<h2>Updated test subtasks</h2><p>Loading...</p>';
+
+  const dirPath = '../captured_data/updated_instruction/';
+
+  try {
+    // 1. 异步获取目录列表
+    const response = await fetch(dirPath);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch directory list: ${response.statusText}`);
+    }
+    const directoryHtml = await response.text();
+
+    // 2. 解析目录内容，找到所有.instruction文件
+    const matches = directoryHtml.match(/(\d+)\.instruction/g);
+    if (!matches || matches.length === 0) {
+      utg_details.innerHTML = '<h2>Updated test subtasks</h2><p>[No instruction file found]</p>';
+      return;
+    }
+
+    const fileNumbers = matches.map(f => parseInt(f, 10));
+
+    // 3. 找到数字最大的文件名
+    const maxK = Math.max(...fileNumbers);
+    const fileName = `${maxK}.instruction`;
+    const filePath = dirPath + fileName;
+
+    // 4. 异步读取最新的文件内容
+    const fileResponse = await fetch(filePath);
+    if (!fileResponse.ok) {
+      throw new Error(`Failed to fetch instruction file: ${fileResponse.statusText}`);
+    }
+    const content = await fileResponse.text();
+
+    // 5. 显示内容，并对HTML特殊字符进行转义以防止XSS
+    const sanitizedContent = content.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    utg_details.innerHTML = `<h2>Updated test subtasks</h2><p style="white-space:pre-wrap;">${sanitizedContent}</p>`;
+  } catch (error) {
+    console.error('Error in showFinalSubtasks:', error);
+    utg_details.innerHTML = '<h2>Updated test subtasks</h2><p>[Error loading instruction data]</p>';
+  }
+}
 var network = null;
 
 function draw() {
@@ -32,7 +86,7 @@ function draw() {
 
       font: {
         size: 12,
-        color:'#000'
+        color: '#000'
       }
     },
     edges: {
@@ -43,9 +97,9 @@ function draw() {
           scaleFactor: 0.5
         }
       },
-      font:{
+      font: {
         size: 12,
-        color:'#000'
+        color: '#000'
       }
     }
   };
@@ -94,14 +148,14 @@ function getOverallResult() {
   overallInfo += "<tr><th class=\"col-md-1\">Model number</th><td class=\"col-md-4\">" + utg.device_model_number + "</td></tr>\n";
   overallInfo += "<tr><th class=\"col-md-1\">SDK version</th><td class=\"col-md-4\">" + utg.device_sdk_version + "</td></tr>\n";
 
-  overallInfo += "<tr class=\"active\"><th colspan=\"2\"><h4>DroidBot result</h4></th></tr>\n";
+  overallInfo += "<tr class=\"active\"><th colspan=\"2\"><h4>Statistics</h4></th></tr>\n";
   overallInfo += "<tr><th class=\"col-md-1\">Test date</th><td class=\"col-md-4\">" + utg.test_date + "</td></tr>\n";
   overallInfo += "<tr><th class=\"col-md-1\">Time spent (s)</th><td class=\"col-md-4\">" + utg.time_spent + "</td></tr>\n";
   overallInfo += "<tr><th class=\"col-md-1\"># input events</th><td class=\"col-md-4\">" + utg.num_input_events + "</td></tr>\n";
   overallInfo += "<tr><th class=\"col-md-1\"># UTG states</th><td class=\"col-md-4\">" + utg.num_nodes + "</td></tr>\n";
   overallInfo += "<tr><th class=\"col-md-1\"># UTG edges</th><td class=\"col-md-4\">" + utg.num_edges + "</td></tr>\n";
-  activity_coverage = 100 * utg.num_reached_activities / utg.app_num_total_activities;
-  overallInfo += "<tr><th class=\"col-md-1\">Activity_coverage</th><td class=\"col-md-4 progress\"><div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"" + utg.num_reached_activities + "\" aria-valuemin=\"0\" aria-valuemax=\"" + utg.app_num_total_activities + "\" style=\"width: " + activity_coverage + "%;\">" + utg.num_reached_activities + "/" + utg.app_num_total_activities + "</div></td></tr>\n";
+  // activity_coverage = 100 * utg.num_reached_activities / utg.app_num_total_activities;
+  // overallInfo += "<tr><th class=\"col-md-1\">Activity_coverage</th><td class=\"col-md-4 progress\"><div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"" + utg.num_reached_activities + "\" aria-valuemin=\"0\" aria-valuemax=\"" + utg.app_num_total_activities + "\" style=\"width: " + activity_coverage + "%;\">" + utg.num_reached_activities + "/" + utg.app_num_total_activities + "</div></td></tr>\n";
 
   overallInfo += "</table>";
   return overallInfo;
@@ -119,10 +173,11 @@ function getEdgeDetails(edgeId) {
   edgeInfo += "<tr class=\"active\"><th colspan=\"4\"><h4>Events</h4></th></tr>\n";
 
   var i;
-  edgeInfo += "<tr><th>id</th><th>type</th><th>view</th><th>event_str</th></tr>\n"
+  edgeInfo += "<tr><th style=\"width: 50%;\">id (click to see chat)</th><th>type</th><th>view</th><th>event_str</th></tr>\n"
   for (i = 0; i < selectedEdge.events.length; i++) {
     event = selectedEdge.events[i];
-    eventStr = event.event_str;
+    // 对 event.event_str 进行 HTML 转义
+    eventStr = event.event_str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     var viewImg = "";
     if (event.view_images != null) {
       var j;
@@ -130,10 +185,43 @@ function getEdgeDetails(edgeId) {
         viewImg += "<img class=\"viewImg\" src=\"" + event.view_images[j] + "\">\n"
       }
     }
-    edgeInfo += "<tr><td>" + event.event_id + "</td><td>" + event.event_type + "</td><td>" + viewImg + "</td><td>" + event.event_str + "</td></tr>"
+    edgeInfo += "<tr><td><a href=\"#\" onclick=\"showChatInModal(" + event.event_id + "); return false;\">" + event.event_id + "</a></td><td>" + event.event_type + "</td><td>" + viewImg + "</td><td>" + eventStr + "</td></tr>"
   }
   edgeInfo += "</table>\n"
   return edgeInfo;
+}
+
+async function showChatInModal(eventId) {
+  const chatId = eventId - 1;
+  const chatFilePath = `../captured_data/chat/${chatId}.chat`;
+
+  // Since bootstrap.min.js and jquery.min.js are included, we can use jQuery for modals.
+  const modal = $('#chatModal');
+  const modalTitle = $('#chatModalLabel');
+  const modalBody = $('#chatModalBody');
+
+  // 1. Set title and loading state
+  modalTitle.text(`Observe-Think-Act Process for Event ${eventId}`);
+  modalBody.html(`<p>Loading Chat Log (File: ${chatId}.chat)...</p>`);
+
+  // 2. Show the modal
+  modal.modal('show');
+
+  try {
+    // 3. Asynchronously fetch the content
+    const response = await fetch(chatFilePath);
+    if (!response.ok) {
+      throw new Error(`File not found or server error: ${response.statusText}`);
+    }
+    const content = await response.text();
+    const sanitizedContent = content.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+    // 4. Update modal body with the fetched content
+    modalBody.html(`<pre style="white-space: pre-wrap; word-wrap: break-word;">${sanitizedContent}</pre>`);
+  } catch (error) {
+    console.error(`Error loading chat file for event ${eventId}:`, error);
+    modalBody.html(`<p style="color: red;"><b>Error:</b> Could not load chat content. ${error.message}</p>`);
+  }
 }
 
 function getNodeDetails(nodeId) {
@@ -187,7 +275,7 @@ function showAbout() {
 function getAboutInfo() {
   var aboutInfo = "<hr />";
   aboutInfo += "<h2>About</h2>\n"
-  aboutInfo += "<p>This report is generated using <a href=\"https://github.com/honeynet/droidbot\">DroidBot</a>.</p>\n";
+  aboutInfo += "<p>This report is generated using updated report generator for subtask-driven GUI test case generation based on  <a href=\"https://github.com/honeynet/droidbot\">DroidBot</a>.</p>\n";
   aboutInfo += "<p>Please find copyright information in the project page.</p>";
   return aboutInfo;
 }
@@ -225,21 +313,21 @@ function clusterStructures() {
 
   var clusterOptionsByData;
   for (var i = 0; i < structures.length; i++) {
-      var structure = structures[i];
-      clusterOptionsByData = {
-          joinCondition: function (childOptions) {
-              return childOptions.structure_str == structure;
-          },
-          processProperties: function (clusterOptions, childNodes, childEdges) {
-              clusterOptions.title = childNodes[0].title;
-              clusterOptions.state_str = childNodes[0].state_str;
-              clusterOptions.label = childNodes[0].label;
-              clusterOptions.image = childNodes[0].image;
-              return clusterOptions;
-          },
-          clusterNodeProperties: {id: 'structure:' + structure, shape: 'image'}
-      };
-      network.cluster(clusterOptionsByData);
+    var structure = structures[i];
+    clusterOptionsByData = {
+      joinCondition: function (childOptions) {
+        return childOptions.structure_str == structure;
+      },
+      processProperties: function (clusterOptions, childNodes, childEdges) {
+        clusterOptions.title = childNodes[0].title;
+        clusterOptions.state_str = childNodes[0].state_str;
+        clusterOptions.label = childNodes[0].label;
+        clusterOptions.image = childNodes[0].image;
+        return clusterOptions;
+      },
+      clusterNodeProperties: { id: 'structure:' + structure, shape: 'image' }
+    };
+    network.cluster(clusterOptionsByData);
   }
 }
 
@@ -256,21 +344,21 @@ function clusterActivities() {
 
   var clusterOptionsByData;
   for (var i = 0; i < activities.length; i++) {
-      var activity = activities[i];
-      clusterOptionsByData = {
-          joinCondition: function (childOptions) {
-              return childOptions.activity == activity;
-          },
-          processProperties: function (clusterOptions, childNodes, childEdges) {
-              clusterOptions.title = childNodes[0].title;
-              clusterOptions.state_str = childNodes[0].state_str;
-              clusterOptions.label = childNodes[0].label;
-              clusterOptions.image = childNodes[0].image;
-              return clusterOptions;
-          },
-          clusterNodeProperties: {id: 'activity:' + activity, shape: 'image'}
-      };
-      network.cluster(clusterOptionsByData);
+    var activity = activities[i];
+    clusterOptionsByData = {
+      joinCondition: function (childOptions) {
+        return childOptions.activity == activity;
+      },
+      processProperties: function (clusterOptions, childNodes, childEdges) {
+        clusterOptions.title = childNodes[0].title;
+        clusterOptions.state_str = childNodes[0].state_str;
+        clusterOptions.label = childNodes[0].label;
+        clusterOptions.image = childNodes[0].image;
+        return clusterOptions;
+      },
+      clusterNodeProperties: { id: 'activity:' + activity, shape: 'image' }
+    };
+    network.cluster(clusterOptionsByData);
   }
 }
 

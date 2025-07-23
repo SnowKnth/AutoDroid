@@ -60,21 +60,22 @@ class UTG(object):
         event_str = event.get_event_str(old_state)
         self.transitions.append((old_state, event, new_state))
 
-        if old_state.state_str == new_state.state_str:
-            self.ineffective_event_strs.add(event_str)
-            # delete the transitions including the event from utg
-            for new_state_str in self.G[old_state.state_str]:
-                if event_str in self.G[old_state.state_str][new_state_str]["events"]:
-                    self.G[old_state.state_str][new_state_str]["events"].pop(event_str)
-            if event_str in self.effective_event_strs:
-                self.effective_event_strs.remove(event_str)
-            return
-
-        self.effective_event_strs.add(event_str)
+        # disable by wxd for RASSDroid
+        # if old_state.state_str == new_state.state_str:
+        #     self.ineffective_event_strs.add(event_str)
+        #     # delete the transitions including the event from utg
+        #     for new_state_str in self.G[old_state.state_str]:
+        #         if event_str in self.G[old_state.state_str][new_state_str]["events"]:
+        #             self.G[old_state.state_str][new_state_str]["events"].pop(event_str)
+        #     if event_str in self.effective_event_strs:
+        #         self.effective_event_strs.remove(event_str)
+        #     return
+        effective_event_count_add = self.effective_event_count + 1
+        self.effective_event_strs.add(event_str + "_" + str(effective_event_count_add))
 
         if (old_state.state_str, new_state.state_str) not in self.G.edges():
             self.G.add_edge(old_state.state_str, new_state.state_str, events={})
-        self.G[old_state.state_str][new_state.state_str]["events"][event_str] = {
+        self.G[old_state.state_str][new_state.state_str]["events"][event_str + "_" + str(effective_event_count_add)] = {
             "event": event,
             "id": self.effective_event_count
         }

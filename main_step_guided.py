@@ -152,7 +152,7 @@ def run_on_agentenv(ac: AndroidController, range_pair, drb_output_dir):
                 continue
             elif index+1 > range_pair[1]:
                 break
-            # if episode not in ( "12321418230619720863", "13842732228357970269","601779706200353051", "10609424558081693691", "11274761796981573687"): #"601779706200353051", "10609424558081693691", "11274761796981573687",
+            # if episode not in ["84143002711104077","244629384739303596","601779706200353051"]: # skip some episodes
             #     continue
             try_count = 0
             while try_count < 3: # try at most 3 times for each task
@@ -192,7 +192,7 @@ def run_on_agentenv(ac: AndroidController, range_pair, drb_output_dir):
                     similarTasks, subTasks = get_reference_steps(task_description, app_short, standard_template, top_k=0)
                     ac.save_intructions(similarTasks, subTasks)
                     
-                    explore(subTasks, ac, episode, drb_output_dir)
+                    explore(subTasks, ac, episode, full_path)
                     
                     
         
@@ -264,10 +264,10 @@ if __name__ == "__main__":
     # )
     # run_on_agentenv(ac, range_pair=target_range, drb_output_dir=droidbot_out_dir)
     
-    AVD_NAME_LIST = [ "Copy1_of_p6a", "Copy2_of_p6a", "Copy3_of_p6a", "Copy4_of_p6a"]
-    port_list = [  "5556","5558","5560", "5562"]
-    AgentEnv_output_dir = "exec_output_llamatouch_RASSDroid_deepseek_06-13"
-    droidbot_out_dir = "drb_output_llamatouch_RASSDroid_deepseek_06-13"
+    AVD_NAME_LIST = [ "Copy1_of_p6a" ] #["Copy2_of_p6a", "Copy3_of_p6a", "Copy4_of_p6a"]#               
+    port_list = [ "5556", "5558","5560", "5562"]
+    AgentEnv_output_dir = "exec_output_llamatouch_RASSDroid_deepseek_07-23"
+    droidbot_out_dir = "drb_output_llamatouch_RASSDroid_deepseek_07-23"
     target_range_list = [(1,130),(131,260),(261,390),(391,495)]
   
     # AVD_NAME_LIST = [ "Copy3_of_p6a"]
@@ -284,7 +284,8 @@ if __name__ == "__main__":
     
     args = [ (avd_name, port_list[i], AgentEnv_output_dir, droidbot_out_dir, target_range_list[i])  for i, avd_name in enumerate(AVD_NAME_LIST)]
     set_start_method('spawn', force=True)
-    with Pool(processes=4) as pool:
+    list_length = len(AVD_NAME_LIST)
+    with Pool(processes=list_length) as pool:
         results = pool.map(parallel_run_on_agentenv, args)
     
     end_time = datetime.now()
