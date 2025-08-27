@@ -264,11 +264,11 @@ if __name__ == "__main__":
     # )
     # run_on_agentenv(ac, range_pair=target_range, drb_output_dir=droidbot_out_dir)
     
-    AVD_NAME_LIST = [ "Copy1_of_p6a" ] #["Copy2_of_p6a", "Copy3_of_p6a", "Copy4_of_p6a"]#               
-    port_list = [ "5556", "5558","5560", "5562"]
-    AgentEnv_output_dir = "exec_output_llamatouch_RASSDroid_deepseek_07-23"
-    droidbot_out_dir = "drb_output_llamatouch_RASSDroid_deepseek_07-23"
-    target_range_list = [(1,130),(131,260),(261,390),(391,495)]
+    AVD_NAME_LIST = [ "Copy1_of_p6a" ] # ["Copy2_of_p6a", "Copy3_of_p6a", "Copy4_of_p6a"]#              
+    port_list = ["5556"] # [  "5558","5560", "5562"] #,
+    AgentEnv_output_dir = "exec_output_llamatouch_RASSDroid_deepseek_07-29"
+    droidbot_out_dir = "drb_output_llamatouch_RASSDroid_deepseek_07-29"
+    target_range_list = [(1,130)]#[(131,260),(261,390),(391,495)] #,
   
     # AVD_NAME_LIST = [ "Copy3_of_p6a"]
     # port_list = [  "5556","5558","5560", "5562"]

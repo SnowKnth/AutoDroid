@@ -1736,13 +1736,15 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                                 )
                         elif event.event_type == "intent":
                             self.addiAC.intent(event.get_intent_str())
+                            # self.addiAC.intent(intent_str=event.get_event_str(self.current_state), intent_dict=event.to_dict())  
                         elif event.event_type == "kill_app":
                             kill_intent = event.get_intent_str()
                             if kill_intent is not None:
                                 self.addiAC.intent(event.get_intent_str())
                             # self.addiAC._backtohome()
                         elif event.event_type in ("oracle"):
-                            self.addiAC.intent(event.get_event_str(self.current_state))           
+                            self.addiAC.oracle(event.get_event_str(self.current_state))           
+                            # self.addiAC.oracle(oracle_str=event.get_event_str(self.current_state), oracle_dict=event.to_dict())           
                         else:
                             raise Exception(f"Error action event type: {event.event_type}")
 
@@ -2421,9 +2423,9 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         
         if current_state:
             if activity == "com.google.android.apps.nexuslauncher/.NexusLauncherActivity":
-                view_descs, candidate_actions, views_without_id, _ = current_state.get_described_actions(add_scroll = False)
-            else:
                 view_descs, candidate_actions, views_without_id, _ = current_state.get_described_actions()
+            else:
+                view_descs, candidate_actions, views_without_id, _ = current_state.get_described_actions(add_scroll = False)
             state_str = current_state.state_str
         else:
             views_with_id = []
@@ -2759,12 +2761,12 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         next_step_ask = "" # if no next step in extracted_info exisits, next_step_ask will be empty string and nothing will insert into question
         if self.step <= len(self.extracted_info)-1:
             next_step = self.extracted_info[self.step]['subtask']
-            next_step_ask = f'If "{next_step}" contains "press enter" action explicitly, set "press_enter" as "true" and set "goto_next_step" as "true". '
+            next_step_ask = f'If "{next_step}" contains "keyboard operation of press enter" action explicitly, set "press_enter" as "true" and set "goto_next_step" as "true";'
         # 提取action的text
         if (isinstance(selected_action, SetTextEvent)) and (self.subtask.split()[0].lower() != "clear"):
             view_text = current_state.get_view_desc(selected_action.view) #get_view_desc需要修改
             task_prompt = f"I am working on a functional test case containing multi-subtasks for the '{func}' feature in the '{app}' app. I've completed some actions and reached the current state. "
-            question = f'My current subtask is "{self.subtask}", and I need to decide the next step that will effectively advance the testing process. I have chosen the action of "{view_text}". So I need to type something into the edit box. Just put the text that need enter into "text_need_enter". {next_step_ask} If "{self.subtask}" contains "keyboard operation of press enter" action explicitly , set "press_enter" as "true". In other conditions, set "press_enter" and "goto_next_step"  as default value "False". Answer using json object format including following keys: "text_need_enter"(str), "press_enter"(true or false) and "goto_next_step"(true or false).'
+            question = f'My current subtask is "{self.subtask}", and I need to decide the next step that will effectively advance the testing process. I have chosen the action of "{view_text}". So I need to type something into the edit box. Just put the text that need enter into "text_need_enter". {next_step_ask} Else if "{self.subtask}" contains "keyboard operation of press enter" action explicitly , set "press_enter" as "true" and "goto_next_step" as "false". In other conditions, set "press_enter" and "goto_next_step"  as default value "false". Answer using json object format including following keys: "text_need_enter"(str), "press_enter"(true or false) and "goto_next_step"(true or false).'
             #prompt = f'{task_prompt}\n{state_prompt}\n{question}'
             prompt = f'{task_prompt}\n{history_prompt}\n{state_prompt}\n{question}' # zyk版本里没有state_prompt
             if ("email" in view_text.lower()) and (self.extracted_info[0]['example_email'] != ""):
