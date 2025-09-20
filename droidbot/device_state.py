@@ -1057,7 +1057,7 @@ class DeviceState(object):
                     desc = f'- Scroll {action.direction.lower()} current screen'
             elif isinstance(action, OracleEvent):
                 if action.assert_accept:
-                    desc = action.condition
+                    desc = action.condition + ' and return true'
                 else:
                     desc = ""
             else:

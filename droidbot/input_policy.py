@@ -2566,7 +2566,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         if self.update_steps_before_looking_after_in_functional_guide and self.function_guide_before_looking_after:
             standard_template = tools.get_standard_prompt(func, app, self.step)
             update_following_steps_str = f"<Question 2>:\nNow with above Completed Actions, these subtasks are seen as done: \n\'\'\'{self._get_finished_task()}\'\'\' If next action is found according to wholeFunction '{func}' in the current state, please review the following list of future subtasks and determine how they should be updated based on the current state and action_id choice. \nFuture subtasks: \n\'\'\'{self._get_unfinished_task()}\'\'\'  If next action is found according to wholeFunction, update future subtasks (including current selected action) using {standard_template} Output this response (response2) as another response following response1. Note that future tasks shouldn't be updated and response2 shouldn't output if next action is found according to current subtask. Append answer using template ```json\n\"response2\":JSON array of objects\n'''.\n<End Question 2>\n"  ###by wxd, if next action is found （caused by inference ability of LLM） according to current subtask， should update current and following instructions perhaps!!! 
-        question = f"<Question 1>:\nBased on completed actions, current activity and current state reached so far, which action (identified by the Action ID in current state) should I perform next to effectively continue current subtask  '{self.subtask}' or should I wait until current subtask related latest action in completed actions finish? Please do not suggest any actions that I have already completed. Please think step by step in analysis and only return the action's ID. {avoid_repeated_action_prompt} Please format the response (response1) as a JSON object with the following keys: 'analysis'(str), 'action_id'(int), 'subtask_or_wholeFunction_guided'(str, choose from 'subtask' or 'wholeFunction'). If current subtask '''{self.subtask}''' is similar to 'keyboard operation of pressing enter' in words explicitly, set action_id as {PRESS_ENTER} and 'subtask_or_wholeFunction_guided' as subtask; if next action corresponding to current subtask '{self.subtask}' can be found in the current state, choose the action id as action_id and set 'subtask_or_wholeFunction_guided' as subtask; if current subtask related latest performed action in completed actions may take more time and I should wait until current state shows current subtask is finished, set action_id as {WAIT_ACTION_NUM} and 'subtask_or_wholeFunction_guided' as 'none'; if current subtask '''{self.subtask}''' only contains 'press back operation', set action_id as {PRESS_BACK}, and set 'subtask_or_wholeFunction_guided' as subtask;{swipe_find_str} {whole_function_guide_str}{press_home_str} if no proper action can be found in the current state, set action_id as {NO_ACTION_FOUND}, and set 'subtask_or_wholeFunction_guided' as 'none'.\n<End Question 1>\n{update_following_steps_str}"
+        question = f"<Question 1>:\nBased on completed actions, current activity and current state reached so far, which action (identified by the Action ID in current state) should I perform next to effectively continue current subtask  '{self.subtask}' or should I wait until current subtask related latest action in completed actions finish? Please do not suggest any actions that I have already completed. Please think step by step in analysis and only return the action's ID. {avoid_repeated_action_prompt} Please format the response (response1) as a JSON object with the following keys: 'analysis'(str), 'action_id'(int), 'subtask_or_wholeFunction_guided'(str, choose from 'subtask' or 'wholeFunction'). If current subtask '''{self.subtask}''' means 'keyboard operation of pressing enter' semantically, set action_id as {PRESS_ENTER} and 'subtask_or_wholeFunction_guided' as subtask; if next action corresponding to current subtask '{self.subtask}' can be found in the current state, choose the action id as action_id and set 'subtask_or_wholeFunction_guided' as subtask; if current subtask related latest performed action in completed actions may take more time and I should wait until current state shows current subtask is finished, set action_id as {WAIT_ACTION_NUM} and 'subtask_or_wholeFunction_guided' as 'none'; if current subtask '''{self.subtask}''' only contains 'press back operation', set action_id as {PRESS_BACK}, and set 'subtask_or_wholeFunction_guided' as subtask;{swipe_find_str} {whole_function_guide_str}{press_home_str} if no proper action can be found in the current state, set action_id as {NO_ACTION_FOUND}, and set 'subtask_or_wholeFunction_guided' as 'none'.\n<End Question 1>\n{update_following_steps_str}"
         # tips = f"Here are a few tips that might help you with your action selection: Please consider that some apps may require login to access main features, but this is not always the case. If considering the login process, please ensure all necessary steps like entering email, password, and then confirming sign-in are included in the recommendation. If you are unsure which action to choose, consider scrolling down to access further features of the app." #去掉关于login的;这里没有把生成的步骤全部列出来是为了在生成的过程中保持一定的自适应性，因为最初合成的步骤不一定和当前用例完全匹配; scroll down目前的处理不奏效
         prompt = f'{task_prompt}\n{history_prompt}\n{state_prompt}\n{question}'
         self.logger.info("\n-------------------------prompt asking for next step----------------------------------\n")
@@ -2630,12 +2630,15 @@ class StepTaskPolicy(UtgBasedInputPolicy):
             time.sleep(5)
             self.wait_count += 1
             return finish, None, candidate_actions # None denotes no event to execute
+        if match == NO_ACTION_FOUND and self.step == len(self.extracted_info): # 对于最后一个验证整个function的task,没有找到合适action
+            finish = 0
+            return finish, None, candidate_actions
             
             
         self.wait_count = 0 # other event will reset wait_count
         finish = 0
         # 判断是否已经执行到后面的task了，这个要列出全部吗？列出前n个？  假如执行到后面了,这个时候要重新调整测试接下来步骤的整体描述！;没有到后面的话，应该让从整体任务看是否要选择某个组件；还是没找到合适组件的话，再选择back或scroll(实现一个scrollable的判别器)而不是默认back（加上动作生效的diff判断反馈给模型），其他时候是否要怎样重新调整测试接下来步骤的整体描述！
-        if (match == NO_ACTION_FOUND or  match == WAIT_ACTION_NUM) and self.step <= len(self.extracted_info)-1: # 一种情况是match == WAIT_ACTION_NUM and self.wait_count==self.wait_max
+        if (match == NO_ACTION_FOUND or  match == WAIT_ACTION_NUM) and self.step <= len(self.extracted_info)-1: # 一种情况是match == WAIT_ACTION_NUM and self.wait_count==self.wait_max; For last subtask [self.step == len(self.extracted_info)], the code below will be skipped
             update_following_steps_functional_guide_str = ""
             update_following_steps_str_after_matching_future_substeps = ""
             standard_template = tools.get_standard_prompt(func, app, self.step)
@@ -2746,7 +2749,7 @@ class StepTaskPolicy(UtgBasedInputPolicy):
                 if step['action_id'] == NO_ACTION_FOUND: #没找到子任务,分两种情况：有function guide和没有function guide
                     # selected_action = candidate_actions[-1] # back, -1 denotes the end one
                     return finish, None, candidate_actions
-                elif step['action_id'] > -1: # 目前负值只可以为NO_ACTION_FOUND
+                elif step['action_id'] > -1: # 目前该阶段代码产生的负值只可以为NO_ACTION_FOUND
                     selected_action = candidate_actions[step['action_id']] # 根据整体functional guide选择的action
                 else: #发生意外情况，选择再来一遍
                     return finish, None, candidate_actions
@@ -2756,17 +2759,20 @@ class StepTaskPolicy(UtgBasedInputPolicy):
         
         idx = step['action_id'] #来自第二阶段或来自第三阶段的step
         self.logger.info(f"StepTaskPolicy _get_action_with_LLM return action id: {idx}")
-
+  
+  
         selected_action = candidate_actions[idx]
         next_step_ask = "" # if no next step in extracted_info exisits, next_step_ask will be empty string and nothing will insert into question
         if self.step <= len(self.extracted_info)-1:
             next_step = self.extracted_info[self.step]['subtask']
-            next_step_ask = f'If "{next_step}" contains "keyboard operation of press enter" action explicitly, set "press_enter" as "true" and set "goto_next_step" as "true";'
+            next_step_ask = f'If next subtask "{next_step}" contains "keyboard operation of press enter" action explicitly, set "press_enter" as "true" and set "goto_next_step" as "true";'
+        else:
+            next_step_ask = "Next subtask does not exist; "
         # 提取action的text
         if (isinstance(selected_action, SetTextEvent)) and (self.subtask.split()[0].lower() != "clear"):
             view_text = current_state.get_view_desc(selected_action.view) #get_view_desc需要修改
             task_prompt = f"I am working on a functional test case containing multi-subtasks for the '{func}' feature in the '{app}' app. I've completed some actions and reached the current state. "
-            question = f'My current subtask is "{self.subtask}", and I need to decide the next step that will effectively advance the testing process. I have chosen the action of "{view_text}". So I need to type something into the edit box. Just put the text that need enter into "text_need_enter". {next_step_ask} Else if "{self.subtask}" contains "keyboard operation of press enter" action explicitly , set "press_enter" as "true" and "goto_next_step" as "false". In other conditions, set "press_enter" and "goto_next_step"  as default value "false". Answer using json object format including following keys: "text_need_enter"(str), "press_enter"(true or false) and "goto_next_step"(true or false).'
+            question = f'My current subtask is "{self.subtask}", and I need to decide the next step that will effectively advance the testing process. I have chosen the action of "{view_text}". So I need to type something into the edit box. Just put the text that need enter into "text_need_enter". {next_step_ask} when next subtask does not exist or does not contain "keyboard operation of press enter" action explicitly, and if "{self.subtask}" contains "keyboard operation of press enter" action explicitly , set "press_enter" as "true" and "goto_next_step" as "false". In other conditions, set "press_enter" and "goto_next_step"  as default value "false". Answer using json object format including following keys: "text_need_enter"(str), "press_enter"(true or false) and "goto_next_step"(true or false).'
             #prompt = f'{task_prompt}\n{state_prompt}\n{question}'
             prompt = f'{task_prompt}\n{history_prompt}\n{state_prompt}\n{question}' # zyk版本里没有state_prompt
             if ("email" in view_text.lower()) and (self.extracted_info[0]['example_email'] != ""):

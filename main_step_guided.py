@@ -7,7 +7,7 @@ from droidbot.droidbot import DroidBot
 from droidbot import input_manager
 from droidbot import env_manager
 from datetime import datetime
-from tools import get_reference_steps, get_standard_prompt
+from tools import get_reference_steps, get_standard_prompt, init_token_stats
 from torch.multiprocessing import Pool, set_start_method
 
 import requests
@@ -152,7 +152,7 @@ def run_on_agentenv(ac: AndroidController, range_pair, drb_output_dir):
                 continue
             elif index+1 > range_pair[1]:
                 break
-            # if episode not in ["84143002711104077","244629384739303596","601779706200353051"]: # skip some episodes
+            # if episode not in ["50827638723968537952"]: # skip some episodes， "244629384739303596","601779706200353051"
             #     continue
             try_count = 0
             while try_count < 3: # try at most 3 times for each task
@@ -236,6 +236,9 @@ def parallel_run_on_agentenv(args):
         max_steps=20,
         instruction_fp=TASK_METADATA_PATH,
     )
+    
+    # 注意：不在子进程中初始化token统计，使用全局统计
+    
     #日志记录
     log_recording_fail_episode_outloop = logging.getLogger(f"{ac.emulator_controller.avd_name}.fail_episode")
     log_recording_fail_episode_outloop.setLevel(logging.INFO)
@@ -253,6 +256,11 @@ def parallel_run_on_agentenv(args):
 
 if __name__ == "__main__":
     start_time = datetime.now()
+    
+    # 初始化全局token统计
+    global_output_dir = "exec_output_llamatouch_RASSDroid_deepseek_09-20"
+    init_token_stats(global_output_dir)
+    
     # AgentEnv_output_dir = "exec_output"
     # droidbot_out_dir = "drb_output"
     # ac = AndroidController(
@@ -264,11 +272,11 @@ if __name__ == "__main__":
     # )
     # run_on_agentenv(ac, range_pair=target_range, drb_output_dir=droidbot_out_dir)
     
-    AVD_NAME_LIST = [ "Copy1_of_p6a" ] # ["Copy2_of_p6a", "Copy3_of_p6a", "Copy4_of_p6a"]#              
-    port_list = ["5556"] # [  "5558","5560", "5562"] #,
-    AgentEnv_output_dir = "exec_output_llamatouch_RASSDroid_deepseek_07-29"
-    droidbot_out_dir = "drb_output_llamatouch_RASSDroid_deepseek_07-29"
-    target_range_list = [(1,130)]#[(131,260),(261,390),(391,495)] #,
+    AVD_NAME_LIST = [ "Copy1_of_p6a", "Copy2_of_p6a", "Copy3_of_p6a", "Copy4_of_p6a"]#              
+    port_list = ["5556", "5558","5560", "5562"] #,
+    AgentEnv_output_dir = "exec_output_llamatouch_RASSDroid_deepseek_09-20"
+    droidbot_out_dir = "drb_output_llamatouch_RASSDroid_deepseek_09-20"
+    target_range_list = [(1,130),(131,260),(261,390),(391,495)] #,
   
     # AVD_NAME_LIST = [ "Copy3_of_p6a"]
     # port_list = [  "5556","5558","5560", "5562"]
@@ -291,4 +299,33 @@ if __name__ == "__main__":
     end_time = datetime.now()
     elapsed_time = end_time - start_time
     logging.info(f"Execution time: {elapsed_time}")
+    
+    # 生成最终的token使用统计报告
+    from tools import save_token_stats, get_token_stats, generate_final_report, print_token_summary
+    save_token_stats()
+    generate_final_report(global_output_dir)
+    print_token_summary()
+    
+    # 打印总体统计
+    final_stats = get_token_stats()
+    print(f"\n{'='*50}")
+    print(f"FINAL TOKEN USAGE SUMMARY")
+    print(f"{'='*50}")
+    print(f"Total Runtime: {elapsed_time}")
+    print(f"Total Requests: {final_stats['request_count']:,}")
+    print(f"Total Input Tokens: {final_stats['total_input_tokens']:,}")
+    print(f"Total Output Tokens: {final_stats['total_output_tokens']:,}")
+    print(f"Total Tokens: {final_stats['total_tokens']:,}")
+    print(f"Average Tokens per Request: {final_stats['total_tokens'] / max(final_stats['request_count'], 1):.1f}")
+    
+    if final_stats['model_usage']:
+        print(f"\nModel Breakdown:")
+        for model, usage in final_stats['model_usage'].items():
+            print(f"  {model}:")
+            print(f"    Requests: {usage['requests']:,}")
+            print(f"    Total Tokens: {usage['total_tokens']:,}")
+    
+    print(f"\nStatistics saved to: {global_output_dir}/llm_token_usage.json")
+    print(f"{'='*50}")
+    
     # pre_download_APK()

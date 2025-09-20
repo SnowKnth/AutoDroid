@@ -3,6 +3,8 @@ import os
 import re
 import json
 import logging
+import threading
+from datetime import datetime
 
 import networkx as nx
 from openai import OpenAI
@@ -20,6 +22,303 @@ from sentence_embedding import get_top_k_similar_episodes
 
 ACTION_MISSED = None
 FINISHED = "task_completed"
+
+# Token统计相关变量
+token_stats_lock = threading.Lock()
+token_stats = {
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_tokens": 0,
+    "request_count": 0,
+    "model_usage": {},
+    "start_time": None,
+    "last_update": None
+}
+
+def init_token_stats(output_dir):
+    """初始化token统计"""
+    global token_stats
+    with token_stats_lock:
+        token_stats["start_time"] = datetime.now()
+        token_stats["last_update"] = datetime.now()
+        token_stats["output_dir"] = output_dir
+        # 确保输出目录存在
+        os.makedirs(output_dir, exist_ok=True)
+
+def log_token_usage(input_tokens, outputTokens, total_tokens, model_name):
+    """记录token使用量"""
+    global token_stats
+    
+    with token_stats_lock:
+        # 更新总计
+        token_stats["total_input_tokens"] += input_tokens
+        token_stats["total_output_tokens"] += outputTokens
+        token_stats["total_tokens"] += total_tokens
+        token_stats["request_count"] += 1
+        token_stats["last_update"] = datetime.now()
+        
+        # 按模型统计
+        if model_name not in token_stats["model_usage"]:
+            token_stats["model_usage"][model_name] = {
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "total_tokens": 0,
+                "requests": 0
+            }
+        
+        token_stats["model_usage"][model_name]["input_tokens"] += input_tokens
+        token_stats["model_usage"][model_name]["output_tokens"] += outputTokens
+        token_stats["model_usage"][model_name]["total_tokens"] += total_tokens
+        token_stats["model_usage"][model_name]["requests"] += 1
+        
+        # 每10次请求打印一次进度
+        if token_stats["request_count"] % 10 == 0:
+            current_cost = sum(calculate_cost_estimation().values()) if calculate_cost_estimation() else 0
+            logging.info(f"Token Progress: {token_stats['request_count']} requests, "
+                        f"{token_stats['total_tokens']:,} tokens, "
+                        f"Est. cost: ${current_cost:.4f}")
+        
+        # 实时保存统计数据（改名避免递归调用）
+        save_token_stats_to_file()
+
+def save_token_stats():
+    """保存token统计到文件（对外接口）"""
+    save_token_stats_to_file()
+
+def save_token_stats_to_file():
+    """实际的保存逻辑 - 多进程安全版本"""
+    global token_stats
+    
+    if "output_dir" not in token_stats:
+        return
+        
+    try:
+        # 计算运行时间
+        runtime = None
+        if token_stats["start_time"]:
+            runtime = str(datetime.now() - token_stats["start_time"])
+        
+        # 准备保存的数据
+        stats_to_save = {
+            "summary": {
+                "total_input_tokens": token_stats["total_input_tokens"],
+                "total_output_tokens": token_stats["total_output_tokens"],
+                "total_tokens": token_stats["total_tokens"],
+                "request_count": token_stats["request_count"],
+                "start_time": token_stats["start_time"].isoformat() if token_stats["start_time"] else None,
+                "last_update": token_stats["last_update"].isoformat() if token_stats["last_update"] else None,
+                "runtime": runtime
+            },
+            "model_usage": token_stats["model_usage"],
+            "cost_estimation": calculate_cost_estimation()
+        }
+        
+        # 使用文件锁保证多进程安全写入
+        stats_file = os.path.join(token_stats["output_dir"], "llm_token_usage.json")
+        temp_file = stats_file + f".tmp.{os.getpid()}"
+        
+        with open(temp_file, 'w', encoding='utf-8') as f:
+            json.dump(stats_to_save, f, indent=2, ensure_ascii=False)
+        
+        # 原子性重命名
+        try:
+            os.rename(temp_file, stats_file)
+        except:
+            # 如果重命名失败（多进程冲突），尝试合并现有数据
+            merge_token_stats(stats_to_save, stats_file)
+            try:
+                os.remove(temp_file)
+            except:
+                pass
+        
+        # 同时保存为可读的文本文件
+        readable_file = os.path.join(token_stats["output_dir"], "llm_token_usage_summary.txt")
+        with open(readable_file, 'w', encoding='utf-8') as f:
+            f.write("=== LLM Token Usage Summary ===\n\n")
+            f.write(f"Start Time: {token_stats['start_time']}\n")
+            f.write(f"Last Update: {token_stats['last_update']}\n")
+            f.write(f"Runtime: {runtime}\n")
+            f.write(f"Total Requests: {token_stats['request_count']}\n\n")
+            
+            f.write("=== Token Usage ===\n")
+            f.write(f"Input Tokens: {token_stats['total_input_tokens']:,}\n")
+            f.write(f"Output Tokens: {token_stats['total_output_tokens']:,}\n")
+            f.write(f"Total Tokens: {token_stats['total_tokens']:,}\n\n")
+            
+            f.write("=== Model Breakdown ===\n")
+            for model, usage in token_stats["model_usage"].items():
+                f.write(f"{model}:\n")
+                f.write(f"  Requests: {usage['requests']}\n")
+                f.write(f"  Input Tokens: {usage['input_tokens']:,}\n")
+                f.write(f"  Output Tokens: {usage['output_tokens']:,}\n")
+                f.write(f"  Total Tokens: {usage['total_tokens']:,}\n\n")
+            
+            cost_est = calculate_cost_estimation()
+            if cost_est:
+                f.write("=== Cost Estimation (USD) ===\n")
+                for model, cost in cost_est.items():
+                    f.write(f"{model}: ${cost:.4f}\n")
+                
+        logging.info(f"Token stats saved to {stats_file}")
+        
+    except Exception as e:
+        logging.error(f"Failed to save token stats: {e}")
+
+def calculate_cost_estimation():
+    """计算成本估算（基于公开的API定价）"""
+    # DeepSeek Chat 定价 (示例价格，请根据实际情况调整)
+    pricing = {
+        "deepseek-chat": {
+            "input_per_1k": 0.0014,  # USD per 1K input tokens
+            "output_per_1k": 0.0028  # USD per 1K output tokens
+        },
+        "gpt-4o": {
+            "input_per_1k": 0.005,
+            "output_per_1k": 0.015
+        },
+        "gpt-3.5-turbo": {
+            "input_per_1k": 0.0015,
+            "output_per_1k": 0.002
+        }
+    }
+    
+    cost_estimation = {}
+    for model, usage in token_stats["model_usage"].items():
+        if model in pricing:
+            input_cost = (usage["input_tokens"] / 1000) * pricing[model]["input_per_1k"]
+            output_cost = (usage["output_tokens"] / 1000) * pricing[model]["output_per_1k"]
+            total_cost = input_cost + output_cost
+            cost_estimation[model] = total_cost
+    
+    return cost_estimation
+
+def get_token_stats():
+    """获取当前token统计"""
+    with token_stats_lock:
+        return token_stats.copy()
+
+def generate_final_report(output_dir):
+    """生成最终的详细统计报告"""
+    global token_stats
+    
+    if "output_dir" not in token_stats:
+        token_stats["output_dir"] = output_dir
+        
+    try:
+        # 计算运行时间
+        runtime = None
+        if token_stats["start_time"]:
+            runtime = datetime.now() - token_stats["start_time"]
+        
+        # 创建详细报告
+        report_file = os.path.join(token_stats["output_dir"], "token_usage_final_report.md")
+        
+        with open(report_file, 'w', encoding='utf-8') as f:
+            f.write("# LLM Token Usage Final Report\n\n")
+            
+            # 基本信息
+            f.write("## Basic Information\n")
+            f.write(f"- **Start Time**: {token_stats['start_time']}\n")
+            f.write(f"- **End Time**: {datetime.now()}\n")
+            f.write(f"- **Total Runtime**: {runtime}\n")
+            f.write(f"- **Total API Requests**: {token_stats['request_count']:,}\n\n")
+            
+            # Token使用统计
+            f.write("## Token Usage Summary\n")
+            f.write(f"- **Total Input Tokens**: {token_stats['total_input_tokens']:,}\n")
+            f.write(f"- **Total Output Tokens**: {token_stats['total_output_tokens']:,}\n")
+            f.write(f"- **Total Tokens**: {token_stats['total_tokens']:,}\n")
+            
+            if token_stats['request_count'] > 0:
+                avg_input = token_stats['total_input_tokens'] / token_stats['request_count']
+                avg_output = token_stats['total_output_tokens'] / token_stats['request_count']
+                avg_total = token_stats['total_tokens'] / token_stats['request_count']
+                
+                f.write(f"- **Average Input Tokens per Request**: {avg_input:.1f}\n")
+                f.write(f"- **Average Output Tokens per Request**: {avg_output:.1f}\n")
+                f.write(f"- **Average Total Tokens per Request**: {avg_total:.1f}\n\n")
+            
+            # 按模型统计
+            if token_stats["model_usage"]:
+                f.write("## Model Usage Breakdown\n")
+                for model, usage in token_stats["model_usage"].items():
+                    f.write(f"### {model}\n")
+                    f.write(f"- **Requests**: {usage['requests']:,}\n")
+                    f.write(f"- **Input Tokens**: {usage['input_tokens']:,}\n")
+                    f.write(f"- **Output Tokens**: {usage['output_tokens']:,}\n")
+                    f.write(f"- **Total Tokens**: {usage['total_tokens']:,}\n")
+                    
+                    if usage['requests'] > 0:
+                        avg_per_req = usage['total_tokens'] / usage['requests']
+                        f.write(f"- **Average Tokens per Request**: {avg_per_req:.1f}\n")
+                    f.write("\n")
+            
+            # 多进程详情（如果需要的话可以添加）
+            # if "process_details" in token_stats and token_stats["process_details"]:
+            #     f.write("## Process Breakdown\n")
+            #     for process_name, details in token_stats["process_details"].items():
+            #         f.write(f"### {process_name}\n")
+            #         if "error" in details:
+            #             f.write(f"- **Error**: {details['error']}\n")
+            #         else:
+            #             f.write(f"- **Requests**: {details.get('requests', 0):,}\n")
+            #             f.write(f"- **Total Tokens**: {details.get('total_tokens', 0):,}\n")
+            #             f.write(f"- **Runtime**: {details.get('runtime', 'N/A')}\n")
+            #         f.write("\n")
+            
+            # 成本估算
+            cost_est = calculate_cost_estimation()
+            if cost_est:
+                f.write("## Cost Estimation (USD)\n")
+                total_cost = 0
+                for model, cost in cost_est.items():
+                    f.write(f"- **{model}**: ${cost:.4f}\n")
+                    total_cost += cost
+                f.write(f"- **Total Estimated Cost**: ${total_cost:.4f}\n\n")
+            
+            # 使用效率分析
+            if runtime and token_stats['total_tokens'] > 0:
+                total_seconds = runtime.total_seconds()
+                tokens_per_second = token_stats['total_tokens'] / total_seconds
+                requests_per_minute = token_stats['request_count'] / (total_seconds / 60)
+                
+                f.write("## Usage Efficiency\n")
+                f.write(f"- **Tokens per Second**: {tokens_per_second:.2f}\n")
+                f.write(f"- **Requests per Minute**: {requests_per_minute:.2f}\n\n")
+        
+        print(f"Final report generated: {report_file}")
+        
+    except Exception as e:
+        logging.error(f"Failed to generate final report: {e}")
+
+def print_token_summary():
+    """打印token使用摘要到控制台"""
+    global token_stats
+    
+    print(f"\n{'='*60}")
+    print(f"TOKEN USAGE SUMMARY")
+    print(f"{'='*60}")
+    
+    if token_stats["start_time"]:
+        runtime = datetime.now() - token_stats["start_time"]
+        print(f"Runtime: {runtime}")
+    
+    print(f"Total Requests: {token_stats['request_count']:,}")
+    print(f"Total Input Tokens: {token_stats['total_input_tokens']:,}")
+    print(f"Total Output Tokens: {token_stats['total_output_tokens']:,}")
+    print(f"Total Tokens: {token_stats['total_tokens']:,}")
+    
+    if token_stats['request_count'] > 0:
+        avg_tokens = token_stats['total_tokens'] / token_stats['request_count']
+        print(f"Average Tokens per Request: {avg_tokens:.1f}")
+    
+    # 成本估算
+    cost_est = calculate_cost_estimation()
+    if cost_est:
+        total_cost = sum(cost_est.values())
+        print(f"Estimated Total Cost: ${total_cost:.4f} USD")
+    
+    print(f"{'='*60}")
 
 
 def get_id_from_view_desc(view_desc):
@@ -1077,7 +1376,7 @@ def get_reference_steps(function:str, app_short:str, standard_prompt:str, top_k:
         if validated_step["subtask"] == "Press Home" or validated_step["subtask"] == "Task Complete":
             continue
         validated_steps.append(validated_step)
-        
+    
     validated_step = {
         "app": f"llamatouch_apps/{app_short}.apk",
         "function": function,
@@ -1126,6 +1425,16 @@ def query_gpt(prompt):
                 stream=False
             )
             res = completion.choices[0].message.content
+            
+            # 统计token使用量
+            if hasattr(completion, 'usage') and completion.usage:
+                input_tokens = completion.usage.prompt_tokens if hasattr(completion.usage, 'prompt_tokens') else 0
+                output_tokens = completion.usage.completion_tokens if hasattr(completion.usage, 'completion_tokens') else 0
+                total_tokens = completion.usage.total_tokens if hasattr(completion.usage, 'total_tokens') else (input_tokens + output_tokens)
+                
+                # 记录token使用量
+                log_token_usage(input_tokens, output_tokens, total_tokens, "deepseek-chat")
+            
             retry = 0
             break
         except Exception as e:
@@ -1134,6 +1443,154 @@ def query_gpt(prompt):
             continue
     return res
 
-# Run the main process
-if __name__ == "__main__":
-    get_reference_steps('Clear the cart on target.com. Add logitech g pro to the cart on target.com', 'target' , 2)
+def collect_all_process_stats(global_output_dir, avd_name_list):
+    """收集所有子进程的token统计数据并合并"""
+    global token_stats
+    
+    combined_stats = {
+        "total_input_tokens": 0,
+        "total_output_tokens": 0,
+        "total_tokens": 0,
+        "request_count": 0,
+        "model_usage": {},
+        "start_time": None,
+        "last_update": None,
+        "process_details": {}
+    }
+    
+    earliest_start = None
+    latest_update = None
+    
+    for avd_name in avd_name_list:
+        process_dir = os.path.join(global_output_dir, f"process_{avd_name}")
+        stats_file = os.path.join(process_dir, "llm_token_usage.json")
+        
+        if os.path.exists(stats_file):
+            try:
+                with open(stats_file, 'r', encoding='utf-8') as f:
+                    process_data = json.load(f)
+                
+                summary = process_data.get("summary", {})
+                model_usage = process_data.get("model_usage", {})
+                
+                # 累加总数
+                combined_stats["total_input_tokens"] += summary.get("total_input_tokens", 0)
+                combined_stats["total_output_tokens"] += summary.get("total_output_tokens", 0)
+                combined_stats["total_tokens"] += summary.get("total_tokens", 0)
+                combined_stats["request_count"] += summary.get("request_count", 0)
+                
+                # 记录进程详情
+                combined_stats["process_details"][avd_name] = {
+                    "requests": summary.get("request_count", 0),
+                    "total_tokens": summary.get("total_tokens", 0),
+                    "runtime": summary.get("runtime", "N/A")
+                }
+                
+                # 合并模型使用统计
+                for model, usage in model_usage.items():
+                    if model not in combined_stats["model_usage"]:
+                        combined_stats["model_usage"][model] = {
+                            "input_tokens": 0,
+                            "output_tokens": 0,
+                            "total_tokens": 0,
+                            "requests": 0
+                        }
+                    
+                    combined_stats["model_usage"][model]["input_tokens"] += usage.get("input_tokens", 0)
+                    combined_stats["model_usage"][model]["output_tokens"] += usage.get("output_tokens", 0)
+                    combined_stats["model_usage"][model]["total_tokens"] += usage.get("total_tokens", 0)
+                    combined_stats["model_usage"][model]["requests"] += usage.get("requests", 0)
+                
+                # 更新时间范围
+                start_time_str = summary.get("start_time")
+                update_time_str = summary.get("last_update")
+                
+                if start_time_str:
+                    process_start = datetime.fromisoformat(start_time_str)
+                    if earliest_start is None or process_start < earliest_start:
+                        earliest_start = process_start
+                
+                if update_time_str:
+                    process_update = datetime.fromisoformat(update_time_str)
+                    if latest_update is None or process_update > latest_update:
+                        latest_update = process_update
+                
+            except Exception as e:
+                logging.error(f"Failed to read stats from {stats_file}: {e}")
+                combined_stats["process_details"][avd_name] = {"error": str(e)}
+        else:
+            logging.warning(f"Stats file not found: {stats_file}")
+            combined_stats["process_details"][avd_name] = {"error": "Stats file not found"}
+    
+    # 更新全局统计
+    with token_stats_lock:
+        token_stats["total_input_tokens"] = combined_stats["total_input_tokens"]
+        token_stats["total_output_tokens"] = combined_stats["total_output_tokens"]
+        token_stats["total_tokens"] = combined_stats["total_tokens"]
+        token_stats["request_count"] = combined_stats["request_count"]
+        token_stats["model_usage"] = combined_stats["model_usage"]
+        token_stats["start_time"] = earliest_start
+        token_stats["last_update"] = latest_update or datetime.now()
+        token_stats["output_dir"] = global_output_dir
+        token_stats["process_details"] = combined_stats["process_details"]
+    
+    logging.info(f"Collected stats from {len(avd_name_list)} processes: "
+                f"{combined_stats['request_count']} requests, "
+                f"{combined_stats['total_tokens']:,} tokens")
+    
+    return combined_stats
+
+def merge_token_stats(new_stats, stats_file):
+    """合并token统计数据 - 处理多进程写入冲突"""
+    try:
+        # 读取现有数据
+        if os.path.exists(stats_file):
+            with open(stats_file, 'r', encoding='utf-8') as f:
+                existing_stats = json.load(f)
+        else:
+            existing_stats = {"summary": {}, "model_usage": {}}
+        
+        # 合并数据
+        existing_summary = existing_stats.get("summary", {})
+        new_summary = new_stats.get("summary", {})
+        
+        merged_summary = {
+            "total_input_tokens": existing_summary.get("total_input_tokens", 0) + new_summary.get("total_input_tokens", 0),
+            "total_output_tokens": existing_summary.get("total_output_tokens", 0) + new_summary.get("total_output_tokens", 0),
+            "total_tokens": existing_summary.get("total_tokens", 0) + new_summary.get("total_tokens", 0),
+            "request_count": existing_summary.get("request_count", 0) + new_summary.get("request_count", 0),
+            "start_time": min(existing_summary.get("start_time", "9999-12-31"), new_summary.get("start_time", "9999-12-31")) if existing_summary.get("start_time") and new_summary.get("start_time") else existing_summary.get("start_time") or new_summary.get("start_time"),
+            "last_update": max(existing_summary.get("last_update", "1900-01-01"), new_summary.get("last_update", "1900-01-01")) if existing_summary.get("last_update") and new_summary.get("last_update") else existing_summary.get("last_update") or new_summary.get("last_update"),
+            "runtime": "N/A"  # 运行时间需要重新计算
+        }
+        
+        # 合并模型使用数据
+        merged_model_usage = existing_stats.get("model_usage", {}).copy()
+        for model, usage in new_stats.get("model_usage", {}).items():
+            if model not in merged_model_usage:
+                merged_model_usage[model] = usage
+            else:
+                merged_model_usage[model]["input_tokens"] += usage.get("input_tokens", 0)
+                merged_model_usage[model]["output_tokens"] += usage.get("output_tokens", 0)
+                merged_model_usage[model]["total_tokens"] += usage.get("total_tokens", 0)
+                merged_model_usage[model]["requests"] += usage.get("requests", 0)
+        
+        # 创建合并后的统计
+        merged_stats = {
+            "summary": merged_summary,
+            "model_usage": merged_model_usage,
+            "cost_estimation": {}  # 成本估算需要重新计算
+        }
+        
+        # 重新计算成本估算
+        # (这里可以添加成本计算逻辑)
+        
+        # 写入合并后的数据
+        with open(stats_file, 'w', encoding='utf-8') as f:
+            json.dump(merged_stats, f, indent=2, ensure_ascii=False)
+            
+    except Exception as e:
+        logging.error(f"Failed to merge token stats: {e}")
+        # 如果合并失败，直接写入新数据
+        with open(stats_file, 'w', encoding='utf-8') as f:
+            json.dump(new_stats, f, indent=2, ensure_ascii=False)
